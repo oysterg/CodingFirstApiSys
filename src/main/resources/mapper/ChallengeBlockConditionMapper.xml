@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.ChallengeBlockConditionMapper">
+    <select id="select" resultType="com.fjut.cf.pojo.po.ChallengeBlockConditionPO">
+        SELECT * FROM t_challenge_block_condition
+        ORDER BY block_id;
+    </select>
+
+    <select id="selectConditionByBlockId"
+            resultType="com.fjut.cf.pojo.vo.ChallengeBlockConditionVO">
+        SELECT cbc.precondition_block_id blockId, name, cbc.precondition_unlock_score num
+        FROM t_challenge_block_condition cbc, t_challenge_block cb
+        WHERE cbc.block_id = #{blockId}
+        AND cb.id = cbc.precondition_block_id;
+    </select>
+
+    <select id="selectRearBlocksByBlockId" resultType="java.lang.Integer">
+        SELECT block_id
+        FROM t_challenge_block_condition
+        WHERE  precondition_block_id = #{blockId};
+    </select>
+</mapper>

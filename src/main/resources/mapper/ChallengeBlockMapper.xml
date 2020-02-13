@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.ChallengeBlockMapper">
+    <select id="selectAsVO" resultType="com.fjut.cf.pojo.vo.UserChallengeBlockVO">
+        SELECT
+            cb.id AS id,
+            cb.name AS name,
+            SUM(cbp.score) AS totalScore,
+            0 as getScore
+                FROM t_challenge_block cb
+            LEFT JOIN t_challenge_block_problem cbp
+            ON cb.id = cbp.block_id
+            GROUP BY cb.id
+            ORDER BY id
+    </select>
+
+    <select id="selectByBlockId" resultType="com.fjut.cf.pojo.po.ChallengeBlockPO">
+        SELECT id,
+	    name,
+	    block_type,
+	    description
+	    FROM t_challenge_block
+	    WHERE id = #{blockId};
+    </select>
+
+    <select id="selectCanShowedBlockIdByUsername" resultType="java.lang.Integer">
+        SELECT cbc.block_id bid FROM t_challenge_block_condition cbc
+        WHERE cbc.precondition_block_id IN
+        (
+            SELECT cuob.block_id
+            FROM t_challenge_user_open_block cuob
+            WHERE username=#{username}
+        )
+        UNION
+        (
+            SELECT block_id bid
+            FROM t_challenge_user_open_block
+            WHERE username=#{username}
+        )
+        ORDER BY bid
+    </select>
+
+
+</mapper>

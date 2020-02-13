@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.ContestProblemMapper">
+    <select id="selectByContestId" resultType="com.fjut.cf.pojo.po.ContestProblemPO">
+        SELECT * FROM t_contest_problem
+        WHERE contest_id = #{contestId}
+        ORDER BY problem_order ASC
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+### 开发环境配置
+#debug: true
+
+spring:
+  datasource:
+    # 连接数据库的url
+    url: jdbc:mysql://47.100.247.55:3306/coding_first?serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    # 连接数据库的账号
+    username: testtest
+    #  连接数据库的密码
+    password: A.bc1234
+  # 邮件配置
+  mail:
+    host: smtp.qq.com
+    username: axiangcoding@foxmail.com
+    password: uqjuaxkpcfzgdgbi
+
+
+logging:
+  config: classpath:conf/logback-dev-spring.xml
+
+cf:
+  config:
+    # 权限拦截器
+    authInterceptor:
+      enable: true
+    # 控制器日志
+    controllerLog:
+      enable: true
+    # 异常处理器日志
+    handlerLog:
+      enable: true
+    # 线程池配置
+    threadPool:
+      corePoolSize: 10
+      maxPoolSize: 100
+      queueCapacity: 200
+    # swagger配置
+    swagger:
+      enable: true
+    # druid配置
+    druid:
+      name: admin
+      pwd: admin
+    localJudgePath: http://192.168.122.129:8100
+    tempFilePath: D://testfile/
+    filePath: D://testfile/
+    picturePath: D://testfile/pic/

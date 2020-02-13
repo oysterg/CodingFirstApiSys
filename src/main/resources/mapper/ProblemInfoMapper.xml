@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.ProblemInfoMapper">
+
+    <insert id="insert">
+       INSERT INTO t_problem_info
+        (id,
+        problem_id,
+        title,
+        belong_oj_id,
+        belong_problem_id,
+        author,
+        total_submit,
+        total_ac,
+        total_submit_user,
+        total_ac_user,
+        visible,
+        judge_option
+        )
+        values
+        (#{problemInfoPO.id},
+        #{problemInfoPO.problemId},
+        #{problemInfoPO.title},
+        #{problemInfoPO.belongOjId},
+        #{problemInfoPO.belongProblemId},
+        #{problemInfoPO.author},
+        #{problemInfoPO.totalSubmit},
+        #{problemInfoPO.totalAc},
+        #{problemInfoPO.totalSubmitUser},
+        #{problemInfoPO.totalAcUser},
+        #{problemInfoPO.visible},
+        #{problemInfoPO.judgeOption}
+        );
+    </insert>
+
+    <update id="updateTotalSubmitAddOne">
+        UPDATE t_problem_info
+        SET total_submit = total_submit + 1
+        WHERE problem_id = #{problemId};
+    </update>
+
+    <update id="updateTotalAcAddOne">
+        UPDATE t_problem_info
+        SET total_ac = total_ac + 1
+        WHERE problem_id = #{problemId};
+    </update>
+
+    <update id="updateTotalSubmitUserAddOne">
+        UPDATE t_problem_info
+        SET total_submit_user = total_submit_user + 1
+        WHERE problem_id = #{problemId};
+    </update>
+
+    <update id="updateTotalAcUserAddOne">
+        UPDATE t_problem_info
+        SET total_ac_user = total_ac_user + 1
+        WHERE problem_id = #{problemId};
+    </update>
+
+
+    <delete id="deleteByProblemId">
+        DELETE FROM t_problem_info
+        WHERE id = #{problemId};
+    </delete>
+
+    <select id="pages" resultType="com.fjut.cf.pojo.po.ProblemInfoPO">
+        SELECT id,
+            problem_id,
+            title,
+            belong_oj_id,
+            belong_problem_id,
+            author,
+            total_submit,
+            total_ac,
+            total_submit_user,
+            total_ac_user,
+            visible,
+            judge_option
+        FROM t_problem_info
+        ORDER BY problem_id DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="selectCountByConditions" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM t_problem_info
+        WHERE 1=1
+        <if test="title != null">
+            AND title LIKE #{title}
+        </if>
+        <if test="tagId != null">
+            AND problem_id IN
+            (SELECT DISTINCT problem_id FROM t_problem_tag_record WHERE tag_id=#{tagId})
+        </if>;
+    </select>
+
+    <select id="queryByProblemId" resultType="com.fjut.cf.pojo.po.ProblemInfoPO">
+        SELECT 	id,
+        problem_id,
+        title,
+        belong_oj_id,
+        belong_problem_id,
+        author,
+        total_submit,
+        total_ac,
+        total_submit_user,
+        total_ac_user,
+        visible,
+        judge_option
+	    FROM
+	    t_problem_info
+	    WHERE problem_id = #{problemId}
+    </select>
+
+    <select id="queryUnSolvedProblemsByUsername" resultType="com.fjut.cf.pojo.po.ProblemInfoPO">
+        SELECT * FROM t_problem_info tpi
+        WHERE  problem_id NOT IN
+        (
+            SELECT problem_id
+            FROM t_user_problem_solved tps
+            WHERE solved_count > 0
+            AND tps.username = #{username}
+        );
+    </select>
+</mapper>

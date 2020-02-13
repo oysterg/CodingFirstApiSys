@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.ProblemTagMapper">
+    <select id="select" resultType="com.fjut.cf.pojo.po.ProblemTagPO">
+        SELECT 	id,
+        name,
+        tag_type,
+        create_user,
+        priority
+        FROM
+        t_problem_tag;
+    </select>
+</mapper>

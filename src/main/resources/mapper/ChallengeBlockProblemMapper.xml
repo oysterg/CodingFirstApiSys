@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.ChallengeBlockProblemMapper">
+    <select id="pagesAsVO"
+            resultType="com.fjut.cf.pojo.vo.ChallengeBlockProblemVO">
+        SELECT  cbp.id,
+                cbp.block_id,
+                tpi.title,
+                cbp.problem_order,
+                cbp.problem_id,
+                cbp.score,
+                cbp.reward_acb
+        FROM t_challenge_block_problem cbp LEFT JOIN t_problem_info tpi
+        on cbp.problem_id = tpi.problem_id
+        WHERE cbp.block_id = #{blockId}
+        ORDER BY cbp.problem_order ASC
+        LIMIT #{startIndex}, #{pageSize};
+    </select>
+
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM t_challenge_block_problem
+        WHERE block_id = #{blockId};
+    </select>
+
+
+    <select id="selectScoredByUsername" resultType="com.fjut.cf.pojo.vo.UserChallengeBlockVO">
+        SELECT block_id id, SUM(score) getScore FROM
+            t_challenge_block_problem cbp WHERE cbp.problem_id IN
+            (
+                SELECT ups.problem_id
+                FROM t_user_problem_solved ups
+                WHERE ups.username = #{username}
+                AND ups.solved_count > 0
+            )
+            GROUP BY block_id ;
+    </select>
+
+    <select id="selectByProblemId" resultType="java.lang.Integer">
+        SELECT block_id from t_challenge_block_problem WHERE problem_id = #{problemId}
+    </select>
+
+    <select id="selectScoredByBlockIdAndUsername" resultType="java.lang.Integer">
+        SELECT SUM(score)
+        FROM  t_challenge_block_problem
+        WHERE block_id = #{blockId}
+        AND  problem_id IN
+        (
+            SELECT ups.problem_id
+            FROM t_user_problem_solved ups
+            WHERE ups.username = #{username}
+            AND ups.solved_count > 0
+        );
+    </select>
+
+    <select id="selectTotalScoreByBlockId" resultType="java.lang.Integer">
+        SELECT
+            SUM(score) AS totalScore
+                FROM t_challenge_block_problem cbp
+            RIGHT JOIN t_challenge_block cb
+            ON cb.id = cbp.block_id
+            WHERE cb.id = #{blockId}
+            GROUP BY cb.id
+    </select>
+
+
+
+</mapper>

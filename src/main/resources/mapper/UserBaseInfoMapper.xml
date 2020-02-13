@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fjut.cf.mapper.UserBaseInfoMapper">
+
+    <insert id="insert">
+        INSERT INTO t_user_base_info
+        (id,
+        username,
+        nick,
+        gender,
+        email,
+        phone,
+        motto,
+        school,
+        faculty,
+        major,
+        cla,
+        student_id,
+        graduation_year
+        )
+        VALUES
+        (#{userBaseInfo.id},
+        #{userBaseInfo.username},
+        #{userBaseInfo.nick},
+        #{userBaseInfo.gender},
+        #{userBaseInfo.email},
+        #{userBaseInfo.phone},
+        #{userBaseInfo.motto},
+        #{userBaseInfo.school},
+        #{userBaseInfo.faculty},
+        #{userBaseInfo.major},
+        #{userBaseInfo.cla},
+        #{userBaseInfo.studentId},
+        #{userBaseInfo.graduationYear}
+        );
+
+    </insert>
+
+
+    <delete id="deleteByUsername">
+        DELETE FROM t_user_base_info
+        WHERE username = #{username};
+    </delete>
+
+
+    <update id="updateByUsername">
+        UPDATE t_user_base_info
+        SET
+        id = #{userBaseInfo.id} ,
+        username = #{userBaseInfo.username} ,
+        nick = #{userBaseInfo.nick} ,
+        gender = #{userBaseInfo.gender} ,
+        email = #{userBaseInfo.email} ,
+        phone = #{userBaseInfo.phone} ,
+        motto = #{userBaseInfo.motto} ,
+        register_time = #{userBaseInfo.registerTime} ,
+        rating = #{userBaseInfo.rating} ,
+        ranking = #{userBaseInfo.ranking} ,
+        ac_num = #{userBaseInfo.ac_num} ,
+        school = #{userBaseInfo.school} ,
+        faculty = #{userBaseInfo.faculty} ,
+        major = #{userBaseInfo.major} ,
+        cla = #{userBaseInfo.cla} ,
+        student_id = #{userBaseInfo.studentId} ,
+        graduation_time = #{userBaseInfo.graduationTime}
+        WHERE
+        username = #{username} ;
+    </update>
+
+    <update id="updateAcNumAddOneByUsername">
+        UPDATE t_user_base_info
+        SET ac_num = ac_num + 1
+        WHERE username = #{username};
+    </update>
+
+    <select id="pages" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+        SELECT id,
+        username,
+        nick,
+        gender,
+        email,
+        phone,
+        motto,
+        register_time,
+        rating,
+        ranking,
+        ac_num,
+        acb,
+        school,
+        faculty,
+        major,
+        cla,
+        student_id,
+        graduation_year
+        FROM
+        t_user_base_info
+        LIMIT #{startIndex}, #{pageSize};
+    </select>
+
+    <select id="selectCountByUsername" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM
+        t_user_base_info
+        WHERE username = #{username}
+    </select>
+
+    <select id="selectByUsername" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+        SELECT id,
+        username,
+        nick,
+        gender,
+        email,
+        phone,
+        motto,
+        register_time,
+        rating,
+        ranking,
+        ac_num,
+        acb,
+        school,
+        faculty,
+        major,
+        cla,
+        student_id,
+        graduation_year
+        FROM
+        t_user_base_info
+        WHERE username = #{username}
+    </select>
+
+    <select id="pagesAcbTop" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+        SELECT username,
+        nick,
+        acb
+        FROM t_user_base_info
+        ORDER BY acb DESC, rating DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="pagesAcNumTop" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+        SELECT username,
+        nick,
+        ac_num
+        FROM t_user_base_info
+        ORDER BY ac_num DESC, rating DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="pagesRatingTop" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+        SELECT username,
+        nick,
+        rating
+        FROM t_user_base_info
+        ORDER BY rating DESC
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+</mapper>
