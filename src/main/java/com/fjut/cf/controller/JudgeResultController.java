@@ -24,7 +24,7 @@ public class JudgeResultController {
     JudgeResultService judgeResultService;
 
     @LoginRequired
-    @GetMapping("/info/get")
+    @GetMapping("/info")
     public ResultJsonVO getJudgeResult(@RequestParam("judgeId")Integer judgeId)
     {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);

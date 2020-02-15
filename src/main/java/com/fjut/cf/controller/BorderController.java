@@ -34,7 +34,7 @@ public class BorderController {
         return resultJsonVO;
     }
 
-    @GetMapping("/mini/get")
+    @GetMapping("/mini")
     public ResultJsonVO getUserBorder(@RequestParam("pageNum") Integer pageNum,
                                       @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();

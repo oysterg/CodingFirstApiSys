@@ -16,6 +16,7 @@ import java.util.Date;
 @CrossOrigin
 @RequestMapping("/util")
 public class UtilController {
+
     @GetMapping("/serverTime")
     public ResultJsonVO getServerTime() {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);

@@ -17,7 +17,6 @@ import java.util.Objects;
  * @author axiang [2020/2/10]
  */
 @RestController
-@ResponseBody
 @CrossOrigin
 @RequestMapping("/problem/vj")
 public class VirtualJudgeProblemController {
@@ -53,7 +52,6 @@ public class VirtualJudgeProblemController {
             resultJsonVO.addInfo(jsonObject);
             resultJsonVO.addInfo(new Date());
         }
-
         return resultJsonVO;
     }
 }

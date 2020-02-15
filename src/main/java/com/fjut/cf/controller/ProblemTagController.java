@@ -22,7 +22,7 @@ public class ProblemTagController {
     @Autowired
     ProblemTagService problemTagService;
 
-    @GetMapping("/get")
+    @GetMapping("/all")
     public ResultJsonVO getAllProblemTag() {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         List<ProblemTagPO> problemTagPOS = problemTagService.select();

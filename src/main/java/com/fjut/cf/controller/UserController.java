@@ -145,7 +145,7 @@ public class UserController {
     }
 
     @LoginRequired
-    @GetMapping("/info/get")
+    @GetMapping("/info")
     public ResultJsonVO getUserInfoByUsername(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         UserBaseInfoPO userBaseInfoVO = userInfoService.selectByUsername(username);
@@ -158,7 +158,7 @@ public class UserController {
     }
 
     @LoginRequired
-    @GetMapping("/award/get")
+    @GetMapping("/award")
     public ResultJsonVO getUserAwardListByUsername(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         List<String> awardStr = borderHonorRankService.selectByUsername(username);

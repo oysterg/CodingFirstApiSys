@@ -21,8 +21,7 @@ public class MallController {
     @Autowired
     MallGoodsService mallGoodsService;
 
-    @LoginRequired
-    @GetMapping("/list/get")
+    @GetMapping("/list")
     public ResultJsonVO getMallGoodsList(@RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
@@ -35,7 +34,7 @@ public class MallController {
     }
 
     @LoginRequired
-    @GetMapping("/info/get")
+    @GetMapping("/info")
     public ResultJsonVO getMallGoodsByGoodsId(@RequestParam("id") Integer id) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         MallGoodsPO mallGoodsPO = mallGoodsService.selectByGoodsId(id);

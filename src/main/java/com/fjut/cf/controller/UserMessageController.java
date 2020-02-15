@@ -21,7 +21,7 @@ public class UserMessageController {
     UserMessageService userMessageService;
 
     @PrivateRequired
-    @GetMapping("/all/get")
+    @GetMapping("/all")
     public ResultJsonVO getUserMessageByUsername(@RequestParam("username") String username,
                                                  @RequestParam("pageNum") Integer pageNum,
                                                  @RequestParam("pageSize") Integer pageSize) {
@@ -35,7 +35,7 @@ public class UserMessageController {
     }
 
     @PrivateRequired
-    @GetMapping("/unread/get")
+    @GetMapping("/unread")
     public ResultJsonVO getUserUnreadMessageByUsername(@RequestParam("username") String username,
                                                        @RequestParam("pageNum") Integer pageNum,
                                                        @RequestParam("pageSize") Integer pageSize) {
@@ -49,7 +49,7 @@ public class UserMessageController {
     }
 
     @PrivateRequired
-    @GetMapping("/unread/count/get")
+    @GetMapping("/unread/count")
     public ResultJsonVO getUserUnreadMessageCountByUsername(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         Integer count = userMessageService.selectCountUnreadByUsername(username);
@@ -58,7 +58,7 @@ public class UserMessageController {
     }
 
     @PrivateRequired
-    @PostMapping("/unread/set_read/post")
+    @PostMapping("/unread/set_read")
     public ResultJsonVO setUserMessageRead(@RequestParam("username") String username,
                                            @RequestParam("id") Integer id) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
@@ -72,7 +72,7 @@ public class UserMessageController {
     }
 
     @PrivateRequired
-    @PostMapping("/unread/set_all_read/post")
+    @PostMapping("/unread/set_all_read")
     public ResultJsonVO setUserMessageAllRead(@RequestParam("username") String username)
     {
         ResultJsonVO resultJsonVO = new ResultJsonVO();

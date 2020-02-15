@@ -1,5 +1,6 @@
 package com.fjut.cf.controller;
 
+import com.fjut.cf.component.interceptor.LoginRequired;
 import com.fjut.cf.pojo.enums.ResultJsonCode;
 import com.fjut.cf.pojo.vo.ResultJsonVO;
 import com.fjut.cf.util.UUIDUtils;
@@ -25,6 +26,7 @@ public class FileController {
     @Value("${cf.config.picturePath}")
     private String picturePath;
 
+    @LoginRequired
     @PostMapping("/upload")
     public ResultJsonVO uploadFile(@RequestParam("file") MultipartFile file,
                                    @RequestParam("type") Integer type) throws Exception {

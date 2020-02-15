@@ -1,5 +1,6 @@
 package com.fjut.cf.controller;
 
+import com.fjut.cf.component.interceptor.LoginRequired;
 import com.fjut.cf.component.interceptor.PrivateRequired;
 import com.fjut.cf.pojo.enums.ResultJsonCode;
 import com.fjut.cf.pojo.po.ChallengeBlockConditionPO;
@@ -26,7 +27,7 @@ public class ChallengeBlockController {
 
 
     @PrivateRequired
-    @GetMapping("/graph/get")
+    @GetMapping("/graph")
     public ResultJsonVO getUserOpenedChallengeBlock(@RequestParam("username") String username) {
 
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
@@ -37,7 +38,8 @@ public class ChallengeBlockController {
         return resultJsonVO;
     }
 
-    @GetMapping("/condition/get")
+    @LoginRequired
+    @GetMapping("/condition")
     public ResultJsonVO getBlockCondition(@RequestParam("blockId") Integer blockId) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         List<ChallengeBlockConditionVO> conditions = challengeBlockService.selectConditionByBlockId(blockId);
@@ -46,7 +48,7 @@ public class ChallengeBlockController {
     }
 
     @PrivateRequired
-    @GetMapping("/detail/get")
+    @GetMapping("/detail")
     public ResultJsonVO getChallengeBlockDetail(@RequestParam("blockId") Integer blockId,
                                                 @RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
@@ -58,7 +60,7 @@ public class ChallengeBlockController {
     }
 
     @PrivateRequired
-    @GetMapping("/problem/get")
+    @GetMapping("/problem")
     public ResultJsonVO getBlockProblems(@RequestParam("username") String username,
                                          @RequestParam("blockId") Integer blockId,
                                          @RequestParam("pageNum") Integer pageNum,

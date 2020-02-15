@@ -4,11 +4,11 @@
 spring:
   datasource:
     # 连接数据库的url
-    url: jdbc:mysql://47.100.247.55:3306/coding_first?serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    url: jdbc:mysql://localhost:3306/cf_test?serverTimezone=Asia/Shanghai&allowMultiQueries=true
     # 连接数据库的账号
-    username: testtest
+    username: root
     #  连接数据库的密码
-    password: A.bc1234
+    password: wyx
   # 邮件配置
   mail:
     host: smtp.qq.com

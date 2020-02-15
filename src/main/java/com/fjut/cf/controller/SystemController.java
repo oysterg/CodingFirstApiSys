@@ -19,7 +19,7 @@ public class SystemController {
     @Autowired
     SystemService systemService;
 
-    @GetMapping("/info/get")
+    @GetMapping("/info")
     public ResultJsonVO getSystemInfoByName(@RequestParam("name") String name) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         SystemInfoPO systemInfoPO = systemService.queryByName(name);

@@ -24,7 +24,7 @@ public class UserCheckInController {
     UserCheckInService userCheckInService;
 
     @PrivateRequired
-    @GetMapping("/list/get")
+    @GetMapping("/list")
     public ResultJsonVO getUserCheckInByUsername(@RequestParam("username") String username,
                                                  @RequestParam("pageNum") Integer pageNum,
                                                  @RequestParam("pageSize") Integer pageSize) {

@@ -47,11 +47,4 @@ public class TestController {
         ////resultJsonVO.addInfo(s);
         return resultJsonVO;
     }
-
-    @GetMapping("/test1")
-    public ResultJsonVO testMethod1() throws Exception {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
-        //emailTool.sendSimpleMailTest();
-        return resultJsonVO;
-    }
 }

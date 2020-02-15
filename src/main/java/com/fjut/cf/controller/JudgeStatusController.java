@@ -31,7 +31,7 @@ public class JudgeStatusController {
     @Autowired
     LocalJudgeHttpClient localJudgeHttpClient;
 
-    @GetMapping("/list/get")
+    @GetMapping("/list")
     public ResultJsonVO getStatusList(@RequestParam("pageNum") Integer pageNum,
                                       @RequestParam("pageSize") Integer pageSize,
                                       @RequestParam(value = "contestId", required = false) Integer contestId,
@@ -74,7 +74,7 @@ public class JudgeStatusController {
         return resultJsonVO;
     }
 
-    @GetMapping("/count/get")
+    @GetMapping("/count")
     public ResultJsonVO getStatusCountByDay(@RequestParam(value = "days", required = false) String daysStr) {
         int days;
         days = daysStr == null ? 60 : Integer.parseInt(daysStr);
@@ -128,7 +128,7 @@ public class JudgeStatusController {
      * @return
      */
     @PrivateRequired
-    @PostMapping("/submit/post")
+    @PostMapping("/submit")
     public ResultJsonVO submitToLocalJudge(@RequestParam("pid") Integer pid,
                                            @RequestParam("timeLimit") Integer timeLimit,
                                            @RequestParam("memoryLimit") Integer MemoryLimit,

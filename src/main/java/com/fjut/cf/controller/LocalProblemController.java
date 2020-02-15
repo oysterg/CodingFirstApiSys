@@ -39,7 +39,7 @@ public class LocalProblemController {
     @Autowired
     UserProblemSolvedService userProblemSolvedService;
 
-    @GetMapping("/list/get")
+    @GetMapping("/list")
     public ResultJsonVO getProblemLimit(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
                                         @RequestParam(value = "tagId", required = false) Integer tagId,
@@ -68,7 +68,7 @@ public class LocalProblemController {
         return resultJsonVO;
     }
 
-    @GetMapping("/info/get")
+    @GetMapping("/info")
     public ResultJsonVO getProblemInfoByProblemId(@RequestParam(value = "username", required = false) String username,
                                                   @RequestParam("problemId") Integer problemId) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
@@ -85,7 +85,7 @@ public class LocalProblemController {
     }
 
     @LoginRequired
-    @GetMapping("/radar/get")
+    @GetMapping("/radar")
     public ResultJsonVO getProblemRadarByUsername(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         List<UserRadarVO> userRadarVOS = problemService.selectUserProblemRadarByUsername(username);
@@ -94,7 +94,7 @@ public class LocalProblemController {
     }
 
     @PrivateRequired
-    @GetMapping("/recommend/get")
+    @GetMapping("/recommend")
     public ResultJsonVO getRecommendProblem(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         Boolean isExist = userInfoService.selectExistByUsername(username);

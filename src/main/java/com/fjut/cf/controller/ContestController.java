@@ -1,5 +1,6 @@
 package com.fjut.cf.controller;
 
+import com.fjut.cf.component.interceptor.LoginRequired;
 import com.fjut.cf.pojo.enums.CodeLanguage;
 import com.fjut.cf.pojo.enums.ResultJsonCode;
 import com.fjut.cf.pojo.enums.SubmitResult;
@@ -33,7 +34,7 @@ public class ContestController {
     @Autowired
     JudgeStatusService judgeStatusService;
 
-    @GetMapping("/list/get")
+    @GetMapping("/list")
     public ResultJsonVO getContestList(@RequestParam("kind") Integer kind,
                                        @RequestParam("pageNum") Integer pageNum,
                                        @RequestParam("pageSize") Integer pageSize,
@@ -54,8 +55,8 @@ public class ContestController {
         return resultJsonVO;
     }
 
-
-    @GetMapping("/info/get")
+    @LoginRequired
+    @GetMapping("/info")
     public ResultJsonVO getContestInfo(@RequestParam("contestId") Integer contestId,
                                        @RequestParam(value = "username", required = false) String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
@@ -64,7 +65,8 @@ public class ContestController {
         return resultJsonVO;
     }
 
-    @GetMapping("/problem/list/get")
+    @LoginRequired
+    @GetMapping("/problem/list")
     public ResultJsonVO getContestProblemList(@RequestParam("contestId") Integer contestId) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         List<ContestProblemPO> contestProblemPOS = contestProblemService.selectByContestId(contestId);
@@ -72,7 +74,8 @@ public class ContestController {
         return resultJsonVO;
     }
 
-    @GetMapping("/status/list/get")
+    @LoginRequired
+    @GetMapping("/status/list")
     public ResultJsonVO getContestStatusList(@RequestParam("contestId") Integer contestId,
                                              @RequestParam("pageNum") Integer pageNum,
                                              @RequestParam("pageSize") Integer pageSize,
