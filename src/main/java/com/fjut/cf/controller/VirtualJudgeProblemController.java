@@ -5,6 +5,7 @@ import com.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import com.fjut.cf.component.judge.vjudge.pojo.VirtualJudgeRequestProblemParams;
 import com.fjut.cf.pojo.enums.ResultJsonCode;
 import com.fjut.cf.pojo.vo.ResultJsonVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,9 @@ import java.util.Objects;
 @CrossOrigin
 @RequestMapping("/problem/vj")
 public class VirtualJudgeProblemController {
+    @Autowired
+    VirtualJudgeHttpClient virtualJudgeHttpClient;
+
     @GetMapping("/list")
     public ResultJsonVO getVJProblemList(@RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize,
@@ -43,12 +47,11 @@ public class VirtualJudgeProblemController {
         if (!Objects.isNull(source)) {
             params.setSource(source);
         }
-        String bodyStr = VirtualJudgeHttpClient.postProblemList(params);
-        if (StringUtils.isEmpty(bodyStr)) {
+        JSONObject jsonObject = virtualJudgeHttpClient.postProblemList(params);
+        if (Objects.isNull(jsonObject)) {
             resultJsonVO.setStatus(ResultJsonCode.RESOURCE_NOT_EXIST);
         } else {
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
-            JSONObject jsonObject = JSONObject.parseObject(bodyStr);
             resultJsonVO.addInfo(jsonObject);
             resultJsonVO.addInfo(new Date());
         }

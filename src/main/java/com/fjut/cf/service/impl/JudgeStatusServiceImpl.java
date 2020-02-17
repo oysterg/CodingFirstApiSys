@@ -110,9 +110,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         int times = 100;
         // TODO: 可以根据活跃线程数executor.getActiveCount()来设置获取时间间隔times
         do {
-            String getResultJsonStr = null;
-            getResultJsonStr = localJudgeHttpClient.getResultFromLocalJudge(judgeStatusPO.getId());
-            JSONObject jsonObject = JSONObject.parseObject(getResultJsonStr);
+            JSONObject jsonObject = localJudgeHttpClient.getResultFromLocalJudge(judgeStatusPO.getId());
             if ("success".equals(jsonObject.getString("ret"))) {
                 JSONObject resultJsonObj = JSONObject.parseObject(jsonObject.getString("result"));
                 judgingStr = resultJsonObj.getString("type");

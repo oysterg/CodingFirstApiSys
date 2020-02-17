@@ -179,16 +179,15 @@ public class JudgeStatusController {
         localJudgeSubmitInfoParams.setTimeLimit(timeLimit);
         localJudgeSubmitInfoParams.setCode(code);
         localJudgeSubmitInfoParams.setLanguageId(language);
-        String submitJsonStr = "";
+        JSONObject jsonObject;
         try {
-            submitJsonStr = localJudgeHttpClient.submitToLocalJudge(localJudgeSubmitInfoParams);
+           jsonObject  = localJudgeHttpClient.submitToLocalJudge(localJudgeSubmitInfoParams);
         } catch (Exception e) {
             // 请求评测机出现异常，返回失败状态
             judgeStatusService.updateIfSubmitFail(localJudgeSubmitInfoParams.getRid());
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！");
             return resultJsonVO;
         }
-        JSONObject jsonObject = JSONObject.parseObject(submitJsonStr);
         // 如果提交到本地评测机成功，则
         if ("success".equals(jsonObject.getString("ret"))) {
             // 更新数据库表

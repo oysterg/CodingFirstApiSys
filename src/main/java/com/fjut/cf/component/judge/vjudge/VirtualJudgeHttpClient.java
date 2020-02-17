@@ -1,7 +1,9 @@
 package com.fjut.cf.component.judge.vjudge;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fjut.cf.component.judge.vjudge.pojo.VirtualJudgeRequestProblemParams;
 import org.apache.commons.httpclient.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,13 +20,24 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 public class VirtualJudgeHttpClient {
-    private static RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    VirtualJudgeResponseParser virtualJudgeResponseParser;
+
+    @Autowired
+    RestTemplate restTemplate;
+
     /**
      * 题目请求url
      */
-    static String requestProblemUrl = "https://vjudge.net/problem/data";
+    String requestProblemUrl = "https://vjudge.net/problem/data";
 
-    public static String postProblemList(VirtualJudgeRequestProblemParams params) {
+    /**
+     * 请求题目列表
+     *
+     * @param params
+     * @return
+     */
+    public JSONObject postProblemList(VirtualJudgeRequestProblemParams params) {
         //入参
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -42,11 +55,13 @@ public class VirtualJudgeHttpClient {
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(requestProblemUrl, request, String.class);
+        // 如果返回200状态码
         if (responseEntity.getStatusCodeValue() == HttpStatus.SC_OK) {
-            return responseEntity.getBody();
+            return virtualJudgeResponseParser.parserStringToJsonObject(responseEntity.getBody());
         } else {
             return null;
         }
     }
+
 
 }
