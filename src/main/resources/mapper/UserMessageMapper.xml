@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.UserMessageMapper">
+<mapper namespace="team.fjut.cf.mapper.UserMessageMapper">
     <insert id="insert">
         insert into t_user_message
             (
@@ -35,7 +35,7 @@
         AND username = #{username};
     </update>
 
-    <select id="pagesByUsername" resultType="com.fjut.cf.pojo.po.UserMessagePO">
+    <select id="pagesByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
         SELECT id,
             username,
             status,
@@ -53,7 +53,7 @@
         WHERE username = #{username};
     </select>
 
-    <select id="pagesUnreadByUsername" resultType="com.fjut.cf.pojo.po.UserMessagePO">
+    <select id="pagesUnreadByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
         SELECT id,
             username,
             status,

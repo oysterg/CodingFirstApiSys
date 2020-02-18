@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.BorderHonorRankMapper">
-    <select id="pages" resultType="com.fjut.cf.pojo.po.BorderHonorRankPO">
+<mapper namespace="team.fjut.cf.mapper.BorderHonorRankMapper">
+    <select id="pages" resultType="team.fjut.cf.pojo.po.BorderHonorRankPO">
         SELECT * FROM t_border_honor_rank
         ORDER BY reward_date DESC
         LIMIT #{startIndex},#{pageSize};
@@ -11,7 +11,7 @@
         SELECT COUNT(*) FROM t_border_honor_rank;
     </select>
 
-    <select id="selectByUsername" resultType="com.fjut.cf.pojo.po.BorderHonorRankPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.BorderHonorRankPO">
         SELECT * FROM t_border_honor_rank
         WHERE username_one = #{username}
         OR username_two = #{username}

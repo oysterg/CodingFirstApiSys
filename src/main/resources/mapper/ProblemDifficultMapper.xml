@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.ProblemDifficultMapper">
+<mapper namespace="team.fjut.cf.mapper.ProblemDifficultMapper">
 
     <insert id="insert">
         INSERT INTO t_problem_difficult
@@ -23,7 +23,7 @@
         problem_id = #{problemId};
     </delete>
 
-    <select id="pagesDifficult" resultType="com.fjut.cf.pojo.po.ProblemDifficultPO">
+    <select id="pagesDifficult" resultType="team.fjut.cf.pojo.po.ProblemDifficultPO">
         SELECT 	id,
         problem_id,
         difficult_level
@@ -33,7 +33,7 @@
         LIMIT #{startIndex}, #{pageSize};
     </select>
 
-    <select id="selectCountType" resultType="com.fjut.cf.pojo.po.ProblemTypeCountPO">
+    <select id="selectCountType" resultType="team.fjut.cf.pojo.po.ProblemTypeCountPO">
         SELECT COUNT(*) total_count, problem_type
         FROM t_problem_difficult
         GROUP BY problem_type

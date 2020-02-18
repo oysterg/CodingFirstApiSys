@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.ViewJudgeStatusMapper">
-    <select id="pagesByConditions" resultType="com.fjut.cf.pojo.po.ViewJudgeStatusPO">
+<mapper namespace="team.fjut.cf.mapper.ViewJudgeStatusMapper">
+    <select id="pagesByConditions" resultType="team.fjut.cf.pojo.po.ViewJudgeStatusPO">
         SELECT * FROM v_judge_status
         WHERE 1=1
         <if test="contestId != null">
@@ -43,7 +43,7 @@
         </if>;
     </select>
 
-    <select id="queryById" resultType="com.fjut.cf.pojo.po.ViewJudgeStatusPO">
+    <select id="queryById" resultType="team.fjut.cf.pojo.po.ViewJudgeStatusPO">
         SELECT * FROM v_judge_status
         WHERE id = #{id};
     </select>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.JudgeResultMapper">
+<mapper namespace="team.fjut.cf.mapper.JudgeResultMapper">
     <insert id="insert">
         INSERT INTO t_judge_result
         (
@@ -14,7 +14,7 @@
         );
     </insert>
 
-    <select id="selectByJudgeId" resultType="com.fjut.cf.pojo.po.JudgeResultPO">
+    <select id="selectByJudgeId" resultType="team.fjut.cf.pojo.po.JudgeResultPO">
         SELECT  judge_id,
                 info
         FROM t_judge_result

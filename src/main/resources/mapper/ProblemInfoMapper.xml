@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.ProblemInfoMapper">
+<mapper namespace="team.fjut.cf.mapper.ProblemInfoMapper">
 
     <insert id="insert">
        INSERT INTO t_problem_info
@@ -63,7 +63,7 @@
         WHERE id = #{problemId};
     </delete>
 
-    <select id="pages" resultType="com.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="pages" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
         SELECT id,
             problem_id,
             title,
@@ -94,7 +94,7 @@
         </if>;
     </select>
 
-    <select id="queryByProblemId" resultType="com.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="queryByProblemId" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
         SELECT 	id,
         problem_id,
         title,
@@ -112,7 +112,7 @@
 	    WHERE problem_id = #{problemId}
     </select>
 
-    <select id="queryUnSolvedProblemsByUsername" resultType="com.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="queryUnSolvedProblemsByUsername" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
         SELECT * FROM t_problem_info tpi
         WHERE  problem_id NOT IN
         (

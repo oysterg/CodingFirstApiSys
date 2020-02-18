@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.ChallengeBlockMapper">
-    <select id="selectAsVO" resultType="com.fjut.cf.pojo.vo.UserChallengeBlockVO">
+<mapper namespace="team.fjut.cf.mapper.ChallengeBlockMapper">
+    <select id="selectAsVO" resultType="team.fjut.cf.pojo.vo.UserChallengeBlockVO">
         SELECT
             cb.id AS id,
             cb.name AS name,
@@ -14,7 +14,7 @@
             ORDER BY id
     </select>
 
-    <select id="selectByBlockId" resultType="com.fjut.cf.pojo.po.ChallengeBlockPO">
+    <select id="selectByBlockId" resultType="team.fjut.cf.pojo.po.ChallengeBlockPO">
         SELECT id,
 	    name,
 	    block_type,

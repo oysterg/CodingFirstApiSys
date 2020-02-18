@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.ChallengeBlockProblemMapper">
+<mapper namespace="team.fjut.cf.mapper.ChallengeBlockProblemMapper">
     <select id="pagesAsVO"
-            resultType="com.fjut.cf.pojo.vo.ChallengeBlockProblemVO">
+            resultType="team.fjut.cf.pojo.vo.ChallengeBlockProblemVO">
         SELECT  cbp.id,
                 cbp.block_id,
                 tpi.title,
@@ -24,7 +24,7 @@
     </select>
 
 
-    <select id="selectScoredByUsername" resultType="com.fjut.cf.pojo.vo.UserChallengeBlockVO">
+    <select id="selectScoredByUsername" resultType="team.fjut.cf.pojo.vo.UserChallengeBlockVO">
         SELECT block_id id, SUM(score) getScore FROM
             t_challenge_block_problem cbp WHERE cbp.problem_id IN
             (

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.UserBaseInfoMapper">
+<mapper namespace="team.fjut.cf.mapper.UserBaseInfoMapper">
 
     <insert id="insert">
         INSERT INTO t_user_base_info
@@ -73,7 +73,7 @@
         WHERE username = #{username};
     </update>
 
-    <select id="pages" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="pages" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT id,
         username,
         nick,
@@ -104,7 +104,7 @@
         WHERE username = #{username}
     </select>
 
-    <select id="selectByUsername" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT id,
         username,
         nick,
@@ -128,7 +128,7 @@
         WHERE username = #{username}
     </select>
 
-    <select id="pagesAcbTop" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="pagesAcbTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT username,
         nick,
         acb
@@ -137,7 +137,7 @@
         LIMIT #{startIndex}, #{pageSize}
     </select>
 
-    <select id="pagesAcNumTop" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="pagesAcNumTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT username,
         nick,
         ac_num
@@ -146,7 +146,7 @@
         LIMIT #{startIndex}, #{pageSize}
     </select>
 
-    <select id="pagesRatingTop" resultType="com.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="pagesRatingTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT username,
         nick,
         rating

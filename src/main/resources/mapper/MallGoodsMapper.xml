@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.fjut.cf.mapper.MallGoodsMapper">
-    <select id="pages" resultType="com.fjut.cf.pojo.po.MallGoodsPO">
+<mapper namespace="team.fjut.cf.mapper.MallGoodsMapper">
+    <select id="pages" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
         SELECT 	id,
         name,
         cost,
@@ -24,7 +24,7 @@
         FROM t_mall_goods;
     </select>
 
-    <select id="selectByGoodsId" resultType="com.fjut.cf.pojo.po.MallGoodsPO">
+    <select id="selectByGoodsId" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
         SELECT 	id,
         name,
         cost,
