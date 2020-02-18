@@ -150,6 +150,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         String username = judgeStatusPO.getUsername();
         Integer problemId = judgeStatusPO.getProblemId();
         // 如果用户AC了这道题，执行的逻辑
+        // FIXME: SCORE的题目没有计入数据，需要修BUG
         if ("AC".equalsIgnoreCase(judgingStr)) {
             // 题目 AC 数量加一
             problemInfoMapper.updateTotalAcAddOne(problemId);
@@ -225,7 +226,9 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         judgeResultMapper.insert(judgeResultPO);
         // 如果是得分题
         if (isScore) {
+            // 设置得分
             judgeStatusPO.setScore(getScore / retJsonArr.size());
+            // 设置结果
             judgeStatusPO.setResult(SubmitResult.SC.getCode());
             ans = "SC";
         } else {

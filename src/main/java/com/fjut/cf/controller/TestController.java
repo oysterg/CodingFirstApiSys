@@ -1,7 +1,8 @@
 package com.fjut.cf.controller;
 
 import com.fjut.cf.component.email.EmailTool;
-import com.fjut.cf.component.judge.local.LocalJudgeHttpClient;
+import com.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
+import com.fjut.cf.component.judge.vjudge.pojo.RequestProblemHtmlParams;
 import com.fjut.cf.component.redis.RedisUtils;
 import com.fjut.cf.component.token.TokenManager;
 import com.fjut.cf.pojo.vo.ResultJsonVO;
@@ -27,7 +28,7 @@ public class TestController {
     TokenManager tokenManager;
 
     @Autowired
-    LocalJudgeHttpClient localJudgeHttpClient;
+    VirtualJudgeHttpClient virtualJudgeHttpClient;
 
     @Autowired
     ChallengeBlockService challengeBlockService;
@@ -35,16 +36,10 @@ public class TestController {
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        //LocalJudgeSubmitInfoBO localJudgeSubmitInfo = new LocalJudgeSubmitInfoBO();
-        //localJudgeSubmitInfo.setPid(1000);
-        //localJudgeSubmitInfo.setRid(12345);
-        //localJudgeSubmitInfo.setCode("#include<stdio.h>");
-        //localJudgeSubmitInfo.setLanguageId(0);
-        //localJudgeSubmitInfo.setMemoryLimit(1000);
-        //localJudgeSubmitInfo.setTimeLimit(1000);
-        //localJudgeSubmitInfo.setType("submit");
-        ////String s = localJudgeHttpClient.submitToLocalJudge(localJudgeSubmitInfo);
-        ////resultJsonVO.addInfo(s);
+        RequestProblemHtmlParams params = new RequestProblemHtmlParams();
+        params.setOJId("UVA");
+        params.setProbNum("11540");
+        resultJsonVO.addInfo(virtualJudgeHttpClient.getProblemHtml( params));
         return resultJsonVO;
     }
 }

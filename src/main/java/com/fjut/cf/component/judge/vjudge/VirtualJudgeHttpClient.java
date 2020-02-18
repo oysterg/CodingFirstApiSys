@@ -1,8 +1,9 @@
 package com.fjut.cf.component.judge.vjudge;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fjut.cf.component.judge.vjudge.pojo.VirtualJudgeRequestProblemParams;
-import org.apache.commons.httpclient.HttpStatus;
+import com.fjut.cf.component.judge.OnlineJudgeHttpClient;
+import com.fjut.cf.component.judge.vjudge.pojo.RequestProblemHtmlParams;
+import com.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Virtual Judge 通讯工具类
@@ -19,17 +19,34 @@ import org.springframework.web.client.RestTemplate;
  * @author axiang [2020/2/9]
  */
 @Component
-public class VirtualJudgeHttpClient {
+public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
     @Autowired
-    VirtualJudgeResponseParser virtualJudgeResponseParser;
+    VirtualJudgeResponseExtractor virtualJudgeResponseParser;
 
-    @Autowired
-    RestTemplate restTemplate;
+    private HttpHeaders headers = new HttpHeaders();
 
     /**
-     * 题目请求url
+     * 请求 题目列表 URL
      */
-    String requestProblemUrl = "https://vjudge.net/problem/data";
+    private String problemListUrl = "https://vjudge.net/problem/data";
+
+    /**
+     * 请求 OJ列表 URL
+     */
+    private String remoteOJsUrl = "https://vjudge.net/util/remoteOJs";
+
+    /**
+     * 请求 题目HTML页面 URL
+     */
+    private String problemHtmlUrl = "https://vjudge.net/problem/%s";
+
+    /**
+     * 初始化类
+     */
+    public VirtualJudgeHttpClient() {
+        // 设置请求头部
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    }
 
     /**
      * 请求题目列表
@@ -37,10 +54,7 @@ public class VirtualJudgeHttpClient {
      * @param params
      * @return
      */
-    public JSONObject postProblemList(VirtualJudgeRequestProblemParams params) {
-        //入参
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    public JSONObject postProblemList(RequestProblemListParams params) {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("start", params.getStart());
         map.add("length", params.getLength());
@@ -54,14 +68,36 @@ public class VirtualJudgeHttpClient {
         map.add("order[0][column]", "5");
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(requestProblemUrl, request, String.class);
-        // 如果返回200状态码
-        if (responseEntity.getStatusCodeValue() == HttpStatus.SC_OK) {
-            return virtualJudgeResponseParser.parserStringToJsonObject(responseEntity.getBody());
-        } else {
-            return null;
-        }
+        ResponseEntity<String> responseEntity = doPost(problemListUrl, request);
+        return virtualJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
+
     }
 
+    /**
+     * 请求 OJ 列表
+     *
+     * @return
+     */
+    public JSONObject postRemoteOJs() {
+        HttpEntity<MultiValueMap<String, Object>> request =
+                new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = doPost(remoteOJsUrl, request);
+        return virtualJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
+    }
+
+    /**
+     * 请求 题目HTML页面
+     *
+     * @param params
+     * @return
+     */
+    public Object getProblemHtml(RequestProblemHtmlParams params) {
+        String realUrl = String.format(problemHtmlUrl, params.getOJId() + "-" + params.getProbNum());
+        System.out.println(realUrl);
+        HttpEntity<MultiValueMap<String, Object>> request =
+                new HttpEntity<>(headers);
+        ResponseEntity<String> responseEntity = doGet(realUrl, request);
+        return virtualJudgeResponseParser.extractBodyAsString(responseEntity);
+    }
 
 }

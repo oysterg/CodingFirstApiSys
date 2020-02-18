@@ -1,8 +1,8 @@
 package com.fjut.cf.component.judge.local;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fjut.cf.component.judge.OnlineJudgeHttpClient;
 import com.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
-import org.apache.commons.httpclient.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * 与本地评测机的通讯
@@ -20,12 +19,10 @@ import org.springframework.web.client.RestTemplate;
  * @author axiang [2019/7/31]
  */
 @Component
-public class LocalJudgeHttpClient {
-    @Autowired
-    RestTemplate restTemplate;
+public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
 
     @Autowired
-    LocalJudgeResponseParser localJudgeResponseParser;
+    LocalJudgeResponseExtractor localJudgeResponseParser;
 
     @Value("${cf.config.localJudgePath}")
     private String localJudgePath;
@@ -43,16 +40,11 @@ public class LocalJudgeHttpClient {
         map.add("memorylimit", localJudgeSubmitInfoParams.getMemoryLimit().toString());
         map.add("code", localJudgeSubmitInfoParams.getCode());
         map.add("language", localJudgeSubmitInfoParams.getLanguageId().toString());
+
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(postURL, request, String.class);
-        // 如果返回200状态码
-        if (responseEntity.getStatusCodeValue() == HttpStatus.SC_OK) {
-            return localJudgeResponseParser.parserStringToJsonObject(responseEntity.getBody());
-        } else {
-            return null;
-        }
-
+        ResponseEntity<String> responseEntity = doPost(postURL, request);
+        return localJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
     }
 
     public JSONObject getResultFromLocalJudge(Integer rid){
@@ -65,13 +57,8 @@ public class LocalJudgeHttpClient {
         map.add("rid", rid.toString());
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(postURL, request, String.class);
-        // 如果返回200状态码
-        if (responseEntity.getStatusCodeValue() == HttpStatus.SC_OK) {
-            return localJudgeResponseParser.parserStringToJsonObject(responseEntity.getBody());
-        } else {
-            return null;
-        }
+        ResponseEntity<String> responseEntity = doPost(postURL, request);
+        return localJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
 
     }
 }

@@ -2,7 +2,7 @@ package com.fjut.cf.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
-import com.fjut.cf.component.judge.vjudge.pojo.VirtualJudgeRequestProblemParams;
+import com.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
 import com.fjut.cf.pojo.enums.ResultJsonCode;
 import com.fjut.cf.pojo.vo.ResultJsonVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import java.util.Objects;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/problem/vj")
-public class VirtualJudgeProblemController {
+@RequestMapping("/vj")
+public class VirtualJudgeController {
     @Autowired
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
-    @GetMapping("/list")
+    @GetMapping("/problem/list")
     public ResultJsonVO getVJProblemList(@RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize,
                                          @RequestParam(value = "OJId", required = false) String OJId,
@@ -33,7 +33,7 @@ public class VirtualJudgeProblemController {
                                          @RequestParam(value = "title", required = false) String title,
                                          @RequestParam(value = "source", required = false) String source) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        VirtualJudgeRequestProblemParams params = new VirtualJudgeRequestProblemParams();
+        RequestProblemListParams params = new RequestProblemListParams();
         params.setStart((pageNum - 1) * pageSize);
         params.setLength(pageSize);
         params.setOJId(StringUtils.isEmpty(OJId) ? "All" : OJId);
@@ -55,6 +55,15 @@ public class VirtualJudgeProblemController {
             resultJsonVO.addInfo(jsonObject);
             resultJsonVO.addInfo(new Date());
         }
+        return resultJsonVO;
+    }
+
+    @GetMapping("/util/ojs")
+    public ResultJsonVO getVJRemoteOJs()
+    {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        JSONObject oJs = virtualJudgeHttpClient.postRemoteOJs();
+        resultJsonVO.addInfo(oJs);
         return resultJsonVO;
     }
 }
