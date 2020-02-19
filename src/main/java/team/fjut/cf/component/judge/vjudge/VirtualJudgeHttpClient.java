@@ -91,13 +91,13 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
      * @param params
      * @return
      */
-    public Object getProblemHtml(RequestProblemHtmlParams params) {
+    public Object getProblemInfo(RequestProblemHtmlParams params) {
         String realUrl = String.format(problemHtmlUrl, params.getOJId() + "-" + params.getProbNum());
         System.out.println(realUrl);
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = doGet(realUrl, request);
-        return virtualJudgeResponseParser.extractBodyAsString(responseEntity);
+        return virtualJudgeResponseParser.extractProbDesAsObject(responseEntity);
     }
 
 }

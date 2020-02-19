@@ -1,13 +1,14 @@
 package team.fjut.cf.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
-import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
+import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemHtmlParams;
+import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
+import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.vo.ResultJsonVO;
 
 import java.util.Date;
 import java.util.Objects;
@@ -55,6 +56,18 @@ public class VirtualJudgeController {
             resultJsonVO.addInfo(jsonObject);
             resultJsonVO.addInfo(new Date());
         }
+        return resultJsonVO;
+    }
+
+    @GetMapping("/problem/info")
+    public ResultJsonVO getProblemInfo(@RequestParam("OJId") String OJId,
+                                       @RequestParam("ProbNum")String probNum)
+    {
+        ResultJsonVO resultJsonVO = new ResultJsonVO();
+        RequestProblemHtmlParams params = new RequestProblemHtmlParams();
+        params.setOJId(OJId);
+        params.setProbNum(probNum);
+        resultJsonVO.addInfo(virtualJudgeHttpClient.getProblemInfo(params));
         return resultJsonVO;
     }
 

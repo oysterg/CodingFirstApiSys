@@ -39,7 +39,7 @@ public class TestController {
         RequestProblemHtmlParams params = new RequestProblemHtmlParams();
         params.setOJId("UVA");
         params.setProbNum("11540");
-        resultJsonVO.addInfo(virtualJudgeHttpClient.getProblemHtml( params));
+        resultJsonVO.addInfo(virtualJudgeHttpClient.getProblemInfo( params));
         return resultJsonVO;
     }
 }

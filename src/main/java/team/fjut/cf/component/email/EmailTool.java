@@ -1,6 +1,6 @@
 package team.fjut.cf.component.email;
 
-import team.fjut.cf.pojo.bo.SendEmailBO;
+import team.fjut.cf.component.email.pojo.EmailMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,7 +22,7 @@ public class EmailTool {
     private String username;
 
     @Async
-    public void sendEmail(SendEmailBO emailBO)
+    public void sendEmail(EmailMessage emailBO)
     {
         SimpleMailMessage message  = new SimpleMailMessage();
         message.setFrom(username);

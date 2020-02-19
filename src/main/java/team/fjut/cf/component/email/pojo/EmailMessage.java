@@ -1,12 +1,21 @@
-package team.fjut.cf.pojo.bo;
+package team.fjut.cf.component.email.pojo;
 
 /**
  * @author axiang [2019/11/28]
  */
-public class SendEmailBO {
+public class EmailMessage {
+    private String from;
     private String to;
     private String subject;
     private String text;
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
     public String getTo() {
         return to;
@@ -34,8 +43,9 @@ public class SendEmailBO {
 
     @Override
     public String toString() {
-        return "SendEmailBO{" +
-                "to='" + to + '\'' +
+        return "EmailMessage{" +
+                "from='" + from + '\'' +
+                ", to='" + to + '\'' +
                 ", subject='" + subject + '\'' +
                 ", text='" + text + '\'' +
                 '}';
