@@ -66,9 +66,7 @@ public class ChallengeBlockController {
                                          @RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        Integer startIndex = (pageNum - 1) * pageSize;
-        List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemService.pagesByBlockId(username, blockId, startIndex, pageSize);
-
+        List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemService.pagesByBlockId(username, blockId, pageNum, pageSize);
         Integer count = challengeBlockProblemService.selectCountByBlockId(blockId);
         if (challengeBlockProblemVOS.size() == 0 && count == 0) {
             resultJsonVO.setStatus(ResultJsonCode.RESOURCE_NOT_EXIST, "本模块没有题目");

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.ContestInfoMapper">
-    <select id="pagesByConditions" resultType="team.fjut.cf.pojo.po.ContestInfoPO">
+    <select id="selectAllByConditions" resultType="team.fjut.cf.pojo.po.ContestInfoPO">
         SELECT * FROM t_contest_info
         WHERE contest_kind = #{kind}
         <if test="searchTitle != null">
@@ -21,7 +21,7 @@
             AND NOW() > end_time
         </if>
         ORDER BY contest_id DESC, begin_time DESC, end_time DESC
-        LIMIT #{startIndex}, #{pageSize};
+
     </select>
 
     <select id="selectCountByConditions" resultType="java.lang.Integer">

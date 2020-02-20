@@ -42,13 +42,12 @@ public class ContestController {
                                        @RequestParam(value = "searchPermission", required = false) Integer searchPermission,
                                        @RequestParam(value = "searchStatus", required = false) Integer searchStatus) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        Integer startIndex = (pageNum - 1) * pageSize;
         if (StringUtils.isEmpty(searchName)) {
             searchName = null;
         } else {
             searchName = "%" + searchName + "%";
         }
-        List<ContestListVO> contestListVOS = contestInfoService.pagesByConditions(kind, searchName, searchPermission, searchStatus, startIndex, pageSize);
+        List<ContestListVO> contestListVOS = contestInfoService.pagesByConditions(kind, searchName, searchPermission, searchStatus, pageNum, pageSize);
         Integer count = contestInfoService.selectCountByConditions(kind, searchName, searchPermission, searchStatus);
         resultJsonVO.addInfo(contestListVOS);
         resultJsonVO.addInfo(count);

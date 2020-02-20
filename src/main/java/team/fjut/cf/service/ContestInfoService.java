@@ -17,7 +17,7 @@ public interface ContestInfoService {
      * @param searchTitle
      * @param searchPermission
      * @param searchStatus
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
@@ -25,7 +25,7 @@ public interface ContestInfoService {
                                           String searchTitle,
                                           Integer searchPermission,
                                           Integer searchStatus,
-                                          Integer startIndex,
+                                          Integer pageNum,
                                           Integer pageSize);
 
     /**

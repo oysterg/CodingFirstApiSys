@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.ChallengeBlockProblemMapper;
 import team.fjut.cf.mapper.UserProblemSolvedMapper;
 import team.fjut.cf.pojo.po.UserProblemSolvedPO;
@@ -24,8 +25,9 @@ public class ChallengeBlockProblemServiceImpl implements ChallengeBlockProblemSe
     UserProblemSolvedMapper userProblemSolvedMapper;
 
     @Override
-    public List<ChallengeBlockProblemVO> pagesByBlockId(String username, Integer blockId, Integer startIndex, Integer pageSize) {
-        List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemMapper.pagesAsVO(blockId, startIndex, pageSize);
+    public List<ChallengeBlockProblemVO> pagesByBlockId(String username, Integer blockId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemMapper.selectAllAsVO(blockId);
         List<UserProblemSolvedPO> userSolvedProblems = userProblemSolvedMapper.selectByUsername(username);
         Map<Integer, Integer> map = new TreeMap<>();
         for (UserProblemSolvedPO solvedProblem : userSolvedProblems) {

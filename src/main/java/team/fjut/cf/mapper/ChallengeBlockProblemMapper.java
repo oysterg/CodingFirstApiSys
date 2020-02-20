@@ -15,13 +15,9 @@ public interface ChallengeBlockProblemMapper {
      * 分页查询模块内的题目
      *
      * @param blockId
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<ChallengeBlockProblemVO> pagesAsVO(@Param("blockId") Integer blockId,
-                                            @Param("startIndex") Integer startIndex,
-                                            @Param("pageSize") Integer pageSize);
+    List<ChallengeBlockProblemVO> selectAllAsVO(@Param("blockId") Integer blockId);
 
     /**
      * 查询模块内题目的总数量

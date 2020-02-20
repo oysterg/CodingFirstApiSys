@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.ContestInfoMapper;
 import team.fjut.cf.pojo.enums.ContestKind;
 import team.fjut.cf.pojo.enums.ContestPermission;
@@ -26,10 +27,11 @@ public class ContestInfoServiceImpl implements ContestInfoService {
                                                  String searchTitle,
                                                  Integer searchPermission,
                                                  Integer searchStatus,
-                                                 Integer startIndex,
+                                                 Integer pageNum,
                                                  Integer pageSize) {
         List<ContestListVO> result = new ArrayList<>();
-        List<ContestInfoPO> contestInfos = contestInfoMapper.pagesByConditions(kind, searchTitle, searchPermission, searchStatus, startIndex, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<ContestInfoPO> contestInfos = contestInfoMapper.selectAllByConditions(kind, searchTitle, searchPermission, searchStatus);
         for (ContestInfoPO contestInfo : contestInfos) {
             ContestListVO contestList = new ContestListVO();
             contestList.setId(contestInfo.getContestId());

@@ -16,16 +16,12 @@ public interface ContestInfoMapper {
      * @param searchTitle
      * @param searchPermission
      * @param searchStatus
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<ContestInfoPO> pagesByConditions(@Param("kind") Integer kind,
-                                          @Param("searchTitle") String searchTitle,
-                                          @Param("searchPermission") Integer searchPermission,
-                                          @Param("searchStatus") Integer searchStatus,
-                                          @Param("startIndex") Integer startIndex,
-                                          @Param("pageSize") Integer pageSize);
+    List<ContestInfoPO> selectAllByConditions(@Param("kind") Integer kind,
+                                              @Param("searchTitle") String searchTitle,
+                                              @Param("searchPermission") Integer searchPermission,
+                                              @Param("searchStatus") Integer searchStatus);
 
     /**
      * 根据条件查询不同比赛类型记录数

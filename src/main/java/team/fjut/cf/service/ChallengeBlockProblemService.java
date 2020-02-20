@@ -13,13 +13,13 @@ public interface ChallengeBlockProblemService {
      *
      * @param username
      * @param blockId
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
     List<ChallengeBlockProblemVO> pagesByBlockId(String username,
                                                  Integer blockId,
-                                                 Integer startIndex,
+                                                 Integer pageNum,
                                                  Integer pageSize);
 
     /**
