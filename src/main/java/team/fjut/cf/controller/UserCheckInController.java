@@ -35,7 +35,6 @@ public class UserCheckInController {
         if (pageSize == null) {
             pageSize = 30;
         }
-        Integer startIndex = (pageNum - 1) * pageSize;
         // 这里一次性查询全部签到记录，暂不用到分页
         List<UserCheckInPO> userCheckInPOS = userCheckInService.selectByUsername(username);
         resultJsonVO.addInfo(userCheckInPOS);

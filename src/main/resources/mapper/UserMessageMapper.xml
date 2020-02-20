@@ -52,7 +52,7 @@
         WHERE username = #{username};
     </select>
 
-    <select id="pagesUnreadByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
+    <select id="selectUnreadByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
         SELECT id,
             username,
             status,
@@ -63,7 +63,6 @@
         WHERE username = #{username}
         AND status = 0
         ORDER BY time DESC
-        LIMIT #{startIndex}, #{pageSize};
     </select>
 
     <select id="selectCountUnreadByUsername" resultType="java.lang.Integer">

@@ -39,8 +39,7 @@ public class UserMessageController {
                                                        @RequestParam("pageNum") Integer pageNum,
                                                        @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        Integer startIndex = (pageNum - 1) * pageSize;
-        List<UserMessagePO> userMessagePOS = userMessageService.pagesUnreadByUsername(username, startIndex, pageSize);
+        List<UserMessagePO> userMessagePOS = userMessageService.pagesUnreadByUsername(username, pageNum, pageSize);
         Integer count = userMessageService.selectCountUnreadByUsername(username);
         resultJsonVO.addInfo(userMessagePOS);
         resultJsonVO.addInfo(count);

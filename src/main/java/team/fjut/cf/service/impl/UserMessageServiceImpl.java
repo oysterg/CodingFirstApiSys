@@ -45,8 +45,10 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public List<UserMessagePO> pagesUnreadByUsername(String username, Integer startIndex, Integer pageSize) {
-        return userMessageMapper.pagesUnreadByUsername(username, startIndex, pageSize);
+    public List<UserMessagePO> pagesUnreadByUsername(String username, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserMessagePO> userMessagePOS = userMessageMapper.selectUnreadByUsername(username);
+        return userMessagePOS;
     }
 
     @Override
