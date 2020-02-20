@@ -38,11 +38,11 @@ public interface UserMessageService {
      * 根据用户名分页查询用户消息记录
      *
      * @param username
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<UserMessagePO> pagesByUsername(String username, Integer startIndex, Integer pageSize);
+    List<UserMessagePO> pagesByUsername(String username, Integer pageNum, Integer pageSize);
 
     /**
      * 根据用户名查询用户消息

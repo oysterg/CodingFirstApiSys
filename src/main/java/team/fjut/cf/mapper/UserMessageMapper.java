@@ -36,14 +36,12 @@ public interface UserMessageMapper {
     Integer updateSetAllReadByUsername(@Param("username") String username);
 
     /**
-     * 根据用户名分页查询用户消息记录
+     * 根据用户名查询用户消息记录
      *
      * @param username
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<UserMessagePO> pagesByUsername(@Param("username") String username, @Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
+    List<UserMessagePO> selectByUsername(@Param("username") String username);
 
     /**
      * 根据用户名查询消息记录数

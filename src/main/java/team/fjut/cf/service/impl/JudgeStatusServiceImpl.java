@@ -2,6 +2,7 @@ package team.fjut.cf.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -248,9 +249,10 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
     }
 
     @Override
-    public List<JudgeStatusVO> pagesByConditions(Integer startIndex, Integer pageSize, Integer contestId, String nick, Integer problemId, Integer result, Integer language) {
+    public List<JudgeStatusVO> pagesByConditions(Integer pageNum, Integer pageSize, Integer contestId, String nick, Integer problemId, Integer result, Integer language) {
         List<JudgeStatusVO> judgeStatusVOS = new ArrayList<>();
-        List<ViewJudgeStatusPO> viewJudgeStatusPOS = viewJudgeStatusMapper.pagesByConditions(startIndex, pageSize, contestId, nick, problemId, result, language);
+        PageHelper.startPage(pageNum, pageSize);
+        List<ViewJudgeStatusPO> viewJudgeStatusPOS = viewJudgeStatusMapper.pagesByConditions(contestId, nick, problemId, result, language);
         for (ViewJudgeStatusPO vjs : viewJudgeStatusPOS) {
             JudgeStatusVO judgeStatusVO = new JudgeStatusVO();
             judgeStatusVO.setId(vjs.getId());

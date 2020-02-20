@@ -46,7 +46,6 @@ public class JudgeStatusController {
         if (null == pageSize) {
             pageSize = 50;
         }
-        Integer startIndex = (pageNum - 1) * pageSize;
         if (!StringUtils.isEmpty(nick)) {
             nick = "%" + nick + "%";
         } else {
@@ -66,7 +65,7 @@ public class JudgeStatusController {
         if (!StringUtils.isEmpty(languageStr)) {
             language = CodeLanguage.getCodeByName(languageStr);
         }
-        List<JudgeStatusVO> judgeStatusVOS = judgeStatusService.pagesByConditions(startIndex, pageSize, contestId, nick, problemId, result, language);
+        List<JudgeStatusVO> judgeStatusVOS = judgeStatusService.pagesByConditions(pageNum, pageSize, contestId, nick, problemId, result, language);
         Integer length = judgeStatusService.selectCountByConditions(contestId, nick, problemId, result, language);
         resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
         resultJsonVO.addInfo(judgeStatusVOS);

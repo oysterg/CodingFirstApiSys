@@ -56,7 +56,7 @@ public interface JudgeStatusService {
     /**
      * 分页查询评测列表
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @param contestId
      * @param nick
@@ -65,7 +65,7 @@ public interface JudgeStatusService {
      * @param language
      * @return
      */
-    List<JudgeStatusVO> pagesByConditions(Integer startIndex, Integer pageSize, Integer contestId, String nick, Integer problemId, Integer result, Integer language);
+    List<JudgeStatusVO> pagesByConditions(Integer pageNum, Integer pageSize, Integer contestId, String nick, Integer problemId, Integer result, Integer language);
 
     /**
      * 查询评测列表视图的大小

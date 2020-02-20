@@ -20,7 +20,6 @@
             AND language = #{language}
         </if>
         ORDER BY id DESC
-        LIMIT #{startIndex}, #{pageSize};
     </select>
 
     <select id="selectCountByConditions" resultType="java.lang.Integer">

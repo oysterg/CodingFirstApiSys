@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.UserMessageMapper;
 import team.fjut.cf.pojo.po.UserMessagePO;
 import team.fjut.cf.service.UserMessageService;
@@ -32,8 +33,10 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public List<UserMessagePO> pagesByUsername(String username, Integer startIndex, Integer pageSize) {
-        return userMessageMapper.pagesByUsername(username, startIndex, pageSize);
+    public List<UserMessagePO> pagesByUsername(String username, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserMessagePO> userMessagePOS = userMessageMapper.selectByUsername(username);
+        return userMessagePOS;
     }
 
     @Override

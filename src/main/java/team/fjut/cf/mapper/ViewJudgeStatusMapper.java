@@ -11,10 +11,8 @@ import java.util.List;
 public interface ViewJudgeStatusMapper {
 
     /**
-     * 分页查询满足条件的评测视图
+     * 查询满足条件的评测视图
      *
-     * @param startIndex
-     * @param pageSize
      * @param contestId
      * @param nick
      * @param problemId
@@ -23,8 +21,6 @@ public interface ViewJudgeStatusMapper {
      * @return
      */
     List<ViewJudgeStatusPO> pagesByConditions(
-            @Param("startIndex") Integer startIndex,
-            @Param("pageSize") Integer pageSize,
             @Param("contestId") Integer contestId,
             @Param("nick") String nick,
             @Param("problemId") Integer problemId,

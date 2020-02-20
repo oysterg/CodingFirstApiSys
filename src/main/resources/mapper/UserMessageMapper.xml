@@ -35,7 +35,7 @@
         AND username = #{username};
     </update>
 
-    <select id="pagesByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
         SELECT id,
             username,
             status,
@@ -45,7 +45,6 @@
             FROM t_user_message
         WHERE username = #{username}
         ORDER BY time DESC
-        LIMIT #{startIndex}, #{pageSize};
     </select>
 
     <select id="selectCountUserMessageByUsername" resultType="java.lang.Integer">
