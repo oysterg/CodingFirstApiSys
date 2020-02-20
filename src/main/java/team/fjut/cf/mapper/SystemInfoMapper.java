@@ -14,5 +14,5 @@ public interface SystemInfoMapper {
      * @param name
      * @return
      */
-    SystemInfoPO queryByName(@Param("name") String name);
+    SystemInfoPO selectByName(@Param("name") String name);
 }

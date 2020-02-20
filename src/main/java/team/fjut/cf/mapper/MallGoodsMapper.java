@@ -15,14 +15,14 @@ public interface MallGoodsMapper {
      *
      * @return
      */
-    List<MallGoodsPO> selectAll();
+    List<MallGoodsPO> all();
 
     /**
      * 查询商品总数
      *
      * @return
      */
-    Integer selectAllCount();
+    Integer allCount();
 
     /**
      * 根据ID查询商品

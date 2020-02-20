@@ -31,7 +31,7 @@
         ORDER BY check_time DESC;
     </select>
 
-    <select id="pagesByUsername" resultType="team.fjut.cf.pojo.po.UserCheckInPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCheckInPO">
         SELECT
         id,
         username,
@@ -42,7 +42,7 @@
         t_user_check_in
         WHERE username = #{username}
         ORDER BY check_time DESC
-        LIMIT #{startIndex}, #{pageSize};
+
     </select>
 
     <select id="selectCountTodayCheckInByUsername" resultType="java.lang.Integer">

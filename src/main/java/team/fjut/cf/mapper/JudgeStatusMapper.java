@@ -57,7 +57,7 @@ public interface JudgeStatusMapper {
      *
      * @return
      */
-    Integer queryMaxId();
+    Integer selectMaxId();
 
     /**
      * 根据用户名和题目ID查询提交总数

@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,8 +146,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserBaseInfoPO> pagesUserBaseInfo(int startIndex, int pageSize) {
-        return userBaseInfoMapper.pages(startIndex, pageSize);
+    public List<UserBaseInfoPO> pagesUserBaseInfo(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.all();
+        return userBaseInfoPOS;
     }
 
     @Override
@@ -181,9 +184,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserAcbBorderVO> selectAcbBorder(int startIndex, int pageSize) {
+    public List<UserAcbBorderVO> selectAcbBorder(int pageNum, int pageSize) {
         List<UserAcbBorderVO> userAcbBorderVOS = new ArrayList<>();
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.pagesAcbTop(startIndex, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.allAcbTop();
         for (UserBaseInfoPO userBase : userBaseInfoPOS) {
             UserAcbBorderVO userAcbBorderVO = new UserAcbBorderVO();
             userAcbBorderVO.setUsername(userBase.getUsername());
@@ -195,9 +199,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserAcNumBorderVO> selectAcNumBorder(int startIndex, int pageSize) {
+    public List<UserAcNumBorderVO> selectAcNumBorder(int pageNum, int pageSize) {
         List<UserAcNumBorderVO> userAcNumBorderVOS = new ArrayList<>();
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.pagesAcNumTop(startIndex, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.allAcNumTop();
         for (UserBaseInfoPO userBase : userBaseInfoPOS) {
             UserAcNumBorderVO userAcbBorderVO = new UserAcNumBorderVO();
             userAcbBorderVO.setUsername(userBase.getUsername());
@@ -209,9 +214,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserRatingBorderVO> selectRatingBorder(int startIndex, int pageSize) {
+    public List<UserRatingBorderVO> selectRatingBorder(int pageNum, int pageSize) {
         List<UserRatingBorderVO> userRatingBorderVOS = new ArrayList<>();
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.pagesRatingTop(startIndex, pageSize);
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.allRatingTop();
         for (UserBaseInfoPO userBase : userBaseInfoPOS) {
             UserRatingBorderVO userRatingBorderVO = new UserRatingBorderVO();
             userRatingBorderVO.setUsername(userBase.getUsername());

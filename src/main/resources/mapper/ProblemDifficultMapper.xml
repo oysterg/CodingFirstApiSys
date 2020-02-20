@@ -23,14 +23,13 @@
         problem_id = #{problemId};
     </delete>
 
-    <select id="pagesDifficult" resultType="team.fjut.cf.pojo.po.ProblemDifficultPO">
+    <select id="all" resultType="team.fjut.cf.pojo.po.ProblemDifficultPO">
         SELECT 	id,
         problem_id,
         difficult_level
         FROM
         t_problem_difficult
         ORDER BY problem_id DESC
-        LIMIT #{startIndex}, #{pageSize};
     </select>
 
     <select id="selectCountType" resultType="team.fjut.cf.pojo.po.ProblemTypeCountPO">

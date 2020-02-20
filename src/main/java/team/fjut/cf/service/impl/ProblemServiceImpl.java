@@ -49,7 +49,7 @@ public class ProblemServiceImpl implements ProblemService {
         List<ProblemListVO> problemListVOS = new ArrayList<>();
         boolean needSolvedStatus = false;
         PageHelper.startPage(pageNum, pageSize, "tpi.problem_id");
-        List<ProblemInfoWithDifficultPO> problemInfoWithDifficultPOS = problemMapper.selectAllFullProblemInfoByConditions(title, tagId);
+        List<ProblemInfoWithDifficultPO> problemInfoWithDifficultPOS = problemMapper.selectFullProblemInfoByConditions(title, tagId);
         Map<Integer, Integer> map = new TreeMap<>();
         if (!StringUtils.isEmpty(username)) {
             needSolvedStatus = true;
@@ -97,7 +97,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public ProblemInfoPO selectProblemInfoByProblemId(Integer problemId) {
-        return problemInfoMapper.queryByProblemId(problemId);
+        return problemInfoMapper.selectByProblemId(problemId);
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public List<ProblemInfoPO> selectRecommendProblemsByUsername(String username) {
-        List<ProblemInfoPO> problemInfoPOS = problemInfoMapper.queryUnSolvedProblemsByUsername(username);
+        List<ProblemInfoPO> problemInfoPOS = problemInfoMapper.selectUnSolvedProblemsByUsername(username);
         List<ProblemInfoPO> results = new ArrayList<>();
         int totalUnsolved = problemInfoPOS.size();
         // 如果用户未解决题目小于3，则直接返回推荐题目内容

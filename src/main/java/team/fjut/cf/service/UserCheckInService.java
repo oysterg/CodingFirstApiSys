@@ -37,11 +37,11 @@ public interface UserCheckInService {
      * 分页查询用户的签到记录
      *
      * @param username
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<UserCheckInPO> pagesByUsername(String username, Integer startIndex, Integer pageSize);
+    List<UserCheckInPO> pagesByUsername(String username, Integer pageNum, Integer pageSize);
 
 
 }

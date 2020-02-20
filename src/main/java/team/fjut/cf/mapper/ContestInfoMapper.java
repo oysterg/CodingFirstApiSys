@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ContestInfoMapper {
     /**
-     * 根据条件分页查询不同类型比赛列表
+     * 根据条件查询不同类型比赛列表
      *
      * @param kind
      * @param searchTitle
@@ -18,10 +18,10 @@ public interface ContestInfoMapper {
      * @param searchStatus
      * @return
      */
-    List<ContestInfoPO> selectAllByConditions(@Param("kind") Integer kind,
-                                              @Param("searchTitle") String searchTitle,
-                                              @Param("searchPermission") Integer searchPermission,
-                                              @Param("searchStatus") Integer searchStatus);
+    List<ContestInfoPO> selectByConditions(@Param("kind") Integer kind,
+                                           @Param("searchTitle") String searchTitle,
+                                           @Param("searchPermission") Integer searchPermission,
+                                           @Param("searchStatus") Integer searchStatus);
 
     /**
      * 根据条件查询不同比赛类型记录数

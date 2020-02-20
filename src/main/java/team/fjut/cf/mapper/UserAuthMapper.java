@@ -68,7 +68,8 @@ public interface UserAuthMapper {
      * @param password
      * @return
      */
-    Integer selectByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    Integer selectByUsernameAndPassword(@Param("username") String username,
+                                        @Param("password") String password);
 
     /**
      * 根据用户名查询用户密码盐值

@@ -18,6 +18,6 @@ public class ProblemTagServiceImpl implements ProblemTagService {
 
     @Override
     public List<ProblemTagPO> select() {
-        return problemTagMapper.select();
+        return problemTagMapper.all();
     }
 }

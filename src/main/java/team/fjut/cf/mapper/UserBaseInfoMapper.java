@@ -45,12 +45,9 @@ public interface UserBaseInfoMapper {
     /**
      * 查找用户基本信息
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<UserBaseInfoPO> pages(@Param("startIndex") int startIndex,
-                               @Param("pageSize") int pageSize);
+    List<UserBaseInfoPO> all();
 
     /**
      * 根据用户名查找用户基本信息
@@ -69,29 +66,23 @@ public interface UserBaseInfoMapper {
     Integer selectCountByUsername(@Param("username") String username);
 
     /**
-     * 分页查询ACB榜单
+     * 查询ACB榜单
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<UserBaseInfoPO> pagesAcbTop(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
+    List<UserBaseInfoPO> allAcbTop();
 
     /**
-     * 分页查询AC题数榜单
+     * 查询AC题数榜单
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<UserBaseInfoPO> pagesAcNumTop(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
+    List<UserBaseInfoPO> allAcNumTop();
 
     /**
-     * 分页查询积分榜单
+     * 查询积分榜单
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<UserBaseInfoPO> pagesRatingTop(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
+    List<UserBaseInfoPO> allRatingTop();
 }

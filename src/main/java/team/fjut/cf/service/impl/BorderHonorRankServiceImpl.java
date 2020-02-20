@@ -26,7 +26,7 @@ public class BorderHonorRankServiceImpl implements BorderHonorRankService {
     public List<BorderHonorRankVO> pages(Integer pageNum, Integer pageSize) {
         List<BorderHonorRankVO> results = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize, "reward_date DESC");
-        List<BorderHonorRankPO> borderHonorRankPOS = borderHonorRankMapper.selectAll();
+        List<BorderHonorRankPO> borderHonorRankPOS = borderHonorRankMapper.all();
         for (BorderHonorRankPO item : borderHonorRankPOS) {
             BorderHonorRankVO borderHonorRankVO = new BorderHonorRankVO();
             borderHonorRankVO.setContestLevel(ContestLevel.getNameByCode(item.getContestLevel()));
@@ -48,7 +48,7 @@ public class BorderHonorRankServiceImpl implements BorderHonorRankService {
 
     @Override
     public Integer selectAllCount() {
-        return borderHonorRankMapper.selectAllCount();
+        return borderHonorRankMapper.allCount();
     }
 
     @Override

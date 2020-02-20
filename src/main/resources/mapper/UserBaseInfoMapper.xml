@@ -73,7 +73,7 @@
         WHERE username = #{username};
     </update>
 
-    <select id="pages" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="all" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT id,
         username,
         nick,
@@ -94,7 +94,7 @@
         graduation_year
         FROM
         t_user_base_info
-        LIMIT #{startIndex}, #{pageSize};
+
     </select>
 
     <select id="selectCountByUsername" resultType="java.lang.Integer">
@@ -128,30 +128,27 @@
         WHERE username = #{username}
     </select>
 
-    <select id="pagesAcbTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="allAcbTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT username,
         nick,
         acb
         FROM t_user_base_info
         ORDER BY acb DESC, rating DESC
-        LIMIT #{startIndex}, #{pageSize}
     </select>
 
-    <select id="pagesAcNumTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="allAcNumTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT username,
         nick,
         ac_num
         FROM t_user_base_info
         ORDER BY ac_num DESC, rating DESC
-        LIMIT #{startIndex}, #{pageSize}
     </select>
 
-    <select id="pagesRatingTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="allRatingTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
         SELECT username,
         nick,
         rating
         FROM t_user_base_info
         ORDER BY rating DESC
-        LIMIT #{startIndex}, #{pageSize}
     </select>
 </mapper>

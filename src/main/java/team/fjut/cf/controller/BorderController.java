@@ -37,10 +37,9 @@ public class BorderController {
     public ResultJsonVO getUserBorder(@RequestParam("pageNum") Integer pageNum,
                                       @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        Integer startIndex = (pageNum - 1) * pageSize;
-        List<UserRatingBorderVO> userRatingBorderVOS = userInfoService.selectRatingBorder(startIndex, pageSize);
-        List<UserAcNumBorderVO> userAcNumBorderVOS = userInfoService.selectAcNumBorder(startIndex, pageSize);
-        List<UserAcbBorderVO> userAcbBorderVOS = userInfoService.selectAcbBorder(startIndex, pageSize);
+        List<UserRatingBorderVO> userRatingBorderVOS = userInfoService.selectRatingBorder(pageNum, pageSize);
+        List<UserAcNumBorderVO> userAcNumBorderVOS = userInfoService.selectAcNumBorder(pageNum, pageSize);
+        List<UserAcbBorderVO> userAcbBorderVOS = userInfoService.selectAcbBorder(pageNum, pageSize);
         resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
         resultJsonVO.addInfo(userRatingBorderVOS);
         resultJsonVO.addInfo(userAcNumBorderVOS);

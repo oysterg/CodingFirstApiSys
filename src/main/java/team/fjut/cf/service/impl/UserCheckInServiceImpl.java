@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.UserCheckInMapper;
 import team.fjut.cf.pojo.po.UserCheckInPO;
 import team.fjut.cf.service.UserCheckInService;
@@ -27,8 +28,10 @@ public class UserCheckInServiceImpl implements UserCheckInService {
     }
 
     @Override
-    public List<UserCheckInPO> pagesByUsername(String username, Integer startIndex, Integer pageSize) {
-        return userCheckInMapper.pagesByUsername(username, startIndex, pageSize);
+    public List<UserCheckInPO> pagesByUsername(String username, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<UserCheckInPO> userCheckInPOS = userCheckInMapper.selectByUsername(username);
+        return userCheckInPOS;
     }
 
     @Override

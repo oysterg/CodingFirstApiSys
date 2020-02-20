@@ -12,5 +12,5 @@ public interface ProblemTagMapper {
      * 查找全部题目标签类型
      * @return
      */
-    List<ProblemTagPO> select();
+    List<ProblemTagPO> all();
 }

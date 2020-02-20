@@ -59,11 +59,11 @@ public interface UserInfoService {
     /**
      * 分页查找用户基础信息
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<UserBaseInfoPO> pagesUserBaseInfo(int startIndex, int pageSize);
+    List<UserBaseInfoPO> pagesUserBaseInfo(int pageNum, int pageSize);
 
     /**
      * 根据用户名查找用户所有信息
@@ -84,29 +84,29 @@ public interface UserInfoService {
     /**
      * 查询ACB榜单
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<UserAcbBorderVO> selectAcbBorder(int startIndex, int pageSize);
+    List<UserAcbBorderVO> selectAcbBorder(int pageNum, int pageSize);
 
     /**
      * 查询AC题数榜单
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<UserAcNumBorderVO> selectAcNumBorder(int startIndex, int pageSize);
+    List<UserAcNumBorderVO> selectAcNumBorder(int pageNum, int pageSize);
 
     /**
      * 查询积分榜单
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<UserRatingBorderVO> selectRatingBorder(int startIndex, int pageSize);
+    List<UserRatingBorderVO> selectRatingBorder(int pageNum, int pageSize);
 
 
 }

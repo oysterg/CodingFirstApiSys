@@ -68,14 +68,11 @@ public interface ProblemInfoMapper {
     Integer selectCountByConditions(@Param("title") String title, @Param("tagId") Integer tagId);
 
     /**
-     * 查找 pageSize 页的题目基本信息
+     * 查找题目基本信息
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<ProblemInfoPO> pages(@Param("startIndex") Integer startIndex,
-                              @Param("pageSize") Integer pageSize);
+    List<ProblemInfoPO> all();
 
     /**
      * 根据题目ID查询题目基本信息
@@ -83,13 +80,13 @@ public interface ProblemInfoMapper {
      * @param problemId
      * @return
      */
-    ProblemInfoPO queryByProblemId(@Param("problemId") Integer problemId);
+    ProblemInfoPO selectByProblemId(@Param("problemId") Integer problemId);
 
     /**
      * 查询用户未解决的题目列表
      * @param username
      * @return
      */
-    List<ProblemInfoPO> queryUnSolvedProblemsByUsername(@Param("username") String username);
+    List<ProblemInfoPO> selectUnSolvedProblemsByUsername(@Param("username") String username);
 
 }

@@ -63,7 +63,7 @@
         WHERE id = #{problemId};
     </delete>
 
-    <select id="pages" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="all" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
         SELECT id,
             problem_id,
             title,
@@ -78,7 +78,6 @@
             judge_option
         FROM t_problem_info
         ORDER BY problem_id DESC
-        LIMIT #{startIndex}, #{pageSize}
     </select>
 
     <select id="selectCountByConditions" resultType="java.lang.Integer">
@@ -94,7 +93,7 @@
         </if>;
     </select>
 
-    <select id="queryByProblemId" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="selectByProblemId" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
         SELECT 	id,
         problem_id,
         title,
@@ -112,7 +111,7 @@
 	    WHERE problem_id = #{problemId}
     </select>
 
-    <select id="queryUnSolvedProblemsByUsername" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="selectUnSolvedProblemsByUsername" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
         SELECT * FROM t_problem_info tpi
         WHERE  problem_id NOT IN
         (

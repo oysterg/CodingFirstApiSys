@@ -15,7 +15,7 @@ public interface ChallengeBlockMapper {
      *
      * @return
      */
-    List<UserChallengeBlockVO> selectAsVO();
+    List<UserChallengeBlockVO> allAsVO();
 
     /**
      * 根据模块ID查询模块详情

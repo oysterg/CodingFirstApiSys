@@ -27,13 +27,11 @@ public interface ProblemDifficultMapper {
     Integer deleteByProblemId(@Param("problemId") Integer problemId);
 
     /**
-     * 查找 pageSize 页的题目难度信息
+     * 查找题目难度信息
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<ProblemDifficultPO> pagesDifficult(@Param("startIndex") Integer startIndex, @Param("pageSize") Integer pageSize);
+    List<ProblemDifficultPO> all();
 
     /**
      * 查询题目类型总计

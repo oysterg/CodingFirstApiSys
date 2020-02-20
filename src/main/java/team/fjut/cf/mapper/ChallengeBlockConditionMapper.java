@@ -15,7 +15,7 @@ public interface ChallengeBlockConditionMapper {
      *
      * @return
      */
-    List<ChallengeBlockConditionPO> select();
+    List<ChallengeBlockConditionPO> all();
 
 
     /**

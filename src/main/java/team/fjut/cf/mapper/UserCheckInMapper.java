@@ -33,14 +33,10 @@ public interface UserCheckInMapper {
     Integer selectCountTodayCheckInByUsername(@Param("username") String username);
 
     /**
-     * 根据用户分页查询签到记录
+     * 根据用户查询签到记录
      * @param username
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<UserCheckInPO> pagesByUsername(@Param("username") String username,
-                                        @Param("startIndex")Integer startIndex,
-                                        @Param("pageSize") Integer pageSize);
+    List<UserCheckInPO> selectByUsername(@Param("username") String username);
 
 }

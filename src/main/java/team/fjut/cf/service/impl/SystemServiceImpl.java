@@ -16,6 +16,6 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public SystemInfoPO queryByName(String name) {
-        return systemInfoMapper.queryByName(name);
+        return systemInfoMapper.selectByName(name);
     }
 }

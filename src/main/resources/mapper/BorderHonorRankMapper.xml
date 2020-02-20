@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.BorderHonorRankMapper">
-    <select id="selectAll" resultType="team.fjut.cf.pojo.po.BorderHonorRankPO">
+    <select id="all" resultType="team.fjut.cf.pojo.po.BorderHonorRankPO">
         SELECT * FROM t_border_honor_rank
     </select>
 
-    <select id="selectAllCount" resultType="java.lang.Integer">
+    <select id="allCount" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM t_border_honor_rank;
     </select>
 

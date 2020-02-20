@@ -14,14 +14,14 @@ public interface BorderHonorRankMapper {
      *
      * @return
      */
-    List<BorderHonorRankPO> selectAll();
+    List<BorderHonorRankPO> all();
 
     /**
      * 查询榜单记录数
      *
      * @return
      */
-    Integer selectAllCount();
+    Integer allCount();
 
     /**
      * 根据用户名查询用户参与榜单

@@ -18,8 +18,8 @@ public interface ProblemMapper {
      * @param tagId
      * @return
      */
-    List<ProblemInfoWithDifficultPO> selectAllFullProblemInfoByConditions(@Param("title") String title,
-                                                                          @Param("tagId") Integer tagId
+    List<ProblemInfoWithDifficultPO> selectFullProblemInfoByConditions(@Param("title") String title,
+                                                                       @Param("tagId") Integer tagId
     );
 
 

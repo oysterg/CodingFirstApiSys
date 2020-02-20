@@ -12,12 +12,12 @@ import java.util.List;
 public interface ChallengeBlockProblemMapper {
 
     /**
-     * 分页查询模块内的题目
+     * 查询模块内的题目
      *
      * @param blockId
      * @return
      */
-    List<ChallengeBlockProblemVO> selectAllAsVO(@Param("blockId") Integer blockId);
+    List<ChallengeBlockProblemVO> allAsVO(@Param("blockId") Integer blockId);
 
     /**
      * 查询模块内题目的总数量
@@ -25,10 +25,10 @@ public interface ChallengeBlockProblemMapper {
      * @param blockId
      * @return
      */
-    Integer selectAllCount(@Param("blockId") Integer blockId);
+    Integer allCount(@Param("blockId") Integer blockId);
 
     /**
-     * 获取用户模块解锁分数
+     * 查询用户模块解锁分数
      *
      * @param username
      * @return

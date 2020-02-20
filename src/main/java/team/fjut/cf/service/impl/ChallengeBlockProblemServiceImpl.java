@@ -27,7 +27,7 @@ public class ChallengeBlockProblemServiceImpl implements ChallengeBlockProblemSe
     @Override
     public List<ChallengeBlockProblemVO> pagesByBlockId(String username, Integer blockId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemMapper.selectAllAsVO(blockId);
+        List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemMapper.allAsVO(blockId);
         List<UserProblemSolvedPO> userSolvedProblems = userProblemSolvedMapper.selectByUsername(username);
         Map<Integer, Integer> map = new TreeMap<>();
         for (UserProblemSolvedPO solvedProblem : userSolvedProblems) {
@@ -49,6 +49,6 @@ public class ChallengeBlockProblemServiceImpl implements ChallengeBlockProblemSe
 
     @Override
     public Integer selectCountByBlockId(Integer blockId) {
-        return challengeBlockProblemMapper.selectAllCount(blockId);
+        return challengeBlockProblemMapper.allCount(blockId);
     }
 }

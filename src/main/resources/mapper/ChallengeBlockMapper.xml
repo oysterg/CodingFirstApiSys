@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.ChallengeBlockMapper">
-    <select id="selectAsVO" resultType="team.fjut.cf.pojo.vo.UserChallengeBlockVO">
+    <select id="allAsVO" resultType="team.fjut.cf.pojo.vo.UserChallengeBlockVO">
         SELECT
             cb.id AS id,
             cb.name AS name,

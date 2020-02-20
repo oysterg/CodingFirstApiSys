@@ -31,7 +31,7 @@ public class ContestInfoServiceImpl implements ContestInfoService {
                                                  Integer pageSize) {
         List<ContestListVO> result = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize);
-        List<ContestInfoPO> contestInfos = contestInfoMapper.selectAllByConditions(kind, searchTitle, searchPermission, searchStatus);
+        List<ContestInfoPO> contestInfos = contestInfoMapper.selectByConditions(kind, searchTitle, searchPermission, searchStatus);
         for (ContestInfoPO contestInfo : contestInfos) {
             ContestListVO contestList = new ContestListVO();
             contestList.setId(contestInfo.getContestId());

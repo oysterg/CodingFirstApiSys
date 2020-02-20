@@ -59,7 +59,7 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
     public List<UserChallengeBlockVO> selectByUsername(String username) {
         List<UserChallengeBlockVO> result = new ArrayList<>();
         // 取得用户的全部挑战模块
-        List<UserChallengeBlockVO> allBlocks = challengeBlockMapper.selectAsVO();
+        List<UserChallengeBlockVO> allBlocks = challengeBlockMapper.allAsVO();
         // 将结果集放入map中
         Map<Integer, UserChallengeBlockVO> map = new TreeMap<>();
         // 锁定全部结果集
@@ -115,7 +115,7 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
 
     @Override
     public List<ChallengeBlockConditionPO> selectConditions() {
-        return challengeBlockConditionMapper.select();
+        return challengeBlockConditionMapper.all();
     }
 
     @Override
