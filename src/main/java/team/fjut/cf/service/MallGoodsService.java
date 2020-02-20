@@ -18,7 +18,7 @@ public interface MallGoodsService {
     List<MallGoodsPO> pages(Integer startIndex, Integer pageSize);
 
     /**
-     * 查询商品总数
+     * 查询商品记录总数
      *
      * @return
      */

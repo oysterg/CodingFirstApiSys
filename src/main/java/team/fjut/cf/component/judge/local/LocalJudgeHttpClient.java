@@ -24,14 +24,21 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
     @Autowired
     LocalJudgeResponseExtractor localJudgeResponseParser;
 
-    @Value("${cf.config.localJudgePath}")
+    @Value("${cf.config.local.localJudgePath}")
     private String localJudgePath;
+
+    private HttpHeaders headers = new HttpHeaders();
+
+    /**
+     * 初始化设置头部
+     */
+    public LocalJudgeHttpClient(){
+        //入参设置头部
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+    }
 
     public JSONObject submitToLocalJudge(LocalJudgeSubmitInfoParams localJudgeSubmitInfoParams){
         String postURL = localJudgePath;
-        //入参
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("type", "submit");
         map.add("pid", localJudgeSubmitInfoParams.getPid().toString());
@@ -49,9 +56,6 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
 
     public JSONObject getResultFromLocalJudge(Integer rid){
         String postURL = localJudgePath;
-        //入参
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("type", "getResult");
         map.add("rid", rid.toString());
@@ -59,7 +63,6 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
                 new HttpEntity<>(map, headers);
         ResponseEntity<String> responseEntity = doPost(postURL, request);
         return localJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
-
     }
 }
 

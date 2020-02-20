@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.MallGoodsMapper;
 import team.fjut.cf.pojo.po.MallGoodsPO;
 import team.fjut.cf.service.MallGoodsService;
@@ -17,8 +18,10 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     MallGoodsMapper mallGoodsMapper;
 
     @Override
-    public List<MallGoodsPO> pages(Integer startIndex, Integer pageSize) {
-        return mallGoodsMapper.pages(startIndex, pageSize);
+    public List<MallGoodsPO> pages(Integer pageIndex, Integer pageSize) {
+        PageHelper.startPage(pageIndex, pageSize);
+        List<MallGoodsPO> mallGoodsPOS = mallGoodsMapper.selectAll();
+        return mallGoodsPOS;
     }
 
     @Override

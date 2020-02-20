@@ -9,22 +9,20 @@ import java.util.List;
  * @author axiang [2019/11/12]
  */
 public interface MallGoodsMapper {
+
     /**
-     * 分页查询商品信息记录
+     * 查询全部商品信息记录
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-   List<MallGoodsPO> pages(@Param("startIndex") Integer startIndex,
-                           @Param("pageSize") Integer pageSize);
+    List<MallGoodsPO> selectAll();
 
     /**
      * 查询商品总数
      *
      * @return
      */
-   Integer selectAllCount();
+    Integer selectAllCount();
 
     /**
      * 根据ID查询商品

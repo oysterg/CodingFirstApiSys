@@ -42,7 +42,18 @@ cf:
     druid:
       name: admin
       pwd: admin
-    localJudgePath: http://192.168.122.129:8100
+    # VJ相关配置
+    vj:
+      user:
+        username: axiangcoding
+        password: wuyuxiang
+      problemListUrl: https://vjudge.net/problem/data
+      remoteOJsUrl: https://vjudge.net/util/remoteOJs
+      problemHtmlUrl: https://vjudge.net/problem/%s
+      checkLoginStatusUrl: https://vjudge.net/user/checkLogInStatus
+      doLoginUrl: https://vjudge.net/user/login
+    local:
+      localJudgePath: http://192.168.122.129:8100
     tempFilePath: D://testfile/
     filePath: D://testfile/
     picturePath: D://testfile/pic/

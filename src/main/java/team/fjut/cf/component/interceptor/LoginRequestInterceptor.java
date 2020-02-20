@@ -44,9 +44,9 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             // 从头部获取auth
             String auth = request.getHeader("auth");
             if (StringUtils.isEmpty(auth)) {
-                ResultJsonVO ResultJsonVO = new ResultJsonVO();
-                ResultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
-                returnJson(response, JSONObject.toJSONString(ResultJsonVO));
+                ResultJsonVO resultJsonVO = new ResultJsonVO();
+                resultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
+                returnJson(response, JSONObject.toJSONString(resultJsonVO));
                 return false;
             } else {
                 // 解析为token
@@ -54,9 +54,9 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
                 if (redisTokenManager.checkToken(model)) {
                     return true;
                 } else {
-                    ResultJsonVO ResultJsonVO = new ResultJsonVO();
-                    ResultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
-                    returnJson(response, JSONObject.toJSONString(ResultJsonVO));
+                    ResultJsonVO resultJsonVO = new ResultJsonVO();
+                    resultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
+                    returnJson(response, JSONObject.toJSONString(resultJsonVO));
                     return false;
                 }
             }
@@ -70,7 +70,6 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
         try {
             writer = response.getWriter();
             writer.print(json);
-
         } catch (IOException e) {
             log.error("response error", e);
         } finally {

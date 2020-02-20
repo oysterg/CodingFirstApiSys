@@ -8,6 +8,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * OJ请求工具类基类
+ *
  * @author axiang [2020/2/18]
  */
 @Component
@@ -15,7 +17,7 @@ public class OnlineJudgeHttpClient {
     @Autowired
     RestTemplate restTemplate;
 
-    public OnlineJudgeHttpClient(){
+    public OnlineJudgeHttpClient() {
 
     }
 

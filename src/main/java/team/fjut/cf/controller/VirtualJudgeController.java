@@ -61,9 +61,9 @@ public class VirtualJudgeController {
 
     @GetMapping("/problem/info")
     public ResultJsonVO getProblemInfo(@RequestParam("OJId") String OJId,
-                                       @RequestParam("ProbNum")String probNum)
-    {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+                                       @RequestParam("probNum") String probNum,
+                                       @RequestParam("username") String username) {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         RequestProblemHtmlParams params = new RequestProblemHtmlParams();
         params.setOJId(OJId);
         params.setProbNum(probNum);
@@ -72,8 +72,7 @@ public class VirtualJudgeController {
     }
 
     @GetMapping("/util/ojs")
-    public ResultJsonVO getVJRemoteOJs()
-    {
+    public ResultJsonVO getVJRemoteOJs() {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         JSONObject oJs = virtualJudgeHttpClient.postRemoteOJs();
         resultJsonVO.addInfo(oJs);

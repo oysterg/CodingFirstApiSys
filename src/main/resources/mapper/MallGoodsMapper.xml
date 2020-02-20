@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.MallGoodsMapper">
-    <select id="pages" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
-        SELECT 	id,
-        name,
-        cost,
-        goods_type,
-        stock,
-        description,
-        picture_url,
-        visible,
-        shelf_user,
-        shelf_time,
-        buy_limit,
-        buy_verify_limit
-        FROM
-        t_mall_goods
-        LIMIT #{startIndex},#{pageSize};
+
+    <select id="selectAll" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
+        SELECT * FROM t_mall_goods
     </select>
 
     <select id="selectAllCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
-        FROM t_mall_goods;
+        FROM t_mall_goods
     </select>
 
     <select id="selectByGoodsId" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
@@ -41,4 +28,5 @@
         t_mall_goods
         WHERE id = #{id}
     </select>
+
 </mapper>
