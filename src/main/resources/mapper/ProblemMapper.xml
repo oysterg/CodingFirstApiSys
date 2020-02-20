@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.ProblemMapper">
-    <select id="pagesFullProblemInfo" resultType="team.fjut.cf.pojo.po.ProblemInfoWithDifficultPO">
+    <select id="selectAllFullProblemInfoByConditions" resultType="team.fjut.cf.pojo.po.ProblemInfoWithDifficultPO">
         SELECT tpi.id,
             tpi.problem_id,
             tpi.title,
@@ -26,8 +26,7 @@
             AND tpi.problem_id IN
             (SELECT DISTINCT problem_id FROM t_problem_tag_record WHERE tag_id=#{tagId})
         </if>
-        ORDER BY tpi.problem_id ASC
-        LIMIT #{startIndex}, #{pageSize};
+
     </select>
 
 

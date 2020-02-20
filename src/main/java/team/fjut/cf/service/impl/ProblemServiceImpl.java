@@ -1,6 +1,7 @@
 package team.fjut.cf.service.impl;
 
- import org.springframework.beans.factory.annotation.Autowired;
+import com.github.pagehelper.PageHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import team.fjut.cf.mapper.*;
@@ -43,10 +44,12 @@ public class ProblemServiceImpl implements ProblemService {
 
 
     @Override
-    public List<ProblemListVO> pagesByConditions(String username, String title, Integer tagId, Integer startIndex, Integer pageSize) {
+    public List<ProblemListVO> pagesByConditions(String username, String title, Integer tagId, Integer pageNum, Integer pageSize) {
+
         List<ProblemListVO> problemListVOS = new ArrayList<>();
         boolean needSolvedStatus = false;
-        List<ProblemInfoWithDifficultPO> problemInfoWithDifficultPOS = problemMapper.pagesFullProblemInfo(title, tagId, startIndex, pageSize);
+        PageHelper.startPage(pageNum, pageSize, "tpi.problem_id");
+        List<ProblemInfoWithDifficultPO> problemInfoWithDifficultPOS = problemMapper.selectAllFullProblemInfoByConditions(title, tagId);
         Map<Integer, Integer> map = new TreeMap<>();
         if (!StringUtils.isEmpty(username)) {
             needSolvedStatus = true;
@@ -141,20 +144,17 @@ public class ProblemServiceImpl implements ProblemService {
         List<ProblemInfoPO> results = new ArrayList<>();
         int totalUnsolved = problemInfoPOS.size();
         // 如果用户未解决题目小于3，则直接返回推荐题目内容
-        if(totalUnsolved <=3)
-        {
+        if (totalUnsolved <= 3) {
             return problemInfoPOS;
         }
         // 如果大于3道，随机推荐3道
         // TODO: 可以做更多的操作
         Random random = new Random();
         Set<Integer> set = new TreeSet<>();
-        while(true)
-        {
+        while (true) {
             int randomInt = random.nextInt(totalUnsolved);
             set.add(randomInt);
-            if(set.size()==3)
-            {
+            if (set.size() == 3) {
                 break;
             }
         }

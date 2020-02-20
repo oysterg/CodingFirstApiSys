@@ -52,7 +52,6 @@ public class LocalProblemController {
         if (pageSize == null) {
             pageSize = 50;
         }
-        Integer startIndex = (pageNum - 1) * pageSize;
         if (!StringUtils.isEmpty(title)) {
             // 拼接查询字符串
             title = "%" + title + "%";
@@ -60,7 +59,7 @@ public class LocalProblemController {
             // 拼接查询字符串如果为空字符或者null则 置为null
             title = null;
         }
-        List<ProblemListVO> problemList = problemService.pagesByConditions(username, title, tagId, startIndex, pageSize);
+        List<ProblemListVO> problemList = problemService.pagesByConditions(username, title, tagId, pageNum, pageSize);
         Integer integer = problemService.selectCountByConditions(title, tagId);
         resultJsonVO.addInfo(problemList);
         resultJsonVO.addInfo(integer);

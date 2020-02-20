@@ -11,11 +11,11 @@ public interface BorderHonorRankService {
     /**
      * 分页查询榜单
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<BorderHonorRankVO> pages(Integer startIndex, Integer pageSize);
+    List<BorderHonorRankVO> pages(Integer pageNum, Integer pageSize);
 
     /**
      * 查询榜单记录数

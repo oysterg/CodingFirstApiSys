@@ -18,8 +18,8 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     MallGoodsMapper mallGoodsMapper;
 
     @Override
-    public List<MallGoodsPO> pages(Integer pageIndex, Integer pageSize) {
-        PageHelper.startPage(pageIndex, pageSize);
+    public List<MallGoodsPO> pages(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
         List<MallGoodsPO> mallGoodsPOS = mallGoodsMapper.selectAll();
         return mallGoodsPOS;
     }

@@ -14,16 +14,13 @@ public interface ProblemMapper {
     /**
      * 多条件查询题目基本信息，带难度
      *
-     * @param pageSize
-     * @param startIndex
      * @param title
      * @param tagId
      * @return
      */
-    List<ProblemInfoWithDifficultPO> pagesFullProblemInfo(@Param("title") String title,
-                                                          @Param("tagId") Integer tagId,
-                                                          @Param("startIndex") Integer startIndex,
-                                                          @Param("pageSize") Integer pageSize);
+    List<ProblemInfoWithDifficultPO> selectAllFullProblemInfoByConditions(@Param("title") String title,
+                                                                          @Param("tagId") Integer tagId
+    );
 
 
 }

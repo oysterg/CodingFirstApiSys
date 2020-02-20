@@ -26,8 +26,7 @@ public class BorderController {
     public ResultJsonVO getHonorRankList(@RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        Integer startIndex = (pageNum - 1) * pageSize;
-        List<BorderHonorRankVO> borderHonorRankVOS = borderHonorRankService.pages(startIndex, pageSize);
+        List<BorderHonorRankVO> borderHonorRankVOS = borderHonorRankService.pages(pageNum, pageSize);
         Integer count  = borderHonorRankService.selectAllCount();
         resultJsonVO.addInfo(borderHonorRankVOS);
         resultJsonVO.addInfo(count);

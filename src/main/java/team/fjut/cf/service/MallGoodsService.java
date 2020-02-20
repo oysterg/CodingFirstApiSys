@@ -11,11 +11,11 @@ public interface MallGoodsService {
     /**
      * 分页查询商品信息记录
      *
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */
-    List<MallGoodsPO> pages(Integer startIndex, Integer pageSize);
+    List<MallGoodsPO> pages(Integer pageNum, Integer pageSize);
 
     /**
      * 查询商品记录总数

@@ -25,8 +25,7 @@ public class MallController {
     public ResultJsonVO getMallGoodsList(@RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        Integer startIndex = (pageNum - 1) * pageSize;
-        List<MallGoodsPO> mallGoodsPOS = mallGoodsService.pages(startIndex, pageSize);
+        List<MallGoodsPO> mallGoodsPOS = mallGoodsService.pages(pageNum, pageSize);
         Integer count = mallGoodsService.selectAllCount();
         resultJsonVO.addInfo(mallGoodsPOS);
         resultJsonVO.addInfo(count);

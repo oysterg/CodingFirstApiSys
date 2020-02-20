@@ -22,7 +22,7 @@ public interface ProblemService {
      * @param pageSize
      * @return
      */
-    List<ProblemListVO> pagesByConditions(String username, String title, Integer tagId, Integer startIndex, Integer pageSize);
+    List<ProblemListVO> pagesByConditions(String username, String title, Integer tagId, Integer pageNum, Integer pageSize);
 
     /**
      * 带条件查询题目数量

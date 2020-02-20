@@ -10,14 +10,11 @@ import java.util.List;
  */
 public interface BorderHonorRankMapper {
     /**
-     * 分页查询榜单
+     * 查询全部榜单
      *
-     * @param startIndex
-     * @param pageSize
      * @return
      */
-    List<BorderHonorRankPO> pages(@Param("startIndex") Integer startIndex,
-                                  @Param("pageSize") Integer pageSize);
+    List<BorderHonorRankPO> selectAll();
 
     /**
      * 查询榜单记录数

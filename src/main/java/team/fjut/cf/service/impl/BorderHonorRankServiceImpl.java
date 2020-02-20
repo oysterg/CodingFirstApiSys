@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.BorderHonorRankMapper;
 import team.fjut.cf.pojo.enums.AwardLevel;
 import team.fjut.cf.pojo.enums.ContestLevel;
@@ -22,9 +23,10 @@ public class BorderHonorRankServiceImpl implements BorderHonorRankService {
     BorderHonorRankMapper borderHonorRankMapper;
 
     @Override
-    public List<BorderHonorRankVO> pages(Integer startIndex, Integer pageSize) {
+    public List<BorderHonorRankVO> pages(Integer pageNum, Integer pageSize) {
         List<BorderHonorRankVO> results = new ArrayList<>();
-        List<BorderHonorRankPO> borderHonorRankPOS = borderHonorRankMapper.pages(startIndex, pageSize);
+        PageHelper.startPage(pageNum, pageSize, "reward_date DESC");
+        List<BorderHonorRankPO> borderHonorRankPOS = borderHonorRankMapper.selectAll();
         for (BorderHonorRankPO item : borderHonorRankPOS) {
             BorderHonorRankVO borderHonorRankVO = new BorderHonorRankVO();
             borderHonorRankVO.setContestLevel(ContestLevel.getNameByCode(item.getContestLevel()));
