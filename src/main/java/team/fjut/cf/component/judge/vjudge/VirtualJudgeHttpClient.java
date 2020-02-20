@@ -155,7 +155,6 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
         // 获取Cookie并保存到头部中，即可保存登录状态
         cookies.add(responseEntity.getHeaders().get("Set-Cookie").get(0));
         headers.put(HttpHeaders.COOKIE, cookies);
-        System.out.println(cookies.get(0));
         return virtualJudgeResponseParser.extractBodyAsString(responseEntity);
     }
 
