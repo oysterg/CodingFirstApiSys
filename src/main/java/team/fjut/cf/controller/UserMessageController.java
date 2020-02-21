@@ -22,9 +22,9 @@ public class UserMessageController {
 
     @PrivateRequired
     @GetMapping("/all")
-    public ResultJsonVO getUserMessageByUsername(@RequestParam("username") String username,
-                                                 @RequestParam("pageNum") Integer pageNum,
-                                                 @RequestParam("pageSize") Integer pageSize) {
+    public ResultJsonVO getUserMessage(@RequestParam("username") String username,
+                                       @RequestParam("pageNum") Integer pageNum,
+                                       @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         List<UserMessagePO> userMessagePOS = userMessageService.pagesByUsername(username, pageNum, pageSize);
         Integer count = userMessageService.selectCountUserMessageByUsername(username);
@@ -35,9 +35,9 @@ public class UserMessageController {
 
     @PrivateRequired
     @GetMapping("/unread")
-    public ResultJsonVO getUserUnreadMessageByUsername(@RequestParam("username") String username,
-                                                       @RequestParam("pageNum") Integer pageNum,
-                                                       @RequestParam("pageSize") Integer pageSize) {
+    public ResultJsonVO getUserUnreadMessage(@RequestParam("username") String username,
+                                             @RequestParam("pageNum") Integer pageNum,
+                                             @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         List<UserMessagePO> userMessagePOS = userMessageService.pagesUnreadByUsername(username, pageNum, pageSize);
         Integer count = userMessageService.selectCountUnreadByUsername(username);
@@ -48,7 +48,7 @@ public class UserMessageController {
 
     @PrivateRequired
     @GetMapping("/unread/count")
-    public ResultJsonVO getUserUnreadMessageCountByUsername(@RequestParam("username") String username) {
+    public ResultJsonVO getUserUnreadMessageCount(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         Integer count = userMessageService.selectCountUnreadByUsername(username);
         resultJsonVO.addInfo(count);

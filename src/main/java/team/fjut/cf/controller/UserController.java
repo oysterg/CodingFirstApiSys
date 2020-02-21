@@ -46,8 +46,8 @@ public class UserController {
     TokenManager tokenManager;
 
     @PostMapping("/login")
-    public ResultJsonVO postUserLogin(@RequestParam("username") String username,
-                                      @RequestParam("password") String password) {
+    public ResultJsonVO userLogin(@RequestParam("username") String username,
+                                  @RequestParam("password") String password) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         Date currentDate = new Date();
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
@@ -87,20 +87,20 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResultJsonVO postUserRegister(@RequestParam("username") String username,
-                                         @RequestParam("password") String password,
-                                         @RequestParam("nick") String nick,
-                                         @RequestParam("gender") Integer gender,
-                                         @RequestParam("email") String email,
-                                         @RequestParam("phone") String phone,
-                                         @RequestParam("motto") String motto,
-                                         @RequestParam(value = "school", required = false) String school,
-                                         @RequestParam(value = "faculty", required = false) String faculty,
-                                         @RequestParam(value = "major", required = false) String major,
-                                         @RequestParam(value = "cla", required = false) String cla,
-                                         @RequestParam(value = "studentId", required = false) String studentId,
-                                         @RequestParam(value = "graduationYear", required = false) String graduationYear,
-                                         @RequestParam(value = "avatarUrl", required = false) String avatarUrl) {
+    public ResultJsonVO userRegister(@RequestParam("username") String username,
+                                     @RequestParam("password") String password,
+                                     @RequestParam("nick") String nick,
+                                     @RequestParam("gender") Integer gender,
+                                     @RequestParam("email") String email,
+                                     @RequestParam("phone") String phone,
+                                     @RequestParam("motto") String motto,
+                                     @RequestParam(value = "school", required = false) String school,
+                                     @RequestParam(value = "faculty", required = false) String faculty,
+                                     @RequestParam(value = "major", required = false) String major,
+                                     @RequestParam(value = "cla", required = false) String cla,
+                                     @RequestParam(value = "studentId", required = false) String studentId,
+                                     @RequestParam(value = "graduationYear", required = false) String graduationYear,
+                                     @RequestParam(value = "avatarUrl", required = false) String avatarUrl) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         Boolean isExist = userInfoService.selectExistByUsername(username);
         if (isExist) {
@@ -138,7 +138,7 @@ public class UserController {
 
     @PrivateRequired
     @PostMapping("/logout")
-    public ResultJsonVO postUserLogOut(@RequestParam("username") String username) {
+    public ResultJsonVO userLogOut(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         tokenManager.deleteToken(username);
         return resultJsonVO;
@@ -146,7 +146,7 @@ public class UserController {
 
     @LoginRequired
     @GetMapping("/info")
-    public ResultJsonVO getUserInfoByUsername(@RequestParam("username") String username) {
+    public ResultJsonVO getUserInfo(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         UserBaseInfoPO userBaseInfoVO = userInfoService.selectByUsername(username);
         UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfoByUsername(username);
@@ -159,7 +159,7 @@ public class UserController {
 
     @LoginRequired
     @GetMapping("/award")
-    public ResultJsonVO getUserAwardListByUsername(@RequestParam("username") String username) {
+    public ResultJsonVO getUserAwardList(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         List<String> awardStr = borderHonorRankService.selectByUsername(username);
         resultJsonVO.addInfo(awardStr);

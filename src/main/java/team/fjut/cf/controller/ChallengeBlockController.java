@@ -28,7 +28,7 @@ public class ChallengeBlockController {
 
     @PrivateRequired
     @GetMapping("/graph")
-    public ResultJsonVO getUserOpenedChallengeBlock(@RequestParam("username") String username) {
+    public ResultJsonVO getOpenedChallengeBlock(@RequestParam("username") String username) {
 
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         List<UserChallengeBlockVO> userChallengeBlockVOS = challengeBlockService.selectByUsername(username);

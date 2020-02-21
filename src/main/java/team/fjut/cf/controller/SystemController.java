@@ -20,7 +20,7 @@ public class SystemController {
     SystemService systemService;
 
     @GetMapping("/info")
-    public ResultJsonVO getSystemInfoByName(@RequestParam("name") String name) {
+    public ResultJsonVO getSystemInfo(@RequestParam("name") String name) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         SystemInfoPO systemInfoPO = systemService.queryByName(name);
         if (Objects.isNull(systemInfoPO)) {

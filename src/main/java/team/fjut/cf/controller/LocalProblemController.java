@@ -68,8 +68,8 @@ public class LocalProblemController {
     }
 
     @GetMapping("/info")
-    public ResultJsonVO getProblemInfoByProblemId(@RequestParam(value = "username", required = false) String username,
-                                                  @RequestParam("problemId") Integer problemId) {
+    public ResultJsonVO getProblemInfo(@RequestParam(value = "username", required = false) String username,
+                                       @RequestParam("problemId") Integer problemId) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         ProblemInfoPO problemInfoPO = problemService.selectProblemInfoByProblemId(problemId);
         ProblemViewPO problemViewPO = problemService.selectProblemViewByProblemId(problemId);
@@ -85,7 +85,7 @@ public class LocalProblemController {
 
     @LoginRequired
     @GetMapping("/radar")
-    public ResultJsonVO getProblemRadarByUsername(@RequestParam("username") String username) {
+    public ResultJsonVO getProblemRadar(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         List<UserRadarVO> userRadarVOS = problemService.selectUserProblemRadarByUsername(username);
         resultJsonVO.addInfo(userRadarVOS);

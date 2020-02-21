@@ -34,7 +34,7 @@ public class MallController {
 
     @LoginRequired
     @GetMapping("/info")
-    public ResultJsonVO getMallGoodsByGoodsId(@RequestParam("id") Integer id) {
+    public ResultJsonVO getMallGoods(@RequestParam("id") Integer id) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         MallGoodsPO mallGoodsPO = mallGoodsService.selectByGoodsId(id);
         if (Objects.isNull(mallGoodsPO)) {

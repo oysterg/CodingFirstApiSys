@@ -25,9 +25,9 @@ public class UserCheckInController {
 
     @PrivateRequired
     @GetMapping("/list")
-    public ResultJsonVO getUserCheckInByUsername(@RequestParam("username") String username,
-                                                 @RequestParam("pageNum") Integer pageNum,
-                                                 @RequestParam("pageSize") Integer pageSize) {
+    public ResultJsonVO getUserCheckIn(@RequestParam("username") String username,
+                                       @RequestParam("pageNum") Integer pageNum,
+                                       @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         if (pageNum == null) {
             pageNum = 0;
@@ -43,7 +43,7 @@ public class UserCheckInController {
 
     @PrivateRequired
     @PostMapping("/check")
-    public ResultJsonVO postUserCheckIn(HttpServletRequest request, String username) {
+    public ResultJsonVO userCheckIn(HttpServletRequest request, String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         UserCheckInPO userCheckInPO = new UserCheckInPO();
         userCheckInPO.setUsername(username);
