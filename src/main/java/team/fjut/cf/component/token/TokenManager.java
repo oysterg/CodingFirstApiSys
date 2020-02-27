@@ -10,37 +10,29 @@ package team.fjut.cf.component.token;
 public interface TokenManager {
 
     /**
-     * 创建一个token，关联上指定用户
-     *
-     * @param username
-     * @return
-     */
-    TokenModel createToken(String username);
-
-    /**
-     * 检查token是否有效
+     * 根据传入的TokenModel创建一个token并存入Redis中
      *
      * @param model
      * @return
      */
-    boolean checkToken(TokenModel model);
+    String createToken(TokenModel model);
 
     /**
-     * 使用token类生成加密字符串
+     * 检查token是否有效，返回token状态枚举
      *
-     * @param model
+     * @param token
      * @return
      */
-    String createAuth(TokenModel model);
+    TokenStatus checkToken(String token);
 
 
     /**
-     * 从加密字符串中获取TokenModel
+     * 获取Token内容
      *
-     * @param auth
+     * @param token
      * @return
      */
-    TokenModel getToken(String auth);
+    TokenModel getTokenModel(String token);
 
     /**
      * 清除token

@@ -7,12 +7,8 @@ package team.fjut.cf.component.token;
  */
 public class TokenModel {
     private String username;
-    private String token;
-
-    public TokenModel(String username, String token) {
-        this.username = username;
-        this.token = token;
-    }
+    private String role;
+    private String ip;
 
     public String getUsername() {
         return username;
@@ -22,19 +18,28 @@ public class TokenModel {
         this.username = username;
     }
 
-    public String getToken() {
-        return token;
+    public String getRole() {
+        return role;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     @Override
     public String toString() {
         return "TokenModel{" +
                 "username='" + username + '\'' +
-                ", token='" + token + '\'' +
+                ", role='" + role + '\'' +
+                ", ip='" + ip + '\'' +
                 '}';
     }
 }

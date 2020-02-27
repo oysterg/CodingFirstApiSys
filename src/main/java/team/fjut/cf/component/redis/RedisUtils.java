@@ -37,12 +37,12 @@ public class RedisUtils {
     }
 
     /**
-     * 根据key 获取过期时间
+     * 根据 key 获取过期时间
      *
      * @param key
      * @return 时间(秒)
      */
-    public long getExpire(String key) {
+    public long getExpireTime(String key) {
         return redisTemplate.getExpire(key, TimeUnit.SECONDS);
     }
 

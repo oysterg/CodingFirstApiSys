@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.component.interceptor.PrivateRequired;
-import team.fjut.cf.component.token.TokenManager;
+import team.fjut.cf.component.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
@@ -13,7 +13,9 @@ import team.fjut.cf.pojo.po.UserBaseInfoPO;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
+import team.fjut.cf.util.IpUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -43,10 +45,11 @@ public class UserController {
     ChallengeBlockService challengeBlockService;
 
     @Autowired
-    TokenManager tokenManager;
+    JwtTokenManager jwtTokenManager;
 
     @PostMapping("/login")
-    public ResultJsonVO userLogin(@RequestParam("username") String username,
+    public ResultJsonVO userLogin(HttpServletRequest request,
+                                  @RequestParam("username") String username,
                                   @RequestParam("password") String password) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         Date currentDate = new Date();
@@ -74,10 +77,15 @@ public class UserController {
         if (userInfoService.login(username, password)) {
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "登录成功！");
             UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfoByUsername(username);
-            TokenModel tokenModel = tokenManager.createToken(username);
-            String auth = tokenManager.createAuth(tokenModel);
+            TokenModel tokenModel = new TokenModel();
+            tokenModel.setIp(IpUtils.getClientIpAddress(request));
+            tokenModel.setUsername(username);
+            tokenModel.setRole("Undefined");
+            System.out.println(tokenModel.toString());
+            String token = jwtTokenManager.createToken(tokenModel);
+            System.out.println(token);
             resultJsonVO.addInfo(username);
-            resultJsonVO.addInfo(auth);
+            resultJsonVO.addInfo(token);
             resultJsonVO.addInfo(userCustomInfoVO);
         } else {
             Integer attemptCount = userInfoService.selectAttemptNumberByUsername(username);
@@ -140,7 +148,7 @@ public class UserController {
     @PostMapping("/logout")
     public ResultJsonVO userLogOut(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        tokenManager.deleteToken(username);
+        jwtTokenManager.deleteToken(username);
         return resultJsonVO;
     }
 

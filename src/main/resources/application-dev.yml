@@ -26,7 +26,8 @@ cf:
       enable: true
     # jwt相关配置
     jwt:
-      expireTime: 15*60*1000
+      # jwt默认过期时间为 1000*60*60*8 毫秒
+      expireTime: 28800000
       tokenSecret: tokentoken
     # 控制器日志
     controllerLog:

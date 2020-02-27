@@ -12,6 +12,7 @@ public enum ResultJsonCode {
     BAD_REQUEST(10003, "参数异常"),
     USER_NOT_LOGIN(20001, "未登录"),
     PERMISSION_NOT_ENOUGH(20002, "权限不足"),
+    TOKEN_OUTDATED(20003,"Token过期"),
     BUSINESS_FAIL(30001, "业务逻辑错误"),
     SYSTEM_ERROR(30002, "系统错误");
 

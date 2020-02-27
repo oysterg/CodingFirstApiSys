@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import team.fjut.cf.component.redis.RedisUtils;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.MallGoodsService;
@@ -17,10 +18,14 @@ public class TestController {
     @Autowired
     MallGoodsService mallGoodsService;
 
+    @Autowired
+    RedisUtils redisUtils;
+
 
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        redisUtils.set("axiangcoding","123");
         return resultJsonVO;
     }
 }

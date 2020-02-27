@@ -62,12 +62,12 @@ public class UserCheckInController {
     @PrivateRequired
     @GetMapping("/is_checked")
     public ResultJsonVO getUserIsChecked(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         Integer count = userCheckInService.selectCountTodayCheckInByUsername(username);
         if (0 == count) {
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "今天未签到");
+            resultJsonVO.addInfo(false);
         } else {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "今天已签到 " + count + " 次");
+            resultJsonVO.addInfo(true);
         }
         return resultJsonVO;
     }
