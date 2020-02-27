@@ -24,6 +24,10 @@ cf:
     # 权限拦截器
     authInterceptor:
       enable: true
+    # jwt相关配置
+    jwt:
+      expireTime: 15*60*1000
+      tokenSecret: tokentoken
     # 控制器日志
     controllerLog:
       enable: true

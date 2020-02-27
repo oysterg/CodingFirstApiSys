@@ -1,7 +1,7 @@
 package team.fjut.cf.component.judge;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.httpclient.HttpStatus;
+import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
