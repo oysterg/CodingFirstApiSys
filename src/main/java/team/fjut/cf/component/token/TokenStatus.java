@@ -2,6 +2,9 @@ package team.fjut.cf.component.token;
 
 /**
  * Token的状态枚举
+ * 0：失败
+ * 1：成功
+ * 2：过期
  *
  * @author axiang
  */
