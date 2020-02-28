@@ -81,9 +81,7 @@ public class UserController {
             tokenModel.setIp(IpUtils.getClientIpAddress(request));
             tokenModel.setUsername(username);
             tokenModel.setRole("Undefined");
-            System.out.println(tokenModel.toString());
             String token = jwtTokenManager.createToken(tokenModel);
-            System.out.println(token);
             resultJsonVO.addInfo(username);
             resultJsonVO.addInfo(token);
             resultJsonVO.addInfo(userCustomInfoVO);
