@@ -75,9 +75,9 @@ public class GlobalExceptionHandler {
         }
         // 其他未指名的运行时异常在倒数第二个捕获
         else if (e instanceof RuntimeException) {
-            exceptionMessage = "[ex0001]: 运行时系统异常";
+            exceptionMessage = "[ex0001]: 系统运行异常";
         } else {
-            exceptionMessage = "[ex0000]: 服务器异常";
+            exceptionMessage = "[ex0000]: 服务端异常";
         }
         resultJson.setStatus(ResultJsonCode.SYSTEM_ERROR, exceptionMessage);
         logger.error(exceptionMessage, e);
