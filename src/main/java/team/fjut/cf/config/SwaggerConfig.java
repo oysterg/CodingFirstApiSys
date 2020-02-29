@@ -26,13 +26,6 @@ public class SwaggerConfig {
     @Value("${cf.config.swagger.enable}")
     private boolean enableSwagger;
 
-    private String title = "“一码当先” 项目接口文档";
-    private String description = "“一码当先” 项目接口文档，Spring boot重构版";
-    private String version = "1.0.0";
-    private String termsOfServiceUrl = "";
-    private String license = "";
-    private String licenseUrl = "";
-
     @Bean
     public Docket api() {
         // 允许开启swagger
@@ -55,6 +48,12 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
+        String licenseUrl = "";
+        String license = "";
+        String termsOfServiceUrl = "";
+        String version = "0.1.0";
+        String description = "一码当先 | CodingFirst 项目在线接口文档";
+        String title = "一码当先 | CodingFirst 项目在线接口文档";
         return new ApiInfoBuilder()
                 .title(title)
                 .description(description)
