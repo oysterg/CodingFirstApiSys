@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/problem")
 @CrossOrigin
-public class LocalProblemController {
+public class ProblemController {
     @Autowired
     UserInfoService userInfoService;
 
@@ -39,9 +39,19 @@ public class LocalProblemController {
     @Autowired
     UserProblemSolvedService userProblemSolvedService;
 
+    /**
+     * TODO: 增加ID的筛选
+     * @param pageNum
+     * @param pageSize
+     * @param tagId
+     * @param title
+     * @param username
+     * @return
+     */
     @GetMapping("/list")
     public ResultJsonVO getProblemLimit(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
+                                        @RequestParam(value = "problemId",required = false) Integer problemId,
                                         @RequestParam(value = "tagId", required = false) Integer tagId,
                                         @RequestParam(value = "title", required = false) String title,
                                         @RequestParam(value = "username", required = false) String username) {

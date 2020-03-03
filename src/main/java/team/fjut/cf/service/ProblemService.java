@@ -18,7 +18,7 @@ public interface ProblemService {
      * @param username
      * @param title
      * @param tagId
-     * @param startIndex
+     * @param pageNum
      * @param pageSize
      * @return
      */

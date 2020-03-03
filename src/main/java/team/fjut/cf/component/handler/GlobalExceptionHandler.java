@@ -3,7 +3,7 @@ package team.fjut.cf.component.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.data.redis.RedisConnectionFailureException;
+import org.springframework.data.redis.connection.PoolException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
             exceptionMessage = "[ex0003]: 空指针错误";
         } else if (e instanceof ResourceAccessException) {
             exceptionMessage = "[ex0004]: 服务器请求外部资源异常";
-        } else if (e instanceof RedisConnectionFailureException) {
+        } else if (e instanceof PoolException) {
             exceptionMessage = "[ex0005]: Redis数据库异常";
         } else if (e instanceof ConnectException)
         {

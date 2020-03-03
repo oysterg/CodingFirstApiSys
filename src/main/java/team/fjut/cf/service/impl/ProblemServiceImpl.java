@@ -45,7 +45,6 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public List<ProblemListVO> pagesByConditions(String username, String title, Integer tagId, Integer pageNum, Integer pageSize) {
-
         List<ProblemListVO> problemListVOS = new ArrayList<>();
         boolean needSolvedStatus = false;
         PageHelper.startPage(pageNum, pageSize, "tpi.problem_id");
@@ -66,9 +65,9 @@ public class ProblemServiceImpl implements ProblemService {
                 if (map.get(problemInfo.getProblemId()) == null) {
                     isSolved = "";
                 } else if (map.get(problemInfo.getProblemId()) >= 1) {
-                    isSolved = "✔";
+                    isSolved = "yes";
                 } else {
-                    isSolved = "X";
+                    isSolved = "no";
                 }
             }
             problemListVO.setIsSolved(isSolved);

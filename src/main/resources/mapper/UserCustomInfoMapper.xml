@@ -5,32 +5,23 @@
     <insert id="insert">
         INSERT INTO t_user_custom_info
         (id,
-        username,
-        avatar_url,
-        adjective_id,
-        article_id,
-        seal_id
-        )
-        VALUES
-        (#{userCustomInfoPO.id},
-        #{userCustomInfoPO.username},
-        #{userCustomInfoPO.avatarUrl},
-        #{userCustomInfoPO.adjectiveId},
-        #{userCustomInfoPO.articleId},
-        #{userCustomInfoPO.sealId}
-        );
+         username,
+         avatar_url,
+         adjective_id,
+         article_id,
+         seal_id)
+        VALUES (#{userCustomInfoPO.id},
+                #{userCustomInfoPO.username},
+                #{userCustomInfoPO.avatarUrl},
+                #{userCustomInfoPO.adjectiveId},
+                #{userCustomInfoPO.articleId},
+                #{userCustomInfoPO.sealId});
 
     </insert>
 
     <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCustomInfoPO">
-        SELECT 	id,
-        username,
-        avatar_url,
-        adjective_id,
-        article_id,
-        seal_id
-        FROM
-        t_user_custom_info
+        SELECT *
+        FROM t_user_custom_info
         WHERE username = #{username};
     </select>
 </mapper>

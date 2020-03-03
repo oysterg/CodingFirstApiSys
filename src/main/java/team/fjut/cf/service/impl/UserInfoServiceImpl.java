@@ -165,6 +165,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             return new UserCustomInfoVO();
         }
         UserCustomInfoVO result = new UserCustomInfoVO();
+        result.setNickname(userCustomInfoPO.getNickname());
         result.setId(userCustomInfoPO.getId());
         result.setUsername(userCustomInfoPO.getUsername());
         result.setAvatarUrl(userCustomInfoPO.getAvatarUrl());

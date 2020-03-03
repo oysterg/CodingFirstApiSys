@@ -17,7 +17,8 @@ import team.fjut.cf.pojo.vo.ResultJsonVO;
 @RequestMapping("/")
 public class RootController {
     @GetMapping("/")
-    public ResultJsonVO getRootInfo() {
-        return new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJsonVO getRootInfo() throws InterruptedException {
+        //Thread.sleep(1000);
+        return new ResultJsonVO(ResultJsonCode.TOKEN_OUTDATED);
     }
 }
