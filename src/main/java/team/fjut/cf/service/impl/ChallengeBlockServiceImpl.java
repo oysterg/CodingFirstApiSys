@@ -8,7 +8,7 @@ import team.fjut.cf.pojo.enums.ChallengeBlockType;
 import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
 import team.fjut.cf.pojo.po.ChallengeBlockPO;
 import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
-import team.fjut.cf.pojo.po.UserMessagePO;
+import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.ChallengeBlockConditionVO;
 import team.fjut.cf.pojo.vo.ChallengeBlockVO;
 import team.fjut.cf.pojo.vo.UserChallengeBlockVO;
@@ -45,13 +45,13 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
     @Override
     public Integer unlockBlock(ChallengeUserOpenBlockPO challengeUserOpenBlockPO) {
         Integer integer = challengeUserOpenBlockMapper.insert(challengeUserOpenBlockPO);
-        UserMessagePO userMessagePO = new UserMessagePO();
-        userMessagePO.setUsername(challengeUserOpenBlockPO.getUsername());
-        userMessagePO.setTime(challengeUserOpenBlockPO.getUnlockTime());
-        userMessagePO.setTitle("恭喜您解锁了新的挑战模式模块！");
-        userMessagePO.setText("恭喜您解锁了新的挑战模式模块，快进去看看吧");
-        userMessagePO.setStatus(0);
-        userMessageService.insert(userMessagePO);
+        UserMessage userMessage = new UserMessage();
+        userMessage.setUsername(challengeUserOpenBlockPO.getUsername());
+        userMessage.setTime(challengeUserOpenBlockPO.getUnlockTime());
+        userMessage.setTitle("恭喜您解锁了新的挑战模式模块！");
+        userMessage.setText("恭喜您解锁了新的挑战模式模块，快进去看看吧");
+        userMessage.setStatus(0);
+        userMessageService.insert(userMessage);
         return integer;
     }
 

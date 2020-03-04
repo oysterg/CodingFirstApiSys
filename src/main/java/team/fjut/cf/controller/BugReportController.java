@@ -1,12 +1,11 @@
 package team.fjut.cf.controller;
 
-import team.fjut.cf.component.interceptor.LoginRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.BugReportPO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
-import team.fjut.cf.service.BugReportedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.po.BugReport;
+import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.service.BugReportedService;
 
 import java.util.Date;
 
@@ -20,16 +19,26 @@ public class BugReportController {
     @Autowired
     BugReportedService bugReportedService;
 
-    @LoginRequired
+    /**
+     * 报告bug
+     *
+     * @param username
+     * @param currentPath
+     * @param type
+     * @param title
+     * @param text
+     * @return
+     */
     @PostMapping("/report")
     public ResultJsonVO insertReport(@RequestParam("username") String username,
-                                     @RequestParam("type") String typeStr,
+                                     @RequestParam("currentPath") String currentPath,
+                                     @RequestParam(value = "type", defaultValue = "0") Integer type,
                                      @RequestParam("title") String title,
                                      @RequestParam("text") String text) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        Integer type = Integer.parseInt(typeStr);
-        BugReportPO bugReport = new BugReportPO();
+        BugReport bugReport = new BugReport();
         bugReport.setUsername(username);
+        bugReport.setCurrentPath(currentPath);
         bugReport.setType(type);
         bugReport.setTitle(title);
         bugReport.setText(text);

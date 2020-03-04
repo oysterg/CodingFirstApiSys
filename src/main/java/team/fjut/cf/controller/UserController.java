@@ -8,8 +8,9 @@ import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.component.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
-import team.fjut.cf.pojo.po.UserBaseInfoPO;
+import team.fjut.cf.pojo.po.UserAuth;
+import team.fjut.cf.pojo.po.UserBaseInfo;
+import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
@@ -95,47 +96,45 @@ public class UserController {
     @PostMapping("/register")
     public ResultJsonVO userRegister(@RequestParam("username") String username,
                                      @RequestParam("password") String password,
-                                     @RequestParam("nick") String nick,
+                                     @RequestParam("nickname") String nickname,
                                      @RequestParam("gender") Integer gender,
                                      @RequestParam("email") String email,
                                      @RequestParam("phone") String phone,
                                      @RequestParam("motto") String motto,
-                                     @RequestParam(value = "school", required = false) String school,
-                                     @RequestParam(value = "faculty", required = false) String faculty,
-                                     @RequestParam(value = "major", required = false) String major,
-                                     @RequestParam(value = "cla", required = false) String cla,
-                                     @RequestParam(value = "studentId", required = false) String studentId,
-                                     @RequestParam(value = "graduationYear", required = false) String graduationYear,
-                                     @RequestParam(value = "avatarUrl", required = false) String avatarUrl) {
+                                     @RequestParam("avatarUrl") String avatarUrl) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         Boolean isExist = userInfoService.selectExistByUsername(username);
         if (isExist) {
-            resultJsonVO.setStatus(ResultJsonCode.SYSTEM_ERROR, "注册的用户已存在！");
+            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "注册的用户已存在！");
             return resultJsonVO;
         }
-        UserBaseInfoPO userBaseInfo = new UserBaseInfoPO();
+        UserBaseInfo userBaseInfo = new UserBaseInfo();
         userBaseInfo.setUsername(username);
-        userBaseInfo.setNick(nick);
         userBaseInfo.setGender(gender);
         userBaseInfo.setEmail(email);
         userBaseInfo.setPhone(phone);
         userBaseInfo.setMotto(motto);
         userBaseInfo.setRegisterTime(new Date());
-        userBaseInfo.setSchool(school);
-        userBaseInfo.setFaculty(faculty);
-        userBaseInfo.setMajor(major);
-        userBaseInfo.setCla(cla);
-        userBaseInfo.setStudentId(studentId);
-        userBaseInfo.setGraduationYear(graduationYear);
-        Boolean ans = userInfoService.registerUser(userBaseInfo, password, avatarUrl);
+        userBaseInfo.setRating(0);
+        userBaseInfo.setRanking(0);
+        userBaseInfo.setAcNum(0);
+        userBaseInfo.setAcb(0);
+        UserAuth userAuth = new UserAuth();
+        userAuth.setPassword(password);
+        UserCustomInfo userCustomInfo = new UserCustomInfo();
+        userCustomInfo.setAvatarUrl(avatarUrl);
+        userCustomInfo.setNickname(nickname);
+        Boolean ans = userInfoService.registerUser(userBaseInfo, userAuth, userCustomInfo);
+
         if (ans) {
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "用户注册成功！");
-            // 插入挑战模式解锁记录
-            ChallengeUserOpenBlockPO challengeUserOpenBlockPO = new ChallengeUserOpenBlockPO();
-            challengeUserOpenBlockPO.setUsername(username);
-            challengeUserOpenBlockPO.setBlockId(1);
-            challengeUserOpenBlockPO.setUnlockTime(new Date());
-            challengeBlockService.unlockBlock(challengeUserOpenBlockPO);
+            // FIXME: 迁移到业务层
+            //// 插入挑战模式解锁记录
+            //ChallengeUserOpenBlockPO challengeUserOpenBlockPO = new ChallengeUserOpenBlockPO();
+            //challengeUserOpenBlockPO.setUsername(username);
+            //challengeUserOpenBlockPO.setBlockId(1);
+            //challengeUserOpenBlockPO.setUnlockTime(new Date());
+            //challengeBlockService.unlockBlock(challengeUserOpenBlockPO);
         } else {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户注册失败！");
         }
@@ -144,7 +143,7 @@ public class UserController {
 
     @PrivateRequired
     @PostMapping("/logout")
-    public ResultJsonVO userLogOut(@RequestParam("username") String username) {
+    public ResultJsonVO userLogOut(String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         jwtTokenManager.deleteToken(username);
         return resultJsonVO;
@@ -154,7 +153,7 @@ public class UserController {
     @GetMapping("/info")
     public ResultJsonVO getUserInfo(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        UserBaseInfoPO userBaseInfoVO = userInfoService.selectByUsername(username);
+        UserBaseInfo userBaseInfoVO = userInfoService.selectByUsername(username);
         UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfoByUsername(username);
         Integer totalSubmit = judgeStatusService.selectCountByUsername(username);
         resultJsonVO.addInfo(userBaseInfoVO);

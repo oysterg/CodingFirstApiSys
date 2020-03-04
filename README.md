@@ -8,7 +8,7 @@
 ## 软件架构
 
 1. 项目采用JAVA语言编写，版本为JDK1.8。
-2. 项目采用Springboot + Mybatis框架，集成了Swagger,Druid等管理工具
+2. 项目采用Springboot + Mybatis + TKMybatis框架，集成了Swagger, Druid等管理工具
 3. 关系型数据库采用MySQL 8.0.19
 4. 键值数据库采用Redis 3.2.100
 5. Web客户端是采用Vue框架搭建的单页Web应用

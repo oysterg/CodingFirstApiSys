@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserMessageMapper">
-    <insert id="insert">
-        insert into t_user_message
-            (
-            username,
-            status,
-            title,
-            text,
-            time
-            )
-            values
-            (
-            #{userMessagePO.username},
-            #{userMessagePO.status},
-            #{userMessagePO.title},
-            #{userMessagePO.text},
-            #{userMessagePO.time}
-            );
-    </insert>
 
     <update id="updateSetReadByUsernameAndId">
         UPDATE t_user_message
@@ -35,7 +17,7 @@
         AND username = #{username};
     </update>
 
-    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserMessage">
         SELECT id,
             username,
             status,
@@ -52,7 +34,7 @@
         WHERE username = #{username};
     </select>
 
-    <select id="selectUnreadByUsername" resultType="team.fjut.cf.pojo.po.UserMessagePO">
+    <select id="selectUnreadByUsername" resultType="team.fjut.cf.pojo.po.UserMessage">
         SELECT id,
             username,
             status,

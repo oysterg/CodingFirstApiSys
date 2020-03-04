@@ -59,6 +59,7 @@ cf:
       doLoginUrl: https://vjudge.net/user/login
     local:
       localJudgePath: http://192.168.122.129:8100
-    tempFilePath: D://testfile/
-    filePath: D://testfile/
-    picturePath: D://testfile/pic/
+    file:
+      globalPath: D://testfile/
+      picPath: D://testfile/pic/
+      avatarPath: D://testfile/avatar/

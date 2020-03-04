@@ -2,7 +2,7 @@ package team.fjut.cf.controller;
 
 import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.UserMessagePO;
+import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.UserMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,9 @@ public class UserMessageController {
                                        @RequestParam("pageNum") Integer pageNum,
                                        @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        List<UserMessagePO> userMessagePOS = userMessageService.pagesByUsername(username, pageNum, pageSize);
+        List<UserMessage> userMessages = userMessageService.pagesByUsername(username, pageNum, pageSize);
         Integer count = userMessageService.selectCountUserMessageByUsername(username);
-        resultJsonVO.addInfo(userMessagePOS);
+        resultJsonVO.addInfo(userMessages);
         resultJsonVO.addInfo(count);
         return resultJsonVO;
     }
@@ -39,9 +39,9 @@ public class UserMessageController {
                                              @RequestParam("pageNum") Integer pageNum,
                                              @RequestParam("pageSize") Integer pageSize) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        List<UserMessagePO> userMessagePOS = userMessageService.pagesUnreadByUsername(username, pageNum, pageSize);
+        List<UserMessage> userMessages = userMessageService.pagesUnreadByUsername(username, pageNum, pageSize);
         Integer count = userMessageService.selectCountUnreadByUsername(username);
-        resultJsonVO.addInfo(userMessagePOS);
+        resultJsonVO.addInfo(userMessages);
         resultJsonVO.addInfo(count);
         return resultJsonVO;
     }

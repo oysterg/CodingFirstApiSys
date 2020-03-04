@@ -2,7 +2,7 @@ package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.UserMessageMapper;
-import team.fjut.cf.pojo.po.UserMessagePO;
+import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.service.UserMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,8 @@ public class UserMessageServiceImpl implements UserMessageService {
     UserMessageMapper userMessageMapper;
 
     @Override
-    public Integer insert(UserMessagePO userMessagePO) {
-        return userMessageMapper.insert(userMessagePO);
+    public Integer insert(UserMessage userMessage) {
+        return userMessageMapper.insert(userMessage);
     }
 
     @Override
@@ -33,10 +33,10 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public List<UserMessagePO> pagesByUsername(String username, Integer pageNum, Integer pageSize) {
+    public List<UserMessage> pagesByUsername(String username, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserMessagePO> userMessagePOS = userMessageMapper.selectByUsername(username);
-        return userMessagePOS;
+        List<UserMessage> userMessages = userMessageMapper.selectByUsername(username);
+        return userMessages;
     }
 
     @Override
@@ -45,10 +45,10 @@ public class UserMessageServiceImpl implements UserMessageService {
     }
 
     @Override
-    public List<UserMessagePO> pagesUnreadByUsername(String username, Integer pageNum, Integer pageSize) {
+    public List<UserMessage> pagesUnreadByUsername(String username, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserMessagePO> userMessagePOS = userMessageMapper.selectUnreadByUsername(username);
-        return userMessagePOS;
+        List<UserMessage> userMessages = userMessageMapper.selectUnreadByUsername(username);
+        return userMessages;
     }
 
     @Override

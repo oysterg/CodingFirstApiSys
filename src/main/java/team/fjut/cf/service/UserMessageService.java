@@ -1,6 +1,6 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.po.UserMessagePO;
+import team.fjut.cf.pojo.po.UserMessage;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ public interface UserMessageService {
     /**
      * 插入一条邮件信息
      *
-     * @param userMessagePO
+     * @param userMessage
      * @return
      */
-    Integer insert(UserMessagePO userMessagePO);
+    Integer insert(UserMessage userMessage);
 
 
     /**
@@ -42,7 +42,7 @@ public interface UserMessageService {
      * @param pageSize
      * @return
      */
-    List<UserMessagePO> pagesByUsername(String username, Integer pageNum, Integer pageSize);
+    List<UserMessage> pagesByUsername(String username, Integer pageNum, Integer pageSize);
 
     /**
      * 根据用户名查询用户消息
@@ -60,7 +60,7 @@ public interface UserMessageService {
      * @param pageSize
      * @return
      */
-    List<UserMessagePO> pagesUnreadByUsername(String username, Integer pageNum, Integer pageSize);
+    List<UserMessage> pagesUnreadByUsername(String username, Integer pageNum, Integer pageSize);
 
     /**
      * 根据用户名查询用户消息

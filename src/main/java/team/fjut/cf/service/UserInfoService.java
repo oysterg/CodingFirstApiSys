@@ -1,6 +1,8 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.po.UserBaseInfoPO;
+import team.fjut.cf.pojo.po.UserAuth;
+import team.fjut.cf.pojo.po.UserBaseInfo;
+import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
 import team.fjut.cf.pojo.vo.UserAcbBorderVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
@@ -15,13 +17,12 @@ import java.util.List;
 public interface UserInfoService {
     /**
      * 注册用户
-     *
-     * @param userBaseInfoPO
-     * @param password
-     * @param avatarUrl
+     * @param userBaseInfo
+     * @param userAuth
+     * @param userCustomInfo
      * @return
      */
-    Boolean registerUser(UserBaseInfoPO userBaseInfoPO, String password, String avatarUrl);
+    Boolean registerUser(UserBaseInfo userBaseInfo, UserAuth userAuth, UserCustomInfo userCustomInfo);
 
     /**
      * 用户登录
@@ -63,7 +64,7 @@ public interface UserInfoService {
      * @param pageSize
      * @return
      */
-    List<UserBaseInfoPO> pagesUserBaseInfo(int pageNum, int pageSize);
+    List<UserBaseInfo> pagesUserBaseInfo(int pageNum, int pageSize);
 
     /**
      * 根据用户名查找用户所有信息
@@ -71,7 +72,7 @@ public interface UserInfoService {
      * @param username
      * @return
      */
-    UserBaseInfoPO selectByUsername(String username);
+    UserBaseInfo selectByUsername(String username);
 
     /**
      * 根据用户名查询用户个性化信息

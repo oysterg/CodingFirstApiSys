@@ -1,22 +1,15 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.UserMessagePO;
+import team.fjut.cf.pojo.po.UserMessage;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/11/11]
  */
-public interface UserMessageMapper {
-
-    /**
-     * 插入一条邮件信息
-     *
-     * @param userMessagePO
-     * @return
-     */
-    Integer insert(@Param("userMessagePO") UserMessagePO userMessagePO);
+public interface UserMessageMapper extends Mapper<UserMessage> {
 
     /**
      * 设置用户特定的消息已读
@@ -41,7 +34,7 @@ public interface UserMessageMapper {
      * @param username
      * @return
      */
-    List<UserMessagePO> selectByUsername(@Param("username") String username);
+    List<UserMessage> selectByUsername(@Param("username") String username);
 
     /**
      * 根据用户名查询消息记录数
@@ -57,7 +50,7 @@ public interface UserMessageMapper {
      * @param username
      * @return
      */
-    List<UserMessagePO> selectUnreadByUsername(@Param("username") String username);
+    List<UserMessage> selectUnreadByUsername(@Param("username") String username);
 
     /**
      * 根据用户名查询消息记录数

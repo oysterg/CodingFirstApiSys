@@ -1,7 +1,7 @@
 package team.fjut.cf.service.impl;
 
 import team.fjut.cf.mapper.BugReportedMapper;
-import team.fjut.cf.pojo.po.BugReportPO;
+import team.fjut.cf.pojo.po.BugReport;
 import team.fjut.cf.service.BugReportedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ public class BugReportedServiceImpl implements BugReportedService {
     BugReportedMapper bugReportedMapper;
 
     @Override
-    public Integer insert(BugReportPO bugReportPO) {
-        return bugReportedMapper.insert(bugReportPO);
+    public int insert(BugReport bugReport) {
+        return bugReportedMapper.insert(bugReport);
     }
 }

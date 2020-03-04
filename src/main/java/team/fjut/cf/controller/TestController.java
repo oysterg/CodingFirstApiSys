@@ -1,6 +1,7 @@
 package team.fjut.cf.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import team.fjut.cf.service.MallGoodsService;
  * @author axiang [2019/10/21]
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/test")
 public class TestController {
     @Autowired
@@ -24,8 +26,7 @@ public class TestController {
 
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        redisUtils.set("axiangcoding","123");
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.TOKEN_OUTDATED);
         return resultJsonVO;
     }
 }

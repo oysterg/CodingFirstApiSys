@@ -26,8 +26,11 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     /**
      * 图片路径
      */
-    @Value("${cf.config.picturePath}")
-    private String picturePath;
+    @Value("${cf.config.file.picPath}")
+    private String picPath;
+
+    @Value("${cf.config.file.avatarPath}")
+    private String avatarPath;
 
     @Autowired
     private LoginRequestInterceptor loginRequestInterceptor;
@@ -57,6 +60,7 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 重定向资源到图片文件夹,
         // 通过 http://[ip]:[port]/[projectName]/image/[fileName]访问图片
-        registry.addResourceHandler("/image/**").addResourceLocations("file:" + picturePath);
+        registry.addResourceHandler("/image/pic/**").addResourceLocations("file:" + picPath);
+        registry.addResourceHandler("/image/avatar/**").addResourceLocations("file:" + avatarPath);
     }
 }

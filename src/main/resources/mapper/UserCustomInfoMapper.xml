@@ -2,24 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserCustomInfoMapper">
 
-    <insert id="insert">
-        INSERT INTO t_user_custom_info
-        (id,
-         username,
-         avatar_url,
-         adjective_id,
-         article_id,
-         seal_id)
-        VALUES (#{userCustomInfoPO.id},
-                #{userCustomInfoPO.username},
-                #{userCustomInfoPO.avatarUrl},
-                #{userCustomInfoPO.adjectiveId},
-                #{userCustomInfoPO.articleId},
-                #{userCustomInfoPO.sealId});
 
-    </insert>
-
-    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCustomInfoPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCustomInfo">
         SELECT *
         FROM t_user_custom_info
         WHERE username = #{username};

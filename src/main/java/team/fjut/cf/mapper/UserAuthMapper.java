@@ -1,22 +1,15 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.UserAuthPO;
+import team.fjut.cf.pojo.po.UserAuth;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.Date;
 
 /**
  * @author axiang [2019/10/11]
  */
-public interface UserAuthMapper {
-    /**
-     * 插入一条用户登录权限记录
-     *
-     * @param tableUserAuth
-     * @return
-     */
-    Integer insert(@Param("UserAuth") UserAuthPO tableUserAuth);
-
+public interface UserAuthMapper extends Mapper<UserAuth> {
     /**
      * 根据用户名删除一条用户登录权限记录
      *

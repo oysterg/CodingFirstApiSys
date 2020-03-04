@@ -2,39 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserBaseInfoMapper">
 
-    <insert id="insert">
-        INSERT INTO t_user_base_info
-        (id,
-        username,
-        nick,
-        gender,
-        email,
-        phone,
-        motto,
-        school,
-        faculty,
-        major,
-        cla,
-        student_id,
-        graduation_year
-        )
-        VALUES
-        (#{userBaseInfo.id},
-        #{userBaseInfo.username},
-        #{userBaseInfo.nick},
-        #{userBaseInfo.gender},
-        #{userBaseInfo.email},
-        #{userBaseInfo.phone},
-        #{userBaseInfo.motto},
-        #{userBaseInfo.school},
-        #{userBaseInfo.faculty},
-        #{userBaseInfo.major},
-        #{userBaseInfo.cla},
-        #{userBaseInfo.studentId},
-        #{userBaseInfo.graduationYear}
-        );
-
-    </insert>
 
 
     <delete id="deleteByUsername">
@@ -73,7 +40,7 @@
         WHERE username = #{username};
     </update>
 
-    <select id="all" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="all" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT id,
         username,
         nick,
@@ -104,7 +71,7 @@
         WHERE username = #{username}
     </select>
 
-    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT id,
         username,
         nick,
@@ -128,7 +95,7 @@
         WHERE username = #{username}
     </select>
 
-    <select id="allAcbTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="allAcbTop" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT username,
         nick,
         acb
@@ -136,7 +103,7 @@
         ORDER BY acb DESC, rating DESC
     </select>
 
-    <select id="allAcNumTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="allAcNumTop" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT username,
         nick,
         ac_num
@@ -144,7 +111,7 @@
         ORDER BY ac_num DESC, rating DESC
     </select>
 
-    <select id="allRatingTop" resultType="team.fjut.cf.pojo.po.UserBaseInfoPO">
+    <select id="allRatingTop" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT username,
         nick,
         rating

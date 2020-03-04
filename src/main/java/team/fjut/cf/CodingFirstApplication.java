@@ -1,15 +1,17 @@
 package team.fjut.cf;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
+ * 初始化Springboot
+ *
  * @author axiang [2019/10/07]
  */
 @SpringBootApplication
-@MapperScan("team.fjut.cf.mapper")
+@MapperScan(basePackages = {"team.fjut.cf.mapper"})
 @EnableTransactionManagement
 public class CodingFirstApplication {
     public static void main(String[] args) {

@@ -51,32 +51,29 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean registerUser(UserBaseInfoPO userBaseInfoPO, String password, String avatarUrl) {
+    public Boolean registerUser(UserBaseInfo userBaseInfo, UserAuth userAuth, UserCustomInfo userCustomInfo) {
         // 插入用户基本信息
-        int ans1 = userBaseInfoMapper.insert(userBaseInfoPO);
+        int ans1 = userBaseInfoMapper.insert(userBaseInfo);
         // 插入用户权限信息
-        UserAuthPO userAuthPO = new UserAuthPO();
         Date currentTime = new Date();
         // 得到随机盐值
         String salt = UUIDUtils.getUUID32();
         // 加盐密码
-        String newPassword = salt + password;
+        String newPassword = salt + userAuth.getPassword();
         // 对加盐密码使用SHA1加密
         String encryptedPwd = SHAUtils.SHA1(newPassword);
-        userAuthPO.setUsername(userBaseInfoPO.getUsername());
-        userAuthPO.setSalt(salt);
-        userAuthPO.setPassword(encryptedPwd);
-        userAuthPO.setAttemptLoginFailCount(0);
+        userAuth.setUsername(userBaseInfo.getUsername());
+        userAuth.setSalt(salt);
+        userAuth.setPassword(encryptedPwd);
+        userAuth.setAttemptLoginFailCount(0);
         // FIXME: 新注册用户进行锁定，但由于邮箱服务问题暂时跳过该逻辑
-        userAuthPO.setLocked(0);
-        userAuthPO.setUnlockTime(currentTime);
-        userAuthPO.setLastLoginTime(currentTime);
-        int ans2 = userAuthMapper.insert(userAuthPO);
+        userAuth.setLocked(0);
+        userAuth.setUnlockTime(currentTime);
+        userAuth.setLastLoginTime(currentTime);
+        int ans2 = userAuthMapper.insert(userAuth);
         // 插入头像信息
-        UserCustomInfoPO userCustomInfoPO = new UserCustomInfoPO();
-        userCustomInfoPO.setUsername(userBaseInfoPO.getUsername());
-        userCustomInfoPO.setAvatarUrl(avatarUrl);
-        Integer ans3 = userCustomInfoMapper.insert(userCustomInfoPO);
+        userCustomInfo.setUsername(userBaseInfo.getUsername());
+        int ans3 = userCustomInfoMapper.insert(userCustomInfo);
         // 发送激活确认邮件
         //SendEmailBO sendEmailBO = new SendEmailBO();
         //sendEmailBO.setTo(userBaseInfoPO.getEmail());
@@ -85,13 +82,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         //+"http://xxxxxxxx");
         //emailTool.sendEmail(sendEmailBO);
         // 发送注册成功站内消息
-        UserMessagePO userMessagePO = new UserMessagePO();
-        userMessagePO.setUsername(userBaseInfoPO.getUsername());
-        userMessagePO.setTitle("欢迎注册一码当先在线编程系统");
-        userMessagePO.setStatus(0);
-        userMessagePO.setText("欢迎注册一码当先在线编程系统，目前我们正在进行内测，功能并未完全开发完毕，如果遇到错误，请通过页面最下方的bug反馈进行反馈哦");
-        userMessagePO.setTime(new Date());
-        userMessageService.insert(userMessagePO);
+        UserMessage userMessage = new UserMessage();
+        userMessage.setUsername(userBaseInfo.getUsername());
+        userMessage.setTitle("欢迎注册一码当先在线编程系统");
+        userMessage.setStatus(0);
+        userMessage.setText("欢迎注册一码当先在线编程系统，目前我们正在进行内测，功能并未完全开发完毕，如果遇到错误，请通过页面最下方的bug反馈进行反馈哦");
+        userMessage.setTime(new Date());
+        userMessageService.insert(userMessage);
         return ans1 == 1 && ans2 == 1 && ans3 == 1;
     }
 
@@ -146,39 +143,39 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public List<UserBaseInfoPO> pagesUserBaseInfo(int pageNum, int pageSize) {
+    public List<UserBaseInfo> pagesUserBaseInfo(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.all();
-        return userBaseInfoPOS;
+        List<UserBaseInfo> userBaseInfos = userBaseInfoMapper.all();
+        return userBaseInfos;
     }
 
     @Override
-    public UserBaseInfoPO selectByUsername(String username) {
-        UserBaseInfoPO userBaseInfoPO = userBaseInfoMapper.selectByUsername(username);
-        return userBaseInfoPO;
+    public UserBaseInfo selectByUsername(String username) {
+        UserBaseInfo userBaseInfo = userBaseInfoMapper.selectByUsername(username);
+        return userBaseInfo;
     }
 
     @Override
     public UserCustomInfoVO selectUserCustomInfoByUsername(String username) {
-        UserCustomInfoPO userCustomInfoPO = userCustomInfoMapper.selectByUsername(username);
-        if (null == userCustomInfoPO) {
+        UserCustomInfo userCustomInfo = userCustomInfoMapper.selectByUsername(username);
+        if (null == userCustomInfo) {
             return new UserCustomInfoVO();
         }
         UserCustomInfoVO result = new UserCustomInfoVO();
-        result.setNickname(userCustomInfoPO.getNickname());
-        result.setId(userCustomInfoPO.getId());
-        result.setUsername(userCustomInfoPO.getUsername());
-        result.setAvatarUrl(userCustomInfoPO.getAvatarUrl());
-        if (userCustomInfoPO.getAdjectiveId() != null) {
-            UserTitlePO userAdjTitle = userTitleMapper.selectById(userCustomInfoPO.getAdjectiveId());
+        result.setNickname(userCustomInfo.getNickname());
+        result.setId(userCustomInfo.getId());
+        result.setUsername(userCustomInfo.getUsername());
+        result.setAvatarUrl(userCustomInfo.getAvatarUrl());
+        if (userCustomInfo.getAdjectiveId() != null) {
+            UserTitlePO userAdjTitle = userTitleMapper.selectById(userCustomInfo.getAdjectiveId());
             result.setAdjectiveTitle(userAdjTitle.getName());
         }
-        if (userCustomInfoPO.getArticleId() != null) {
-            UserTitlePO userArtTitle = userTitleMapper.selectById(userCustomInfoPO.getArticleId());
+        if (userCustomInfo.getArticleId() != null) {
+            UserTitlePO userArtTitle = userTitleMapper.selectById(userCustomInfo.getArticleId());
             result.setArticleTitle(userArtTitle.getName());
         }
-        if (userCustomInfoPO.getSealId() != null) {
-            UserSealPO userSealPO = userSealMapper.selectById(userCustomInfoPO.getSealId());
+        if (userCustomInfo.getSealId() != null) {
+            UserSealPO userSealPO = userSealMapper.selectById(userCustomInfo.getSealId());
             result.setSealUrl(userSealPO.getPictureUrl());
         }
         return result;
@@ -188,11 +185,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     public List<UserAcbBorderVO> selectAcbBorder(int pageNum, int pageSize) {
         List<UserAcbBorderVO> userAcbBorderVOS = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize);
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.allAcbTop();
-        for (UserBaseInfoPO userBase : userBaseInfoPOS) {
+        List<UserBaseInfo> userBaseInfos = userBaseInfoMapper.allAcbTop();
+        for (UserBaseInfo userBase : userBaseInfos) {
             UserAcbBorderVO userAcbBorderVO = new UserAcbBorderVO();
             userAcbBorderVO.setUsername(userBase.getUsername());
-            userAcbBorderVO.setNick(userBase.getNick());
+            // FIXME: 昵称换表了
+            //userAcbBorderVO.setNick(userBase.getNick());
             userAcbBorderVO.setAcb(userBase.getAcb());
             userAcbBorderVOS.add(userAcbBorderVO);
         }
@@ -203,11 +201,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     public List<UserAcNumBorderVO> selectAcNumBorder(int pageNum, int pageSize) {
         List<UserAcNumBorderVO> userAcNumBorderVOS = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize);
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.allAcNumTop();
-        for (UserBaseInfoPO userBase : userBaseInfoPOS) {
+        List<UserBaseInfo> userBaseInfos = userBaseInfoMapper.allAcNumTop();
+        for (UserBaseInfo userBase : userBaseInfos) {
             UserAcNumBorderVO userAcbBorderVO = new UserAcNumBorderVO();
             userAcbBorderVO.setUsername(userBase.getUsername());
-            userAcbBorderVO.setNick(userBase.getNick());
+            // FIXME: 昵称换表了
+            //userAcbBorderVO.setNick(userBase.getNick());
             userAcbBorderVO.setAcNum(userBase.getAcNum());
             userAcNumBorderVOS.add(userAcbBorderVO);
         }
@@ -218,11 +217,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     public List<UserRatingBorderVO> selectRatingBorder(int pageNum, int pageSize) {
         List<UserRatingBorderVO> userRatingBorderVOS = new ArrayList<>();
         PageHelper.startPage(pageNum, pageSize);
-        List<UserBaseInfoPO> userBaseInfoPOS = userBaseInfoMapper.allRatingTop();
-        for (UserBaseInfoPO userBase : userBaseInfoPOS) {
+        List<UserBaseInfo> userBaseInfos = userBaseInfoMapper.allRatingTop();
+        for (UserBaseInfo userBase : userBaseInfos) {
             UserRatingBorderVO userRatingBorderVO = new UserRatingBorderVO();
             userRatingBorderVO.setUsername(userBase.getUsername());
-            userRatingBorderVO.setNick(userBase.getNick());
+            // FIXME: 昵称换表了
+            //userRatingBorderVO.setNick(userBase.getNick());
             userRatingBorderVO.setRating(userBase.getRating());
             userRatingBorderVOS.add(userRatingBorderVO);
         }

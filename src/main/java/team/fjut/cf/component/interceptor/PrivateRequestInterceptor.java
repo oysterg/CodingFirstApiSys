@@ -35,7 +35,6 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
     private JwtTokenManager jwtTokenManager;
 
     /**
-     * FIXME:重写
      * @param request
      * @param response
      * @param handler
@@ -50,11 +49,13 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
 
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         PrivateRequired privateRequired = handlerMethod.getMethodAnnotation(PrivateRequired.class);
-        String username = request.getParameter("username");
-        // 如果没有注解，直接跳过
+
+        // 如果没有注解，返回正确
         if (null == privateRequired) {
             return true;
         } else {
+            // 从参数中拿到用户名
+            String username = request.getParameter("username");
             // 从头部获取token
             String token = request.getHeader("token");
             // 如果token不存在
@@ -67,13 +68,17 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
             // 如果token存在，则开始校验
             else {
                 TokenStatus status = jwtTokenManager.checkToken(token);
-                // 如果token验证成功，不再拦截，检查username是否为本人的
+                System.out.println(token);
+                System.out.println(status);
+                // 如果token验证成功,检查username是否为本人，如果不是，则失败
                 if (status == TokenStatus.IS_TRUE) {
                     TokenModel tokenModel = jwtTokenManager.getTokenModel(token);
-                    if(Objects.equals(username,tokenModel.getUsername()))
-                    {
+                    if (Objects.equals(username, tokenModel.getUsername())) {
                         return true;
-                    }else{
+                    } else {
+                        ResultJsonVO resultJsonVO = new ResultJsonVO();
+                        resultJsonVO.setStatus(ResultJsonCode.PERMISSION_NOT_ENOUGH, "权限不足");
+                        returnJson(response, JSONObject.toJSONString(resultJsonVO));
                         return false;
                     }
                 }

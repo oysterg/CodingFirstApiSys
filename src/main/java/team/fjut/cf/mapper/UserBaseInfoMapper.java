@@ -1,21 +1,22 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.UserBaseInfoPO;
+import team.fjut.cf.pojo.po.UserBaseInfo;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/10/11]
  */
-public interface UserBaseInfoMapper {
-    /**
-     * 增加一条用户基本信息
-     *
-     * @param userBaseInfo
-     * @return
-     */
-    Integer insert(@Param("userBaseInfo") UserBaseInfoPO userBaseInfo);
+public interface UserBaseInfoMapper extends Mapper<UserBaseInfo> {
+    ///**
+    // * 增加一条用户基本信息
+    // *
+    // * @param userBaseInfo
+    // * @return
+    // */
+    //Integer insert(@Param("userBaseInfo") UserBaseInfo userBaseInfo);
 
     /**
      * 根据用户名删除一条用户基本信息
@@ -32,7 +33,7 @@ public interface UserBaseInfoMapper {
      * @param userBaseInfo
      * @return
      */
-    Integer updateByUsername(@Param("username") String username, @Param("userBaseInfo") UserBaseInfoPO userBaseInfo);
+    Integer updateByUsername(@Param("username") String username, @Param("userBaseInfo") UserBaseInfo userBaseInfo);
 
     /**
      * 更新用户AC题数+1
@@ -47,7 +48,7 @@ public interface UserBaseInfoMapper {
      *
      * @return
      */
-    List<UserBaseInfoPO> all();
+    List<UserBaseInfo> all();
 
     /**
      * 根据用户名查找用户基本信息
@@ -55,7 +56,7 @@ public interface UserBaseInfoMapper {
      * @param username
      * @return
      */
-    UserBaseInfoPO selectByUsername(@Param("username") String username);
+    UserBaseInfo selectByUsername(@Param("username") String username);
 
     /**
      * 根据用户名查询用户基本信息数量
@@ -70,19 +71,19 @@ public interface UserBaseInfoMapper {
      *
      * @return
      */
-    List<UserBaseInfoPO> allAcbTop();
+    List<UserBaseInfo> allAcbTop();
 
     /**
      * 查询AC题数榜单
      *
      * @return
      */
-    List<UserBaseInfoPO> allAcNumTop();
+    List<UserBaseInfo> allAcNumTop();
 
     /**
      * 查询积分榜单
      *
      * @return
      */
-    List<UserBaseInfoPO> allRatingTop();
+    List<UserBaseInfo> allRatingTop();
 }

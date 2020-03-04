@@ -1,18 +1,14 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.BugReportPO;
-import org.apache.ibatis.annotations.Param;
+import team.fjut.cf.pojo.po.BugReport;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
+ * bug反馈，采用了tk mybatis插件
+ *
  * @author axiang [2019/10/18]
  */
-public interface BugReportedMapper {
-    /**
-     * 插入一条bug反馈记录
-     *
-     * @param bugReportPO
-     * @return
-     */
-    Integer insert(@Param("bugReportPO") BugReportPO bugReportPO);
+public interface BugReportedMapper extends Mapper<BugReport> {
+
 }
 

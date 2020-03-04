@@ -1,29 +1,29 @@
 package team.fjut.cf.pojo.vo;
 
-import team.fjut.cf.pojo.po.UserBaseInfoPO;
-import team.fjut.cf.pojo.po.UserCustomInfoPO;
+import team.fjut.cf.pojo.po.UserBaseInfo;
+import team.fjut.cf.pojo.po.UserCustomInfo;
 
 /**
  * @author axiang [2019/10/14]
  */
 public class UserInfoVO {
-    private UserCustomInfoPO customInfo;
-    private UserBaseInfoPO baseInfo;
+    private UserCustomInfo customInfo;
+    private UserBaseInfo baseInfo;
 
-    public UserCustomInfoPO getUserCustomInfoPO() {
+    public UserCustomInfo getUserCustomInfoPO() {
         return customInfo;
     }
 
-    public void setUserCustomInfoPO(UserCustomInfoPO userCustomInfoPO) {
-        this.customInfo = userCustomInfoPO;
+    public void setUserCustomInfoPO(UserCustomInfo userCustomInfo) {
+        this.customInfo = userCustomInfo;
     }
 
-    public UserBaseInfoPO getUserBaseInfoPO() {
+    public UserBaseInfo getUserBaseInfoPO() {
         return baseInfo;
     }
 
-    public void setUserBaseInfoPO(UserBaseInfoPO userBaseInfoPO) {
-        this.baseInfo = userBaseInfoPO;
+    public void setUserBaseInfoPO(UserBaseInfo userBaseInfo) {
+        this.baseInfo = userBaseInfo;
     }
 
     @Override
