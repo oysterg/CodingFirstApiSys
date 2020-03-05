@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserProblemSolvedMapper">
-    <insert id="insert">
-        insert into t_user_problem_solved
-        (
-        username,
-        problem_id,
-        try_count,
-        solved_count,
-        last_try_time,
-        first_solved_time
-        )
-        values
-        (
-        #{userProblemSolvedPO.username},
-        #{userProblemSolvedPO.problemId},
-        #{userProblemSolvedPO.tryCount},
-        #{userProblemSolvedPO.solvedCount},
-        #{userProblemSolvedPO.lastTryTime},
-        #{userProblemSolvedPO.firstSolvedTime}
-        );
-    </insert>
 
     <update id="updateTryCountAddOne">
        UPDATE t_user_problem_solved
@@ -50,12 +30,12 @@
        AND problem_id = #{problemId};
     </update>
 
-    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserProblemSolvedPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserProblemSolved">
     SELECT * FROM t_user_problem_solved
         WHERE username = #{username};
     </select>
 
-    <select id="selectByUsernameAndProblemId" resultType="team.fjut.cf.pojo.po.UserProblemSolvedPO">
+    <select id="selectByUsernameAndProblemId" resultType="team.fjut.cf.pojo.po.UserProblemSolved">
     SELECT * FROM t_user_problem_solved
         WHERE username = #{username}
         AND problem_id = #{problemId};

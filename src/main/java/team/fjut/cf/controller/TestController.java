@@ -9,6 +9,7 @@ import team.fjut.cf.component.redis.RedisUtils;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.MallGoodsService;
+import team.fjut.cf.service.UserInfoService;
 
 /**
  * @author axiang [2019/10/21]
@@ -23,10 +24,15 @@ public class TestController {
     @Autowired
     RedisUtils redisUtils;
 
+    @Autowired
+    UserInfoService userAuthService;
 
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.TOKEN_OUTDATED);
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        //List<ViewProblemInfo> pages = viewProblemInfoService.pagesByConditions(1, 20, null, "%A + B%", null);
+        //resultJsonVO.addInfo(pages);
+        resultJsonVO.addInfo(userAuthService.selectExistByUsername("axiangcoding"));
         return resultJsonVO;
     }
 }

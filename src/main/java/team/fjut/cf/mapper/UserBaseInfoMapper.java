@@ -10,31 +10,6 @@ import java.util.List;
  * @author axiang [2019/10/11]
  */
 public interface UserBaseInfoMapper extends Mapper<UserBaseInfo> {
-    ///**
-    // * 增加一条用户基本信息
-    // *
-    // * @param userBaseInfo
-    // * @return
-    // */
-    //Integer insert(@Param("userBaseInfo") UserBaseInfo userBaseInfo);
-
-    /**
-     * 根据用户名删除一条用户基本信息
-     *
-     * @param username
-     * @return
-     */
-    Integer deleteByUsername(@Param("username") String username);
-
-    /**
-     * 根据用户名修改一条用户基本消息
-     *
-     * @param username
-     * @param userBaseInfo
-     * @return
-     */
-    Integer updateByUsername(@Param("username") String username, @Param("userBaseInfo") UserBaseInfo userBaseInfo);
-
     /**
      * 更新用户AC题数+1
      *
@@ -43,12 +18,6 @@ public interface UserBaseInfoMapper extends Mapper<UserBaseInfo> {
      */
     Integer updateAcNumAddOneByUsername(@Param("username") String username);
 
-    /**
-     * 查找用户基本信息
-     *
-     * @return
-     */
-    List<UserBaseInfo> all();
 
     /**
      * 根据用户名查找用户基本信息
@@ -57,14 +26,6 @@ public interface UserBaseInfoMapper extends Mapper<UserBaseInfo> {
      * @return
      */
     UserBaseInfo selectByUsername(@Param("username") String username);
-
-    /**
-     * 根据用户名查询用户基本信息数量
-     *
-     * @param username
-     * @return
-     */
-    Integer selectCountByUsername(@Param("username") String username);
 
     /**
      * 查询ACB榜单

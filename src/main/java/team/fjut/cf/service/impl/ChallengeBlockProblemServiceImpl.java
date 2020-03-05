@@ -3,7 +3,7 @@ package team.fjut.cf.service.impl;
 import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.ChallengeBlockProblemMapper;
 import team.fjut.cf.mapper.UserProblemSolvedMapper;
-import team.fjut.cf.pojo.po.UserProblemSolvedPO;
+import team.fjut.cf.pojo.po.UserProblemSolved;
 import team.fjut.cf.pojo.vo.ChallengeBlockProblemVO;
 import team.fjut.cf.service.ChallengeBlockProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class ChallengeBlockProblemServiceImpl implements ChallengeBlockProblemSe
     public List<ChallengeBlockProblemVO> pagesByBlockId(String username, Integer blockId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ChallengeBlockProblemVO> challengeBlockProblemVOS = challengeBlockProblemMapper.allAsVO(blockId);
-        List<UserProblemSolvedPO> userSolvedProblems = userProblemSolvedMapper.selectByUsername(username);
+        List<UserProblemSolved> userSolvedProblems = userProblemSolvedMapper.selectByUsername(username);
         Map<Integer, Integer> map = new TreeMap<>();
-        for (UserProblemSolvedPO solvedProblem : userSolvedProblems) {
+        for (UserProblemSolved solvedProblem : userSolvedProblems) {
             map.put(solvedProblem.getProblemId(), solvedProblem.getSolvedCount());
         }
         for (ChallengeBlockProblemVO challengeBlockProblemVO : challengeBlockProblemVOS) {

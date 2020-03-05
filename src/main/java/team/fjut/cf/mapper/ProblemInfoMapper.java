@@ -1,30 +1,15 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.ProblemInfoPO;
+import team.fjut.cf.pojo.po.ProblemInfo;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/10/22]
  */
-public interface ProblemInfoMapper {
-
-    /**
-     * 插入一条题目基本信息记录
-     *
-     * @param problemInfoPO
-     * @return
-     */
-    Integer insert(@Param("problemInfoPO") ProblemInfoPO problemInfoPO);
-
-    /**
-     * 根据 problemId 删除 题目基本信息
-     *
-     * @param problemId
-     * @return
-     */
-    Integer deleteByProblemId(@Param("problemId") Integer problemId);
+public interface ProblemInfoMapper extends Mapper<ProblemInfo> {
 
     /**
      * 更新题目提交总数+1
@@ -58,21 +43,6 @@ public interface ProblemInfoMapper {
      */
     Integer updateTotalAcUserAddOne(@Param("problemId") Integer problemId);
 
-    /**
-     * 带条件查询题目总数
-     *
-     * @param title
-     * @param tagId
-     * @return
-     */
-    Integer selectCountByConditions(@Param("title") String title, @Param("tagId") Integer tagId);
-
-    /**
-     * 查找题目基本信息
-     *
-     * @return
-     */
-    List<ProblemInfoPO> all();
 
     /**
      * 根据题目ID查询题目基本信息
@@ -80,13 +50,13 @@ public interface ProblemInfoMapper {
      * @param problemId
      * @return
      */
-    ProblemInfoPO selectByProblemId(@Param("problemId") Integer problemId);
+    ProblemInfo selectByProblemId(@Param("problemId") Integer problemId);
 
     /**
      * 查询用户未解决的题目列表
      * @param username
      * @return
      */
-    List<ProblemInfoPO> selectUnSolvedProblemsByUsername(@Param("username") String username);
+    List<ProblemInfo> selectUnSolvedProblemsByUsername(@Param("username") String username);
 
 }

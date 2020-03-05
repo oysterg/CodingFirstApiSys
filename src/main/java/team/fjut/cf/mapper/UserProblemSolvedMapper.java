@@ -1,23 +1,16 @@
 package team.fjut.cf.mapper;
 
 import team.fjut.cf.pojo.po.ProblemTypeCountPO;
-import team.fjut.cf.pojo.po.UserProblemSolvedPO;
+import team.fjut.cf.pojo.po.UserProblemSolved;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/11/14]
  */
-public interface UserProblemSolvedMapper {
-    /**
-     * 插入一条解题记录
-     *
-     * @param userProblemSolvedPO
-     * @return
-     */
-    Integer insert(@Param("userProblemSolvedPO") UserProblemSolvedPO userProblemSolvedPO);
-
+public interface UserProblemSolvedMapper extends Mapper<UserProblemSolved> {
     /**
      * 根据用户名和题目ID更新尝试次数+1
      *
@@ -60,7 +53,7 @@ public interface UserProblemSolvedMapper {
      * @param username
      * @return
      */
-    List<UserProblemSolvedPO> selectByUsername(@Param("username") String username);
+    List<UserProblemSolved> selectByUsername(@Param("username") String username);
 
     /**
      * 根据用户名和题目ID查找对应记录
@@ -69,7 +62,7 @@ public interface UserProblemSolvedMapper {
      * @param problemId
      * @return
      */
-    UserProblemSolvedPO selectByUsernameAndProblemId(@Param("username") String username, @Param("problemId") Integer problemId);
+    UserProblemSolved selectByUsernameAndProblemId(@Param("username") String username, @Param("problemId") Integer problemId);
 
     /**
      * 根据用户名和题目ID查找对应记录数量

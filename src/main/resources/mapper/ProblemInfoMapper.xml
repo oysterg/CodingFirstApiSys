@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.ProblemInfoMapper">
-
-    <insert id="insert">
-       INSERT INTO t_problem_info
-        (id,
-        problem_id,
-        title,
-        belong_oj_id,
-        belong_problem_id,
-        author,
-        total_submit,
-        total_ac,
-        total_submit_user,
-        total_ac_user,
-        visible,
-        judge_option
-        )
-        values
-        (#{problemInfoPO.id},
-        #{problemInfoPO.problemId},
-        #{problemInfoPO.title},
-        #{problemInfoPO.belongOjId},
-        #{problemInfoPO.belongProblemId},
-        #{problemInfoPO.author},
-        #{problemInfoPO.totalSubmit},
-        #{problemInfoPO.totalAc},
-        #{problemInfoPO.totalSubmitUser},
-        #{problemInfoPO.totalAcUser},
-        #{problemInfoPO.visible},
-        #{problemInfoPO.judgeOption}
-        );
-    </insert>
-
     <update id="updateTotalSubmitAddOne">
         UPDATE t_problem_info
         SET total_submit = total_submit + 1
@@ -58,42 +26,9 @@
     </update>
 
 
-    <delete id="deleteByProblemId">
-        DELETE FROM t_problem_info
-        WHERE id = #{problemId};
-    </delete>
 
-    <select id="all" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
-        SELECT id,
-            problem_id,
-            title,
-            belong_oj_id,
-            belong_problem_id,
-            author,
-            total_submit,
-            total_ac,
-            total_submit_user,
-            total_ac_user,
-            visible,
-            judge_option
-        FROM t_problem_info
-        ORDER BY problem_id DESC
-    </select>
 
-    <select id="selectCountByConditions" resultType="java.lang.Integer">
-        SELECT COUNT(*)
-        FROM t_problem_info
-        WHERE 1=1
-        <if test="title != null">
-            AND title LIKE #{title}
-        </if>
-        <if test="tagId != null">
-            AND problem_id IN
-            (SELECT DISTINCT problem_id FROM t_problem_tag_record WHERE tag_id=#{tagId})
-        </if>;
-    </select>
-
-    <select id="selectByProblemId" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="selectByProblemId" resultType="team.fjut.cf.pojo.po.ProblemInfo">
         SELECT 	id,
         problem_id,
         title,
@@ -111,7 +46,7 @@
 	    WHERE problem_id = #{problemId}
     </select>
 
-    <select id="selectUnSolvedProblemsByUsername" resultType="team.fjut.cf.pojo.po.ProblemInfoPO">
+    <select id="selectUnSolvedProblemsByUsername" resultType="team.fjut.cf.pojo.po.ProblemInfo">
         SELECT * FROM t_problem_info tpi
         WHERE  problem_id NOT IN
         (

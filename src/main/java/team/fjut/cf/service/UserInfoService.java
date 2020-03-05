@@ -8,7 +8,6 @@ import team.fjut.cf.pojo.vo.UserAcbBorderVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.pojo.vo.UserRatingBorderVO;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,15 +30,7 @@ public interface UserInfoService {
      * @param password
      * @return
      */
-    Boolean login(String username, String password);
-
-    /**
-     * 查询用户登录解锁时间
-     *
-     * @param username
-     * @return
-     */
-    Date selectUnlockTimeByUsername(String username);
+    Boolean userLogin(String username, String password);
 
     /**
      * 根据用户名查询该用户名是否存在
@@ -49,22 +40,7 @@ public interface UserInfoService {
      */
     Boolean selectExistByUsername(String username);
 
-    /**
-     * 查询用户的登录失败次数
-     *
-     * @param username
-     * @return
-     */
-    Integer selectAttemptNumberByUsername(String username);
 
-    /**
-     * 分页查找用户基础信息
-     *
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    List<UserBaseInfo> pagesUserBaseInfo(int pageNum, int pageSize);
 
     /**
      * 根据用户名查找用户所有信息
@@ -80,7 +56,7 @@ public interface UserInfoService {
      * @param username
      * @return
      */
-    UserCustomInfoVO selectUserCustomInfoByUsername(String username);
+    UserCustomInfoVO selectUserCustomInfo(String username);
 
     /**
      * 查询ACB榜单

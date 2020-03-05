@@ -13,7 +13,7 @@ import team.fjut.cf.pojo.enums.CodeLanguage;
 import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.JudgeResultPO;
 import team.fjut.cf.pojo.po.JudgeStatusPO;
-import team.fjut.cf.pojo.po.UserProblemSolvedPO;
+import team.fjut.cf.pojo.po.UserProblemSolved;
 import team.fjut.cf.pojo.po.ViewJudgeStatusPO;
 import team.fjut.cf.pojo.vo.JudgeStatusVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
@@ -73,13 +73,13 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         // 查询解答记录表中该题的解答记录是否存在
         Integer countSolvedRecord = userProblemSolvedMapper.selectCountByUsernameAndProblemId(username, problemId);
         if (countSolvedRecord == 0) {
-            UserProblemSolvedPO userProblemSolvedPO = new UserProblemSolvedPO();
-            userProblemSolvedPO.setUsername(username);
-            userProblemSolvedPO.setProblemId(problemId);
-            userProblemSolvedPO.setTryCount(1);
-            userProblemSolvedPO.setSolvedCount(0);
-            userProblemSolvedPO.setLastTryTime(new Date());
-            userProblemSolvedMapper.insert(userProblemSolvedPO);
+            UserProblemSolved userProblemSolved = new UserProblemSolved();
+            userProblemSolved.setUsername(username);
+            userProblemSolved.setProblemId(problemId);
+            userProblemSolved.setTryCount(1);
+            userProblemSolved.setSolvedCount(0);
+            userProblemSolved.setLastTryTime(new Date());
+            userProblemSolvedMapper.insert(userProblemSolved);
         } else {
             // 尝试次数+1
             userProblemSolvedMapper.updateTryCountAddOne(username, problemId);
@@ -168,7 +168,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
             // 解题ac次数加一
             userProblemSolvedMapper.updateSolvedCountAddOne(username, problemId);
             // 查询题目解决表中是否有记录
-            UserProblemSolvedPO userSolvedRecord = userProblemSolvedMapper.selectByUsernameAndProblemId(username, problemId);
+            UserProblemSolved userSolvedRecord = userProblemSolvedMapper.selectByUsernameAndProblemId(username, problemId);
             // 如果第一次解答该题
             if (userSolvedRecord.getSolvedCount() == 1) {
                 // 更新第一次解决时间

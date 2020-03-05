@@ -15,6 +15,7 @@ import team.fjut.cf.service.UserInfoService;
 import team.fjut.cf.service.UserMessageService;
 import team.fjut.cf.util.SHAUtils;
 import team.fjut.cf.util.UUIDUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,62 +93,71 @@ public class UserInfoServiceImpl implements UserInfoService {
         return ans1 == 1 && ans2 == 1 && ans3 == 1;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean login(String username, String password) {
+    public Boolean userLogin(String username, String password) {
         // 最大登录尝试次数
         int maxAttemptTimes = 5;
+        Example example = new Example(UserAuth.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("username", username);
+        // 拿到权限表的内容
+        UserAuth userAuth = userAuthMapper.selectOneByExample(example);
         // 取出数据库中盐值
-        String salt = userAuthMapper.selectSaltByUsername(username);
+        String salt = userAuth.getSalt();
         String newPwd = salt + password;
         // 对明文密码和盐值做加密
         String encryptPwd = SHAUtils.SHA1(newPwd);
+        criteria.andEqualTo("password", encryptPwd);
         // 查询用户名密码是否对应上
-        Integer ans = userAuthMapper.selectByUsernameAndPassword(username, encryptPwd);
+        int ans = userAuthMapper.selectCountByExample(example);
+        // 重置example为只查询username
+        example.clear();
+        example.createCriteria().andEqualTo("username", username);
         // 登录成功
         if (1 == ans) {
+            UserAuth newUserAuth = new UserAuth();
             // 重置尝试失败次数为0
-            userAuthMapper.updateAttemptFailSetZeroByUsername(username);
+            newUserAuth.setAttemptLoginFailCount(0);
+            // 更新最后登录时间
+            newUserAuth.setLastLoginTime(new Date());
+            userAuthMapper.updateByExampleSelective(newUserAuth, example);
             return true;
         }
         // 登录失败
         else {
-            //更新登录失败次数+1
-            userAuthMapper.updateAttemptFailByUsername(username, 1);
-            //查询登录失败次数
-            Integer failLoginCount = userAuthMapper.selectAttemptNumberByUsername(username);
-            //超过最大登录失败次数，则账号锁定五分钟
-            if (failLoginCount >= maxAttemptTimes) {
-                //设置时间为现在时间的五分钟后
+            // 拿到该登录失败用户的表记录
+            UserAuth temp = userAuthMapper.selectOneByExample(example);
+            // 更新登录失败次数+1
+            temp.setAttemptLoginFailCount(temp.getAttemptLoginFailCount() + 1);
+            // 更新回去
+            userAuthMapper.updateByExampleSelective(temp, example);
+            // 如果查询上次登录次数即将超限，则还需要设置超时时间
+            if (temp.getAttemptLoginFailCount() >= maxAttemptTimes) {
                 long timeLaterFiveMin = System.currentTimeMillis() + (60 * 5 * 1000);
-                userAuthMapper.updateUnlockTimeByUsername(new Date(timeLaterFiveMin), username);
+                temp.setUnlockTime(new Date(timeLaterFiveMin));
+                userAuthMapper.updateByExampleSelective(temp, example);
             }
             return false;
         }
     }
 
-    @Override
-    public Date selectUnlockTimeByUsername(String username) {
-        return userAuthMapper.selectUnlockTimeByUsername(username);
-    }
 
     @Override
     public Boolean selectExistByUsername(String username) {
-        Integer num1 = userAuthMapper.selectCountByUsername(username);
-        Integer num2 = userBaseInfoMapper.selectCountByUsername(username);
+        Example example = new Example(UserAuth.class);
+        example.createCriteria().andEqualTo("username", username);
+        int num1 = userAuthMapper.selectCountByExample(example);
+        System.out.println(num1);
+        Example example1 = new Example(UserBaseInfo.class);
+        example1.createCriteria().andEqualTo("username", username);
+        int num2 = userBaseInfoMapper.selectCountByExample(example1);
+        System.out.println(num2);
         return (num1 == 1) && (num2 == 1);
     }
 
-    @Override
-    public Integer selectAttemptNumberByUsername(String username) {
-        return userAuthMapper.selectAttemptNumberByUsername(username);
-    }
 
-    @Override
-    public List<UserBaseInfo> pagesUserBaseInfo(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<UserBaseInfo> userBaseInfos = userBaseInfoMapper.all();
-        return userBaseInfos;
-    }
+
 
     @Override
     public UserBaseInfo selectByUsername(String username) {
@@ -156,27 +166,30 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserCustomInfoVO selectUserCustomInfoByUsername(String username) {
-        UserCustomInfo userCustomInfo = userCustomInfoMapper.selectByUsername(username);
-        if (null == userCustomInfo) {
-            return new UserCustomInfoVO();
-        }
+    public UserCustomInfoVO selectUserCustomInfo(String username) {
         UserCustomInfoVO result = new UserCustomInfoVO();
+        Example example = new Example(UserCustomInfo.class);
+        example.createCriteria().andEqualTo("username", username);
+        UserCustomInfo userCustomInfo = userCustomInfoMapper.selectOneByExample(example);
+        // 如果为空返回空内容
+        if (null == userCustomInfo) {
+            return result;
+        }
         result.setNickname(userCustomInfo.getNickname());
         result.setId(userCustomInfo.getId());
         result.setUsername(userCustomInfo.getUsername());
         result.setAvatarUrl(userCustomInfo.getAvatarUrl());
         if (userCustomInfo.getAdjectiveId() != null) {
-            UserTitlePO userAdjTitle = userTitleMapper.selectById(userCustomInfo.getAdjectiveId());
+            UserTitle userAdjTitle = userTitleMapper.selectByPrimaryKey(userCustomInfo.getAdjectiveId());
             result.setAdjectiveTitle(userAdjTitle.getName());
         }
         if (userCustomInfo.getArticleId() != null) {
-            UserTitlePO userArtTitle = userTitleMapper.selectById(userCustomInfo.getArticleId());
+            UserTitle userArtTitle = userTitleMapper.selectByPrimaryKey(userCustomInfo.getArticleId());
             result.setArticleTitle(userArtTitle.getName());
         }
         if (userCustomInfo.getSealId() != null) {
-            UserSealPO userSealPO = userSealMapper.selectById(userCustomInfo.getSealId());
-            result.setSealUrl(userSealPO.getPictureUrl());
+            UserSeal userSeal = userSealMapper.selectByPrimaryKey(userCustomInfo.getSealId());
+            result.setSealUrl(userSeal.getPictureUrl());
         }
         return result;
     }

@@ -59,7 +59,6 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 重定向资源到图片文件夹,
-        // 通过 http://[ip]:[port]/[projectName]/image/[fileName]访问图片
         registry.addResourceHandler("/image/pic/**").addResourceLocations("file:" + picPath);
         registry.addResourceHandler("/image/avatar/**").addResourceLocations("file:" + avatarPath);
     }

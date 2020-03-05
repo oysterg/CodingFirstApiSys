@@ -2,120 +2,61 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserBaseInfoMapper">
 
-
-
-    <delete id="deleteByUsername">
-        DELETE FROM t_user_base_info
-        WHERE username = #{username};
-    </delete>
-
-
-    <update id="updateByUsername">
-        UPDATE t_user_base_info
-        SET
-        id = #{userBaseInfo.id} ,
-        username = #{userBaseInfo.username} ,
-        nick = #{userBaseInfo.nick} ,
-        gender = #{userBaseInfo.gender} ,
-        email = #{userBaseInfo.email} ,
-        phone = #{userBaseInfo.phone} ,
-        motto = #{userBaseInfo.motto} ,
-        register_time = #{userBaseInfo.registerTime} ,
-        rating = #{userBaseInfo.rating} ,
-        ranking = #{userBaseInfo.ranking} ,
-        ac_num = #{userBaseInfo.ac_num} ,
-        school = #{userBaseInfo.school} ,
-        faculty = #{userBaseInfo.faculty} ,
-        major = #{userBaseInfo.major} ,
-        cla = #{userBaseInfo.cla} ,
-        student_id = #{userBaseInfo.studentId} ,
-        graduation_time = #{userBaseInfo.graduationTime}
-        WHERE
-        username = #{username} ;
-    </update>
-
     <update id="updateAcNumAddOneByUsername">
         UPDATE t_user_base_info
         SET ac_num = ac_num + 1
         WHERE username = #{username};
     </update>
 
-    <select id="all" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
-        SELECT id,
-        username,
-        nick,
-        gender,
-        email,
-        phone,
-        motto,
-        register_time,
-        rating,
-        ranking,
-        ac_num,
-        acb,
-        school,
-        faculty,
-        major,
-        cla,
-        student_id,
-        graduation_year
-        FROM
-        t_user_base_info
-
-    </select>
-
-    <select id="selectCountByUsername" resultType="java.lang.Integer">
-        SELECT COUNT(*)
-        FROM
-        t_user_base_info
-        WHERE username = #{username}
-    </select>
-
     <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT id,
-        username,
-        nick,
-        gender,
-        email,
-        phone,
-        motto,
-        register_time,
-        rating,
-        ranking,
-        ac_num,
-        acb,
-        school,
-        faculty,
-        major,
-        cla,
-        student_id,
-        graduation_year
-        FROM
-        t_user_base_info
+               username,
+               gender,
+               email,
+               phone,
+               motto,
+               register_time,
+               rating,
+               ranking,
+               ac_num,
+               acb,
+               school,
+               faculty,
+               major,
+               cla,
+               student_id,
+               graduation_year
+        FROM t_user_base_info
         WHERE username = #{username}
     </select>
 
     <select id="allAcbTop" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT username,
-        nick,
-        acb
+               nickname,
+               acb
         FROM t_user_base_info
+                 left join t_user_custom_info
+                           ON t_user_base_info.username = t_user_custom_info.username
         ORDER BY acb DESC, rating DESC
     </select>
 
     <select id="allAcNumTop" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT username,
-        nick,
-        ac_num
+               nickname,
+               ac_num
         FROM t_user_base_info
+                 left join t_user_custom_info
+                           ON t_user_base_info.username = t_user_custom_info.username
         ORDER BY ac_num DESC, rating DESC
     </select>
 
     <select id="allRatingTop" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT username,
-        nick,
-        rating
+               nickname,
+               rating
         FROM t_user_base_info
+                 left join t_user_custom_info
+                           ON t_user_base_info.username = t_user_custom_info.username
         ORDER BY rating DESC
     </select>
 </mapper>

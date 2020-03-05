@@ -1,22 +1,16 @@
 package team.fjut.cf.controller;
 
-import team.fjut.cf.component.interceptor.LoginRequired;
-import team.fjut.cf.component.interceptor.PrivateRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.ProblemInfoPO;
-import team.fjut.cf.pojo.po.ProblemSamplePO;
-import team.fjut.cf.pojo.po.ProblemViewPO;
-import team.fjut.cf.pojo.po.UserProblemSolvedPO;
-import team.fjut.cf.pojo.vo.ProblemListVO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
-import team.fjut.cf.pojo.vo.UserRadarVO;
-import team.fjut.cf.service.ProblemService;
-import team.fjut.cf.service.ProblemTagService;
-import team.fjut.cf.service.UserInfoService;
-import team.fjut.cf.service.UserProblemSolvedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.component.interceptor.LoginRequired;
+import team.fjut.cf.component.interceptor.PrivateRequired;
+import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.po.*;
+import team.fjut.cf.pojo.vo.ProblemListVO;
+import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.UserRadarVO;
+import team.fjut.cf.service.*;
 
 import java.util.List;
 
@@ -39,10 +33,13 @@ public class ProblemController {
     @Autowired
     UserProblemSolvedService userProblemSolvedService;
 
+    @Autowired
+    ViewProblemInfoService viewProblemInfoService;
+
     /**
-     * TODO: 增加ID的筛选
      * @param pageNum
      * @param pageSize
+     * @param problemId
      * @param tagId
      * @param title
      * @param username
@@ -51,11 +48,11 @@ public class ProblemController {
     @GetMapping("/list")
     public ResultJsonVO getProblemLimit(@RequestParam("pageNum") Integer pageNum,
                                         @RequestParam("pageSize") Integer pageSize,
-                                        @RequestParam(value = "problemId",required = false) Integer problemId,
+                                        @RequestParam(value = "problemId", required = false) Integer problemId,
                                         @RequestParam(value = "tagId", required = false) Integer tagId,
                                         @RequestParam(value = "title", required = false) String title,
                                         @RequestParam(value = "username", required = false) String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         if (pageNum == null) {
             pageNum = 0;
         }
@@ -69,11 +66,10 @@ public class ProblemController {
             // 拼接查询字符串如果为空字符或者null则 置为null
             title = null;
         }
-        List<ProblemListVO> problemList = problemService.pagesByConditions(username, title, tagId, pageNum, pageSize);
-        Integer integer = problemService.selectCountByConditions(title, tagId);
-        resultJsonVO.addInfo(problemList);
-        resultJsonVO.addInfo(integer);
-        resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
+        List<ProblemListVO> problemLists = viewProblemInfoService.pagesByConditions(pageNum, pageSize, problemId, title, tagId, username);
+        int count = viewProblemInfoService.countByConditions(problemId, title, tagId);
+        resultJsonVO.addInfo(problemLists);
+        resultJsonVO.addInfo(count);
         return resultJsonVO;
     }
 
@@ -81,12 +77,12 @@ public class ProblemController {
     public ResultJsonVO getProblemInfo(@RequestParam(value = "username", required = false) String username,
                                        @RequestParam("problemId") Integer problemId) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        ProblemInfoPO problemInfoPO = problemService.selectProblemInfoByProblemId(problemId);
+        ProblemInfo problemInfo = problemService.selectProblemInfoByProblemId(problemId);
         ProblemViewPO problemViewPO = problemService.selectProblemViewByProblemId(problemId);
         List<ProblemSamplePO> problemSamplePOS = problemService.selectProblemSampleByProblemId(problemId);
-        UserProblemSolvedPO userProblemSolved = userProblemSolvedService.selectCountByUsernameAndProblemId(username, problemId);
+        UserProblemSolved userProblemSolved = userProblemSolvedService.selectCountByUsernameAndProblemId(username, problemId);
         Boolean isSolved = userProblemSolved != null && userProblemSolved.getSolvedCount() > 0;
-        resultJsonVO.addInfo(problemInfoPO);
+        resultJsonVO.addInfo(problemInfo);
         resultJsonVO.addInfo(problemViewPO);
         resultJsonVO.addInfo(problemSamplePOS);
         resultJsonVO.addInfo(isSolved);
@@ -111,7 +107,7 @@ public class ProblemController {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户不存在");
             return resultJsonVO;
         }
-        List<ProblemInfoPO> problems = problemService.selectRecommendProblemsByUsername(username);
+        List<ProblemInfo> problems = problemService.selectRecommendProblemsByUsername(username);
         resultJsonVO.addInfo(problems);
         return resultJsonVO;
     }

@@ -63,21 +63,22 @@ public class UserController {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "登录失败！用户不存在！");
             return resultJsonVO;
         }
+        // 查询账号是否激活
+        boolean isUserLocked = userAuthService.isUserLocked(username);
+        if (isUserLocked) {
+            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "您的账号还未激活，请到邮箱中点击激活！");
+            return resultJsonVO;
+        }
         // 查询登录权限的解锁时间
-        Date unlockTime = userInfoService.selectUnlockTimeByUsername(username);
+        Date unlockTime = userAuthService.selectUnlockTime(username);
         // 如果当前时间小于解锁时间，则表示账号还在锁定期，无法登录
         if (0 > currentDate.compareTo(unlockTime)) {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "您的账号已暂时被锁定，请稍后登录。如有疑问，请联系管理员");
             return resultJsonVO;
         }
-        Integer integer = userAuthService.selectLockedByUsername(username);
-        if (integer == 1) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "您的账号还未激活，请到邮箱中点击激活！");
-            return resultJsonVO;
-        }
-        if (userInfoService.login(username, password)) {
+        if (userInfoService.userLogin(username, password)) {
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "登录成功！");
-            UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfoByUsername(username);
+            UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
             TokenModel tokenModel = new TokenModel();
             tokenModel.setIp(IpUtils.getClientIpAddress(request));
             tokenModel.setUsername(username);
@@ -87,7 +88,7 @@ public class UserController {
             resultJsonVO.addInfo(token);
             resultJsonVO.addInfo(userCustomInfoVO);
         } else {
-            Integer attemptCount = userInfoService.selectAttemptNumberByUsername(username);
+            Integer attemptCount = userAuthService.selectAttemptNumber(username);
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "登录失败！账号或密码不正确！您还有 " + (Math.max(5 - attemptCount, 0)) + "次机会");
         }
         return resultJsonVO;
@@ -154,7 +155,7 @@ public class UserController {
     public ResultJsonVO getUserInfo(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         UserBaseInfo userBaseInfoVO = userInfoService.selectByUsername(username);
-        UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfoByUsername(username);
+        UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
         Integer totalSubmit = judgeStatusService.selectCountByUsername(username);
         resultJsonVO.addInfo(userBaseInfoVO);
         resultJsonVO.addInfo(userCustomInfoVO);

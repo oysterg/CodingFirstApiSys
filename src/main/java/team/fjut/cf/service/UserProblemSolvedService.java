@@ -1,6 +1,6 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.po.UserProblemSolvedPO;
+import team.fjut.cf.pojo.po.UserProblemSolved;
 
 /**
  * @author axiang [2019/11/15]
@@ -13,5 +13,5 @@ public interface UserProblemSolvedService {
      * @param problemId
      * @return
      */
-    UserProblemSolvedPO selectCountByUsernameAndProblemId(String username, Integer problemId);
+    UserProblemSolved selectCountByUsernameAndProblemId(String username, Integer problemId);
 }

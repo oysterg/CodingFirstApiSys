@@ -1,19 +1,16 @@
 package team.fjut.cf.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import team.fjut.cf.mapper.*;
-import team.fjut.cf.pojo.enums.OjId;
-import team.fjut.cf.pojo.enums.ProblemDifficultLevel;
 import team.fjut.cf.pojo.enums.ProblemType;
-import team.fjut.cf.pojo.po.*;
-import team.fjut.cf.pojo.vo.ProblemListVO;
+import team.fjut.cf.pojo.po.ProblemInfo;
+import team.fjut.cf.pojo.po.ProblemSamplePO;
+import team.fjut.cf.pojo.po.ProblemTypeCountPO;
+import team.fjut.cf.pojo.po.ProblemViewPO;
 import team.fjut.cf.pojo.vo.UserRadarVO;
 import team.fjut.cf.service.ProblemService;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -34,9 +31,6 @@ public class ProblemServiceImpl implements ProblemService {
     ProblemDifficultMapper problemDifficultMapper;
 
     @Autowired
-    ProblemMapper problemMapper;
-
-    @Autowired
     UserProblemSolvedMapper userProblemSolvedMapper;
 
     @Autowired
@@ -44,58 +38,7 @@ public class ProblemServiceImpl implements ProblemService {
 
 
     @Override
-    public List<ProblemListVO> pagesByConditions(String username, String title, Integer tagId, Integer pageNum, Integer pageSize) {
-        List<ProblemListVO> problemListVOS = new ArrayList<>();
-        boolean needSolvedStatus = false;
-        PageHelper.startPage(pageNum, pageSize, "tpi.problem_id");
-        List<ProblemInfoWithDifficultPO> problemInfoWithDifficultPOS = problemMapper.selectFullProblemInfoByConditions(title, tagId);
-        Map<Integer, Integer> map = new TreeMap<>();
-        if (!StringUtils.isEmpty(username)) {
-            needSolvedStatus = true;
-            List<UserProblemSolvedPO> solvedProblems = userProblemSolvedMapper.selectByUsername(username);
-
-            for (UserProblemSolvedPO solvedProblem : solvedProblems) {
-                map.put(solvedProblem.getProblemId(), solvedProblem.getSolvedCount());
-            }
-        }
-        for (ProblemInfoWithDifficultPO problemInfo : problemInfoWithDifficultPOS) {
-            ProblemListVO problemListVO = new ProblemListVO();
-            String isSolved = "";
-            if (needSolvedStatus) {
-                if (map.get(problemInfo.getProblemId()) == null) {
-                    isSolved = "";
-                } else if (map.get(problemInfo.getProblemId()) >= 1) {
-                    isSolved = "yes";
-                } else {
-                    isSolved = "no";
-                }
-            }
-            problemListVO.setIsSolved(isSolved);
-            problemListVO.setProblemId(problemInfo.getProblemId());
-            problemListVO.setTitle(problemInfo.getTitle());
-            DecimalFormat decimalFormat = new DecimalFormat("0.00");
-            String ratio;
-            if (problemInfo.getTotalSubmit() == 0) {
-                ratio = "0.00%(0/0)";
-            } else {
-                ratio = decimalFormat.format(100.00 * problemInfo.getTotalAc() / problemInfo.getTotalSubmit()) + "%("
-                        + problemInfo.getTotalAc() + "/" + problemInfo.getTotalSubmit() + ")";
-            }
-            problemListVO.setRatio(ratio);
-            problemListVO.setDifficult(ProblemDifficultLevel.getNameByCode(problemInfo.getDifficultLevel()));
-            problemListVO.setBelongToOj(OjId.getNameByCode(problemInfo.getBelongOjId()));
-            problemListVOS.add(problemListVO);
-        }
-        return problemListVOS;
-    }
-
-    @Override
-    public Integer selectCountByConditions(String title, Integer tagId) {
-        return problemInfoMapper.selectCountByConditions(title, tagId);
-    }
-
-    @Override
-    public ProblemInfoPO selectProblemInfoByProblemId(Integer problemId) {
+    public ProblemInfo selectProblemInfoByProblemId(Integer problemId) {
         return problemInfoMapper.selectByProblemId(problemId);
     }
 
@@ -138,13 +81,13 @@ public class ProblemServiceImpl implements ProblemService {
     }
 
     @Override
-    public List<ProblemInfoPO> selectRecommendProblemsByUsername(String username) {
-        List<ProblemInfoPO> problemInfoPOS = problemInfoMapper.selectUnSolvedProblemsByUsername(username);
-        List<ProblemInfoPO> results = new ArrayList<>();
-        int totalUnsolved = problemInfoPOS.size();
+    public List<ProblemInfo> selectRecommendProblemsByUsername(String username) {
+        List<ProblemInfo> problemInfos = problemInfoMapper.selectUnSolvedProblemsByUsername(username);
+        List<ProblemInfo> results = new ArrayList<>();
+        int totalUnsolved = problemInfos.size();
         // 如果用户未解决题目小于3，则直接返回推荐题目内容
         if (totalUnsolved <= 3) {
-            return problemInfoPOS;
+            return problemInfos;
         }
         // 如果大于3道，随机推荐3道
         // TODO: 可以做更多的操作
@@ -158,7 +101,7 @@ public class ProblemServiceImpl implements ProblemService {
             }
         }
         for (Integer i : set) {
-            results.add(problemInfoPOS.get(i));
+            results.add(problemInfos.get(i));
         }
         return results;
 
