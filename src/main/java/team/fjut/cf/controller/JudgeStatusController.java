@@ -1,20 +1,20 @@
 package team.fjut.cf.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import team.fjut.cf.component.interceptor.PrivateRequired;
-import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
-import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
-import team.fjut.cf.pojo.enums.CodeLanguage;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.enums.SubmitResult;
-import team.fjut.cf.pojo.po.JudgeStatusPO;
-import team.fjut.cf.pojo.vo.JudgeStatusVO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
-import team.fjut.cf.pojo.vo.StatusCountVO;
-import team.fjut.cf.service.JudgeStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.component.interceptor.PrivateRequired;
+import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
+import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
+import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.SubmitResult;
+import team.fjut.cf.pojo.po.JudgeStatusPO;
+import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.StatusCountVO;
+import team.fjut.cf.pojo.vo.StatusListVO;
+import team.fjut.cf.service.JudgeStatusService;
+import team.fjut.cf.service.ViewJudgeStatusService;
 
 import java.util.*;
 
@@ -23,10 +23,13 @@ import java.util.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/judge_status")
+@RequestMapping("/judgeStatus")
 public class JudgeStatusController {
     @Autowired
     JudgeStatusService judgeStatusService;
+
+    @Autowired
+    ViewJudgeStatusService viewJudgeStatusService;
 
     @Autowired
     LocalJudgeHttpClient localJudgeHttpClient;
@@ -35,41 +38,26 @@ public class JudgeStatusController {
     public ResultJsonVO getStatusList(@RequestParam("pageNum") Integer pageNum,
                                       @RequestParam("pageSize") Integer pageSize,
                                       @RequestParam(value = "contestId", required = false) Integer contestId,
-                                      @RequestParam(value = "nick", required = false) String nick,
+                                      @RequestParam(value = "nickname", required = false) String nickname,
                                       @RequestParam(value = "problemId", required = false) Integer problemId,
-                                      @RequestParam(value = "result", required = false) String resultStr,
-                                      @RequestParam(value = "language", required = false) String languageStr) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+                                      @RequestParam(value = "result", required = false) Integer result,
+                                      @RequestParam(value = "language", required = false) Integer language) {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         if (null == pageNum) {
             pageNum = 1;
         }
-        if (null == pageSize) {
+        if (null == pageSize || pageSize > 100) {
             pageSize = 50;
         }
-        if (!StringUtils.isEmpty(nick)) {
-            nick = "%" + nick + "%";
+        if (!StringUtils.isEmpty(nickname)) {
+            nickname = "%" + nickname + "%";
         } else {
-            nick = null;
+            nickname = null;
         }
-        Integer result = null;
-        Integer language = null;
-        if (StringUtils.isEmpty(contestId)) {
-            contestId = null;
-        }
-        if (StringUtils.isEmpty(problemId)) {
-            problemId = null;
-        }
-        if (!StringUtils.isEmpty(resultStr)) {
-            result = SubmitResult.getCodeByName(resultStr);
-        }
-        if (!StringUtils.isEmpty(languageStr)) {
-            language = CodeLanguage.getCodeByName(languageStr);
-        }
-        List<JudgeStatusVO> judgeStatusVOS = judgeStatusService.pagesByConditions(pageNum, pageSize, contestId, nick, problemId, result, language);
-        Integer length = judgeStatusService.selectCountByConditions(contestId, nick, problemId, result, language);
-        resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(judgeStatusVOS);
-        resultJsonVO.addInfo(length);
+        List<StatusListVO> statusListVOS = viewJudgeStatusService.pagesByConditions(pageNum, pageSize, contestId, nickname, problemId, result, language);
+        int count = viewJudgeStatusService.countByConditions(contestId, nickname, problemId, result, language);
+        resultJsonVO.addInfo(statusListVOS);
+        resultJsonVO.addInfo(count);
         return resultJsonVO;
     }
 
@@ -180,7 +168,7 @@ public class JudgeStatusController {
         localJudgeSubmitInfoParams.setLanguageId(language);
         JSONObject jsonObject;
         try {
-           jsonObject  = localJudgeHttpClient.submitToLocalJudge(localJudgeSubmitInfoParams);
+            jsonObject = localJudgeHttpClient.submitToLocalJudge(localJudgeSubmitInfoParams);
         } catch (Exception e) {
             // 请求评测机出现异常，返回失败状态
             judgeStatusService.updateIfSubmitFail(localJudgeSubmitInfoParams.getRid());

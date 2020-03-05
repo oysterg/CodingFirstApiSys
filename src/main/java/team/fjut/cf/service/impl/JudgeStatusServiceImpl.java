@@ -2,25 +2,21 @@ package team.fjut.cf.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.mapper.*;
-import team.fjut.cf.pojo.enums.CodeLanguage;
 import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.JudgeResultPO;
 import team.fjut.cf.pojo.po.JudgeStatusPO;
 import team.fjut.cf.pojo.po.UserProblemSolved;
-import team.fjut.cf.pojo.po.ViewJudgeStatusPO;
-import team.fjut.cf.pojo.vo.JudgeStatusVO;
+import team.fjut.cf.pojo.vo.JudgeStatus;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 import team.fjut.cf.service.ChallengeBlockService;
 import team.fjut.cf.service.JudgeStatusService;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -249,58 +245,33 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
     }
 
     @Override
-    public List<JudgeStatusVO> pagesByConditions(Integer pageNum, Integer pageSize, Integer contestId, String nick, Integer problemId, Integer result, Integer language) {
-        List<JudgeStatusVO> judgeStatusVOS = new ArrayList<>();
-        PageHelper.startPage(pageNum, pageSize);
-        List<ViewJudgeStatusPO> viewJudgeStatusPOS = viewJudgeStatusMapper.pagesByConditions(contestId, nick, problemId, result, language);
-        for (ViewJudgeStatusPO vjs : viewJudgeStatusPOS) {
-            JudgeStatusVO judgeStatusVO = new JudgeStatusVO();
-            judgeStatusVO.setId(vjs.getId());
-            judgeStatusVO.setNick(vjs.getNick());
-            judgeStatusVO.setUsername(vjs.getUsername());
-            judgeStatusVO.setCodeLength(vjs.getCodeLength());
-            judgeStatusVO.setLanguage(CodeLanguage.getNameByCode(vjs.getLanguage()));
-            judgeStatusVO.setTimeUsed(vjs.getTimeUsed());
-            judgeStatusVO.setMemoryUsed(vjs.getMemoryUsed());
-            judgeStatusVO.setProblemId(vjs.getProblemId());
-            judgeStatusVO.setSubmitTime(vjs.getSubmitTime());
-            // 如果是Score的，带上分值
-            if (vjs.getResult() == SubmitResult.SC.getCode()) {
-                judgeStatusVO.setResult(SubmitResult.getNameByCode(vjs.getResult()) + " " + vjs.getScore());
-            } else {
-                judgeStatusVO.setResult(SubmitResult.getNameByCode(vjs.getResult()));
-            }
-            judgeStatusVOS.add(judgeStatusVO);
-        }
-        return judgeStatusVOS;
-    }
-
-    @Override
     public Integer selectCountByConditions(Integer contestId, String nick, Integer problemId, Integer result, Integer language) {
-        return viewJudgeStatusMapper.selectCountByConditions(contestId, nick, problemId, result, language);
+        return null;
     }
 
     @Override
-    public JudgeStatusVO selectAsViewJudgeStatusById(Integer id) {
-        ViewJudgeStatusPO viewJudgeStatusPO = viewJudgeStatusMapper.queryById(id);
-        JudgeStatusVO judgeStatusVO = new JudgeStatusVO();
-        judgeStatusVO.setUsername(viewJudgeStatusPO.getUsername());
-        // 如果是Score的，带上分值
-        if (viewJudgeStatusPO.getResult() == SubmitResult.SC.getCode()) {
-            judgeStatusVO.setResult(SubmitResult.getNameByCode(viewJudgeStatusPO.getResult()) + " " + viewJudgeStatusPO.getScore());
-        } else {
-            judgeStatusVO.setResult(SubmitResult.getNameByCode(viewJudgeStatusPO.getResult()));
-        }
-        judgeStatusVO.setSubmitTime(viewJudgeStatusPO.getSubmitTime());
-        judgeStatusVO.setProblemId(viewJudgeStatusPO.getProblemId());
-        judgeStatusVO.setMemoryUsed(viewJudgeStatusPO.getMemoryUsed());
-        judgeStatusVO.setTimeUsed(viewJudgeStatusPO.getTimeUsed());
-        judgeStatusVO.setNick(viewJudgeStatusPO.getNick());
-        judgeStatusVO.setCode(viewJudgeStatusPO.getCode());
-        judgeStatusVO.setCodeLength(viewJudgeStatusPO.getCodeLength());
-        judgeStatusVO.setLanguage(CodeLanguage.getNameByCode(viewJudgeStatusPO.getLanguage()));
-        judgeStatusVO.setId(viewJudgeStatusPO.getId());
-        return judgeStatusVO;
+    public JudgeStatus selectAsViewJudgeStatusById(Integer id) {
+        // FIXME:这里需要修改
+        return null;
+        //ViewJudgeStatus viewJudgeStatus = viewJudgeStatusMapper.queryById(id);
+        //JudgeStatus judgeStatus = new JudgeStatus();
+        //judgeStatus.setUsername(viewJudgeStatus.getUsername());
+        //// 如果是Score的，带上分值
+        //if (viewJudgeStatus.getResult() == SubmitResult.SC.getCode()) {
+        //    judgeStatus.setResult(SubmitResult.getNameByCode(viewJudgeStatus.getResult()) + " " + viewJudgeStatus.getScore());
+        //} else {
+        //    judgeStatus.setResult(SubmitResult.getNameByCode(viewJudgeStatus.getResult()));
+        //}
+        //judgeStatus.setSubmitTime(viewJudgeStatus.getSubmitTime());
+        //judgeStatus.setProblemId(viewJudgeStatus.getProblemId());
+        //judgeStatus.setMemoryUsed(viewJudgeStatus.getMemoryUsed());
+        //judgeStatus.setTimeUsed(viewJudgeStatus.getTimeUsed());
+        //judgeStatus.setNick(viewJudgeStatus.getNick());
+        //judgeStatus.setCode(viewJudgeStatus.getCode());
+        //judgeStatus.setCodeLength(viewJudgeStatus.getCodeLength());
+        //judgeStatus.setLanguage(CodeLanguage.getNameByCode(viewJudgeStatus.getLanguage()));
+        //judgeStatus.setId(viewJudgeStatus.getId());
+        //return judgeStatus;
     }
 
     @Override

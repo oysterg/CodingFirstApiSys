@@ -8,7 +8,8 @@ public enum BugType {
     SYSTEM_FAIL(1, "系统漏洞"),
     FUNCTION_ERROR(2, "功能异常"),
     LOGICAL_ERROR(3, "逻辑错误"),
-    VIEW_PROBLEM(4, "界面问题");
+    VIEW_PROBLEM(4, "界面问题"),
+    PROBLEM_ABOUT(5,"题目相关");
 
     private int code;
     private String name;

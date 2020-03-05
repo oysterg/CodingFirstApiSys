@@ -73,8 +73,10 @@ public class ViewProblemInfoServiceImpl implements ViewProblemInfoService {
             vo.setTitle(item.getTitle());
             vo.setDifficult(ProblemDifficultLevel.getNameByCode(item.getDifficultLevel()));
             if (userIsLogin) {
-                int SolvedCount = userSolveMap.get(item.getProblemId());
-                vo.setIsSolved(SolvedCount > 0 ? "yes" : "no");
+                Integer solvedCount = userSolveMap.get(item.getProblemId());
+                if (Objects.nonNull(solvedCount)) {
+                    vo.setIsSolved(solvedCount > 0 ? "yes" : "no");
+                }
             }
             String ratio;
             if (item.getTotalSubmit() == 0) {

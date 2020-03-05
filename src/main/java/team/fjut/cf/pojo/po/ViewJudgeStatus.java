@@ -2,6 +2,7 @@ package team.fjut.cf.pojo.po;
 
 import lombok.Data;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -10,9 +11,9 @@ import java.util.Date;
  * @author axiang [2019/10/31]
  */
 @Data
-public class ViewJudgeStatusPO {
+@Table(name = "v_judge_status")
+public class ViewJudgeStatus {
     Integer id;
-    String nick;
     String username;
     Integer problemId;
     Integer contestId;
@@ -22,6 +23,6 @@ public class ViewJudgeStatusPO {
     Integer score;
     String timeUsed;
     String memoryUsed;
-    String code;
     Integer codeLength;
+    String nickname;
 }

@@ -31,4 +31,18 @@ public class UtilController {
         resultJsonVO.addInfo(Enums2ListUtils.parseBugType());
         return resultJsonVO;
     }
+
+    @GetMapping("/codeLanguage")
+    public ResultJsonVO getCodeLanguage() {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        resultJsonVO.addInfo(Enums2ListUtils.parseCodeLanguage());
+        return resultJsonVO;
+    }
+
+    @GetMapping("/submitResult")
+    public ResultJsonVO getSubmitResult() {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        resultJsonVO.addInfo(Enums2ListUtils.parseSubmitResult());
+        return resultJsonVO;
+    }
 }

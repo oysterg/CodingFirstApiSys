@@ -56,7 +56,7 @@ public class ProblemController {
         if (pageNum == null) {
             pageNum = 0;
         }
-        if (pageSize == null) {
+        if (pageSize == null || pageSize > 100) {
             pageSize = 50;
         }
         if (!StringUtils.isEmpty(title)) {

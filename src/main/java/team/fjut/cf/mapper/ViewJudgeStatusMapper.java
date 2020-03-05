@@ -1,54 +1,10 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.ViewJudgeStatusPO;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
+import team.fjut.cf.pojo.po.ViewJudgeStatus;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
- * @author axiang [2019/10/31]
+ * @author axiang [2020/3/5]
  */
-public interface ViewJudgeStatusMapper {
-
-    /**
-     * 查询满足条件的评测视图
-     *
-     * @param contestId
-     * @param nick
-     * @param problemId
-     * @param result
-     * @param language
-     * @return
-     */
-    List<ViewJudgeStatusPO> pagesByConditions(
-            @Param("contestId") Integer contestId,
-            @Param("nick") String nick,
-            @Param("problemId") Integer problemId,
-            @Param("result") Integer result,
-            @Param("language") Integer language);
-
-    /**
-     * 根据条件查询视图的内容大小
-     *
-     * @param contestId
-     * @param nick
-     * @param problemId
-     * @param result
-     * @param language
-     * @return
-     */
-    Integer selectCountByConditions(
-            @Param("contestId") Integer contestId,
-            @Param("nick") String nick,
-            @Param("problemId") Integer problemId,
-            @Param("result") Integer result,
-            @Param("language") Integer language);
-
-    /**
-     * 根据评测ID查询评测记录
-     *
-     * @param id
-     * @return
-     */
-    ViewJudgeStatusPO queryById(@Param("id") Integer id);
+public interface ViewJudgeStatusMapper extends Mapper<ViewJudgeStatus> {
 }

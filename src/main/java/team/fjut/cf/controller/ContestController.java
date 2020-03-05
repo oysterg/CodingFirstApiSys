@@ -1,5 +1,8 @@
 package team.fjut.cf.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.pojo.enums.CodeLanguage;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
@@ -7,14 +10,11 @@ import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.ContestInfoPO;
 import team.fjut.cf.pojo.po.ContestProblemPO;
 import team.fjut.cf.pojo.vo.ContestListVO;
-import team.fjut.cf.pojo.vo.JudgeStatusVO;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.ContestInfoService;
 import team.fjut.cf.service.ContestProblemService;
 import team.fjut.cf.service.JudgeStatusService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.service.ViewJudgeStatusService;
 
 import java.util.List;
 
@@ -33,6 +33,9 @@ public class ContestController {
 
     @Autowired
     JudgeStatusService judgeStatusService;
+
+    @Autowired
+    ViewJudgeStatusService viewJudgeStatusService;
 
     @GetMapping("/list")
     public ResultJsonVO getContestList(@RequestParam("kind") Integer kind,
@@ -105,11 +108,12 @@ public class ContestController {
         if (!StringUtils.isEmpty(languageStr)) {
             language = CodeLanguage.getCodeByName(languageStr);
         }
-        List<JudgeStatusVO> judgeStatusVOS = judgeStatusService.pagesByConditions(pageNum, pageSize, contestId, nick, problemId, result, language);
-        Integer length = judgeStatusService.selectCountByConditions(contestId, nick, problemId, result, language);
-        resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(judgeStatusVOS);
-        resultJsonVO.addInfo(length);
+        // FIXME: 这里需要修改
+        //List<JudgeStatus> judgeStatuses = judgeStatusService.pagesByConditions(pageNum, pageSize, contestId, nick, problemId, result, language);
+        //Integer length = judgeStatusService.selectCountByConditions(contestId, nick, problemId, result, language);
+        //resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
+        //resultJsonVO.addInfo(judgeStatuses);
+        //resultJsonVO.addInfo(length);
         return resultJsonVO;
     }
 

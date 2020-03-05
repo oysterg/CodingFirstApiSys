@@ -1,7 +1,7 @@
 package team.fjut.cf.service;
 
 import team.fjut.cf.pojo.po.JudgeStatusPO;
-import team.fjut.cf.pojo.vo.JudgeStatusVO;
+import team.fjut.cf.pojo.vo.JudgeStatus;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 
 import java.util.List;
@@ -54,20 +54,6 @@ public interface JudgeStatusService {
 
 
     /**
-     * 分页查询评测列表
-     *
-     * @param pageNum
-     * @param pageSize
-     * @param contestId
-     * @param nick
-     * @param problemId
-     * @param result
-     * @param language
-     * @return
-     */
-    List<JudgeStatusVO> pagesByConditions(Integer pageNum, Integer pageSize, Integer contestId, String nick, Integer problemId, Integer result, Integer language);
-
-    /**
      * 查询评测列表视图的大小
      *
      * @param contestId
@@ -85,7 +71,7 @@ public interface JudgeStatusService {
      * @param id
      * @return
      */
-    JudgeStatusVO selectAsViewJudgeStatusById(Integer id);
+    JudgeStatus selectAsViewJudgeStatusById(Integer id);
 
     /**
      * 根据用户名查询评测记录条数
