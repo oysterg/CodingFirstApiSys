@@ -5,6 +5,7 @@ import team.fjut.cf.pojo.po.UserProblemSolved;
 import team.fjut.cf.service.UserProblemSolvedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author axiang [2019/11/15]
@@ -15,7 +16,10 @@ public class UserProblemSolvedServiceImpl implements UserProblemSolvedService {
     UserProblemSolvedMapper userProblemSolvedMapper;
 
     @Override
-    public UserProblemSolved selectCountByUsernameAndProblemId(String username, Integer problemId) {
-        return userProblemSolvedMapper.selectByUsernameAndProblemId(username, problemId);
+    public UserProblemSolved selectUserSolved(String username, Integer problemId) {
+        Example example = new Example(UserProblemSolved.class);
+        example.createCriteria().andEqualTo("username", username)
+                .andEqualTo("problemId", problemId);
+        return userProblemSolvedMapper.selectOneByExample(example);
     }
 }

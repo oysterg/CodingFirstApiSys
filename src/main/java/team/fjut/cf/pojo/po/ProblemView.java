@@ -6,21 +6,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
- * @author axiang [2019/11/11]
+ * @author axiang [2019/10/18]
  */
 @Data
-@Table(name = "t_user_problem_solved")
-public class UserProblemSolved {
+@Table(name = "t_problem_view")
+public class ProblemView {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
     Integer id;
-    String username;
     Integer problemId;
-    Integer tryCount;
-    Integer solvedCount;
-    Date lastTryTime;
-    Date firstSolvedTime;
+    String timeLimit;
+    String memoryLimit;
+    String intFormat;
+    Integer spj;
+    String description;
+    String input;
+    String output;
+
+
 }

@@ -6,6 +6,7 @@ import team.fjut.cf.pojo.po.UserProblemSolved;
  * @author axiang [2019/11/15]
  */
 public interface UserProblemSolvedService {
+
     /**
      * 根据用户名和题目ID查询解题记录
      *
@@ -13,5 +14,5 @@ public interface UserProblemSolvedService {
      * @param problemId
      * @return
      */
-    UserProblemSolved selectCountByUsernameAndProblemId(String username, Integer problemId);
+    UserProblemSolved selectUserSolved(String username, Integer problemId);
 }

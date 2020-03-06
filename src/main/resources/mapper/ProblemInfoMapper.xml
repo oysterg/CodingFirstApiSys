@@ -26,26 +26,6 @@
     </update>
 
 
-
-
-    <select id="selectByProblemId" resultType="team.fjut.cf.pojo.po.ProblemInfo">
-        SELECT 	id,
-        problem_id,
-        title,
-        belong_oj_id,
-        belong_problem_id,
-        author,
-        total_submit,
-        total_ac,
-        total_submit_user,
-        total_ac_user,
-        visible,
-        judge_option
-	    FROM
-	    t_problem_info
-	    WHERE problem_id = #{problemId}
-    </select>
-
     <select id="selectUnSolvedProblemsByUsername" resultType="team.fjut.cf.pojo.po.ProblemInfo">
         SELECT * FROM t_problem_info tpi
         WHERE  problem_id NOT IN

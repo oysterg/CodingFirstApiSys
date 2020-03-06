@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import team.fjut.cf.mapper.*;
 import team.fjut.cf.pojo.enums.ProblemType;
 import team.fjut.cf.pojo.po.ProblemInfo;
-import team.fjut.cf.pojo.po.ProblemSamplePO;
 import team.fjut.cf.pojo.po.ProblemTypeCountPO;
-import team.fjut.cf.pojo.po.ProblemViewPO;
 import team.fjut.cf.pojo.vo.UserRadarVO;
 import team.fjut.cf.service.ProblemService;
 
@@ -35,23 +33,6 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Autowired
     ProblemTagRecordMapper problemTagRecordMapper;
-
-
-    @Override
-    public ProblemInfo selectProblemInfoByProblemId(Integer problemId) {
-        return problemInfoMapper.selectByProblemId(problemId);
-    }
-
-    @Override
-    public ProblemViewPO selectProblemViewByProblemId(Integer problemId) {
-        return problemViewMapper.selectByProblemId(problemId);
-    }
-
-    @Override
-    public List<ProblemSamplePO> selectProblemSampleByProblemId(Integer problemId) {
-        return problemSampleMapper.selectByProblemId(problemId);
-    }
-
 
     @Override
     public List<UserRadarVO> selectUserProblemRadarByUsername(String username) {

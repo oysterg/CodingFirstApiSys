@@ -28,6 +28,15 @@ public class ProblemController {
     ProblemService problemService;
 
     @Autowired
+    ProblemInfoService problemInfoService;
+
+    @Autowired
+    ProblemViewService problemViewService;
+
+    @Autowired
+    ProblemSampleService problemSampleService;
+
+    @Autowired
     ProblemTagService problemTagService;
 
     @Autowired
@@ -73,19 +82,30 @@ public class ProblemController {
         return resultJsonVO;
     }
 
-    @GetMapping("/info")
+    @PostMapping("/info")
     public ResultJsonVO getProblemInfo(@RequestParam(value = "username", required = false) String username,
                                        @RequestParam("problemId") Integer problemId) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        ProblemInfo problemInfo = problemService.selectProblemInfoByProblemId(problemId);
-        ProblemViewPO problemViewPO = problemService.selectProblemViewByProblemId(problemId);
-        List<ProblemSamplePO> problemSamplePOS = problemService.selectProblemSampleByProblemId(problemId);
-        UserProblemSolved userProblemSolved = userProblemSolvedService.selectCountByUsernameAndProblemId(username, problemId);
-        Boolean isSolved = userProblemSolved != null && userProblemSolved.getSolvedCount() > 0;
+        ProblemInfo problemInfo = problemInfoService.selectProblemInfo(problemId);
+        ProblemView problemView = problemViewService.selectView(problemId);
+        List<ProblemSample> problemSamples = problemSampleService.selectSamples(problemId);
         resultJsonVO.addInfo(problemInfo);
-        resultJsonVO.addInfo(problemViewPO);
-        resultJsonVO.addInfo(problemSamplePOS);
-        resultJsonVO.addInfo(isSolved);
+        resultJsonVO.addInfo(problemView);
+        resultJsonVO.addInfo(problemSamples);
+
+        return resultJsonVO;
+    }
+
+    @PrivateRequired
+    @PostMapping("/userSolved")
+    public ResultJsonVO getUserSolved(@RequestParam("username") String username,
+                                      @RequestParam("problemId") Integer problemId) {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        UserProblemSolved userProblemSolved = new UserProblemSolved();
+        if (!StringUtils.isEmpty(username)) {
+            userProblemSolved = userProblemSolvedService.selectUserSolved(username, problemId);
+        }
+        resultJsonVO.addInfo(userProblemSolved);
         return resultJsonVO;
     }
 

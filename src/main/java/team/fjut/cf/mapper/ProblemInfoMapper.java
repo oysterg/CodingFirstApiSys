@@ -44,13 +44,13 @@ public interface ProblemInfoMapper extends Mapper<ProblemInfo> {
     Integer updateTotalAcUserAddOne(@Param("problemId") Integer problemId);
 
 
-    /**
-     * 根据题目ID查询题目基本信息
-     *
-     * @param problemId
-     * @return
-     */
-    ProblemInfo selectByProblemId(@Param("problemId") Integer problemId);
+    ///**
+    // * 根据题目ID查询题目基本信息
+    // *
+    // * @param problemId
+    // * @return
+    // */
+    //ProblemInfo selectByProblemId(@Param("problemId") Integer problemId);
 
     /**
      * 查询用户未解决的题目列表
