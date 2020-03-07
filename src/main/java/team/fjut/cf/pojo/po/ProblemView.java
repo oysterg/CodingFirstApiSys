@@ -24,6 +24,7 @@ public class ProblemView {
     String description;
     String input;
     String output;
+    String hint;
 
 
 }
