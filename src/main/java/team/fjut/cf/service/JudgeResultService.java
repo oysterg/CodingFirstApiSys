@@ -1,6 +1,6 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.po.JudgeResultPO;
+import team.fjut.cf.pojo.po.JudgeResult;
 
 /**
  * @author axiang [2019/11/8]
@@ -12,5 +12,5 @@ public interface JudgeResultService {
      * @param judgeId
      * @return
      */
-    JudgeResultPO queryJudgeResultByJudgeId(Integer judgeId);
+    JudgeResult queryJudgeResultByJudgeId(Integer judgeId);
 }

@@ -38,7 +38,7 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
     }
 
     public JSONObject submitToLocalJudge(LocalJudgeSubmitInfoParams localJudgeSubmitInfoParams){
-        String postURL = localJudgePath;
+        String postUrl = localJudgePath;
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("type", "submit");
         map.add("pid", localJudgeSubmitInfoParams.getPid().toString());
@@ -50,18 +50,18 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
 
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
-        ResponseEntity<String> responseEntity = doPost(postURL, request);
+        ResponseEntity<String> responseEntity = doPost(postUrl, request);
         return localJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
     }
 
     public JSONObject getResultFromLocalJudge(Integer rid){
-        String postURL = localJudgePath;
+        String postUrl = localJudgePath;
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("type", "getResult");
         map.add("rid", rid.toString());
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
-        ResponseEntity<String> responseEntity = doPost(postURL, request);
+        ResponseEntity<String> responseEntity = doPost(postUrl, request);
         return localJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
     }
 }

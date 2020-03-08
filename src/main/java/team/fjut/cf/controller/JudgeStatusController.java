@@ -9,7 +9,7 @@ import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.enums.SubmitResult;
-import team.fjut.cf.pojo.po.JudgeStatusPO;
+import team.fjut.cf.pojo.po.JudgeStatus;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 import team.fjut.cf.pojo.vo.StatusListVO;
@@ -104,66 +104,53 @@ public class JudgeStatusController {
 
     /**
      * 本地判题
+     * 业务逻辑如下：
+     * 1. 将评测记录插入数据库中
+     * 2. 提交到评测机评测
+     * 3. 把取结果的业务放到线程池中去做
      *
-     * @param pid
-     * @param timeLimit
-     * @param MemoryLimit
+     * @param problemId
      * @param code
      * @param languageStr
      * @param username
-     * @param cid
+     * @param contestId
      * @return
+     * @throws Exception
      */
     @PrivateRequired
     @PostMapping("/submit")
-    public ResultJsonVO submitToLocalJudge(@RequestParam("pid") Integer pid,
-                                           @RequestParam("timeLimit") Integer timeLimit,
-                                           @RequestParam("memoryLimit") Integer MemoryLimit,
+    public ResultJsonVO submitToLocalJudge(@RequestParam("problemId") Integer problemId,
                                            @RequestParam("code") String code,
                                            @RequestParam("language") String languageStr,
                                            @RequestParam("username") String username,
-                                           @RequestParam(value = "cid", required = false) Integer cid) throws Exception {
+                                           @RequestParam(value = "contestId", required = false) Integer contestId) throws Exception {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         Date currentTime = new Date();
         // 目前支持语言 JAVA Python2 C/C++
-        int language = ("JAVA").equalsIgnoreCase(languageStr) ? 2 : ("Python").equalsIgnoreCase(languageStr) ? 3 : 1;
-        if (null == cid) {
-            cid = -1;
-        }
-        // TODO: 如果是赛题
-        if (cid != -1) {
-
-        }
-        /*
-           业务逻辑如下：
-           1. 将评测记录插入数据库中
-           2. 提交到评测机评测
-           3. 把取结果的业务放到线程池中去做
-         */
-        JudgeStatusPO judgeStatusPO = new JudgeStatusPO();
-        judgeStatusPO.setUsername(username);
-        judgeStatusPO.setProblemId(pid);
-        judgeStatusPO.setContestId(cid);
-        judgeStatusPO.setLanguage(language);
-        judgeStatusPO.setSubmitTime(currentTime);
-        judgeStatusPO.setResult(SubmitResult.PENDING.getCode());
-        // 默认为非分值题
-        judgeStatusPO.setScore(-1);
-        judgeStatusPO.setTimeUsed("-");
-        judgeStatusPO.setMemoryUsed("-");
-        judgeStatusPO.setCode(code);
-        judgeStatusPO.setCodeLength(code.length());
+        int language = ("JAVA").equalsIgnoreCase(languageStr) ?
+                2 : ("Python2").equalsIgnoreCase(languageStr) ? 3 : 1;
+        JudgeStatus judgeStatus = new JudgeStatus();
+        judgeStatus.setUsername(username);
+        judgeStatus.setProblemId(problemId);
+        judgeStatus.setContestId(contestId);
+        judgeStatus.setLanguage(language);
+        judgeStatus.setSubmitTime(currentTime);
+        judgeStatus.setResult(SubmitResult.PENDING.getCode());
+        judgeStatus.setTimeUsed("-");
+        judgeStatus.setMemoryUsed("-");
+        judgeStatus.setCode(code);
+        judgeStatus.setCodeLength(code.replaceAll("\\s*", "").length());
         // 插入数据库中
-        judgeStatusService.insert(judgeStatusPO);
-        String type = "submit";
+        judgeStatusService.insert(judgeStatus);
+
         // 获得插入后的rid
-        Integer rid = judgeStatusPO.getId();
+        Integer runId = judgeStatus.getId();
         LocalJudgeSubmitInfoParams localJudgeSubmitInfoParams = new LocalJudgeSubmitInfoParams();
-        localJudgeSubmitInfoParams.setType(type);
-        localJudgeSubmitInfoParams.setPid(pid);
-        localJudgeSubmitInfoParams.setRid(rid);
-        localJudgeSubmitInfoParams.setMemoryLimit(MemoryLimit);
-        localJudgeSubmitInfoParams.setTimeLimit(timeLimit);
+        localJudgeSubmitInfoParams.setType("submit");
+        localJudgeSubmitInfoParams.setPid(problemId);
+        localJudgeSubmitInfoParams.setRid(runId);
+        localJudgeSubmitInfoParams.setMemoryLimit(65536);
+        localJudgeSubmitInfoParams.setTimeLimit(2000);
         localJudgeSubmitInfoParams.setCode(code);
         localJudgeSubmitInfoParams.setLanguageId(language);
         JSONObject jsonObject;
@@ -171,23 +158,23 @@ public class JudgeStatusController {
             jsonObject = localJudgeHttpClient.submitToLocalJudge(localJudgeSubmitInfoParams);
         } catch (Exception e) {
             // 请求评测机出现异常，返回失败状态
-            judgeStatusService.updateIfSubmitFail(localJudgeSubmitInfoParams.getRid());
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！");
+            judgeStatusService.ifLocalJudgeError(judgeStatus);
+            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！评测机连接异常");
             return resultJsonVO;
         }
         // 如果提交到本地评测机成功，则
         if ("success".equals(jsonObject.getString("ret"))) {
             // 更新数据库表
-            judgeStatusService.updateIfSubmitSuccess(judgeStatusPO);
+            judgeStatusService.ifSubmitSuccess(judgeStatus);
             // 启用异步Service获取结果
-            judgeStatusService.selectFromLocalJudgeAsync(judgeStatusPO);
+            judgeStatusService.queryResultFromLocalJudge(judgeStatus);
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "提交评测成功！");
         }
         // 如果请求评测机成功，但评测机返回失败结论
         else {
             // 更新数据库表，返回结果
-            judgeStatusService.updateIfSubmitFail(localJudgeSubmitInfoParams.getRid());
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！");
+            judgeStatusService.ifSubmitError(judgeStatus);
+            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！评测机内部异常");
         }
         return resultJsonVO;
     }

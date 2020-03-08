@@ -1,7 +1,7 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.po.JudgeStatusPO;
-import team.fjut.cf.pojo.vo.JudgeStatus;
+import team.fjut.cf.pojo.po.JudgeStatus;
+import team.fjut.cf.pojo.vo.JudgeStatusVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 
 import java.util.List;
@@ -13,36 +13,44 @@ public interface JudgeStatusService {
     /**
      * 插入一条评测记录
      *
-     * @param judgeStatusPO
+     * @param judgeStatus
      * @return
      */
-    Integer insert(JudgeStatusPO judgeStatusPO);
+    Integer insert(JudgeStatus judgeStatus);
 
     /**
      * 如果提交代码成功更新数据库内容
      * 更新题目表
      * 更新用户解答记录表
      *
-     * @param judgeStatusPO
+     * @param judgeStatus
      * @return
      */
-    Boolean updateIfSubmitSuccess(JudgeStatusPO judgeStatusPO);
+    Boolean ifSubmitSuccess(JudgeStatus judgeStatus);
 
     /**
-     * 如果提交代码失败更新数据库内容
+     * 如果评测机出现异常
      *
-     * @param judgeId
+     * @param judgeStatus
      * @return
      */
-    Boolean updateIfSubmitFail(Integer judgeId);
+    void ifLocalJudgeError(JudgeStatus judgeStatus);
+
+    /**
+     * 如果提交异常
+     *
+     * @param judgeStatus
+     * @return
+     */
+    void ifSubmitError(JudgeStatus judgeStatus);
 
     /**
      * 查询本地评测机中的结果，异步做法
      *
-     * @param judgeStatusPO
+     * @param judgeStatus
      * @throws Exception
      */
-    void selectFromLocalJudgeAsync(JudgeStatusPO judgeStatusPO) throws Exception;
+    void queryResultFromLocalJudge(JudgeStatus judgeStatus) throws Exception;
 
     /**
      * 查询最近 days 天的提交统计
@@ -71,7 +79,7 @@ public interface JudgeStatusService {
      * @param id
      * @return
      */
-    JudgeStatus selectAsViewJudgeStatusById(Integer id);
+    JudgeStatusVO selectAsViewJudgeStatusById(Integer id);
 
     /**
      * 根据用户名查询评测记录条数

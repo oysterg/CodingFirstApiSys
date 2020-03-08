@@ -1,19 +1,13 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.JudgeResultPO;
+import team.fjut.cf.pojo.po.JudgeResult;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * @author axiang [2019/11/8]
  */
-public interface JudgeResultMapper {
-    /**
-     * 插入一条评测结果记录
-     *
-     * @param judgeResultPO
-     * @return
-     */
-    Integer insert(@Param("judgeResultPO") JudgeResultPO judgeResultPO);
+public interface JudgeResultMapper extends Mapper<JudgeResult> {
 
     /**
      * 根据评测ID 获取评测结果
@@ -21,5 +15,5 @@ public interface JudgeResultMapper {
      * @param judgeId
      * @return
      */
-    JudgeResultPO selectByJudgeId(@Param("judgeId") Integer judgeId);
+    JudgeResult selectByJudgeId(@Param("judgeId") Integer judgeId);
 }

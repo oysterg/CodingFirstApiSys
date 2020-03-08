@@ -2,8 +2,8 @@ package team.fjut.cf.controller;
 
 import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.JudgeResultPO;
-import team.fjut.cf.pojo.vo.JudgeStatus;
+import team.fjut.cf.pojo.po.JudgeResult;
+import team.fjut.cf.pojo.vo.JudgeStatusVO;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.JudgeResultService;
 import team.fjut.cf.service.JudgeStatusService;
@@ -28,10 +28,10 @@ public class JudgeResultController {
     public ResultJsonVO getJudgeResult(@RequestParam("judgeId")Integer judgeId)
     {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        JudgeResultPO judgeResultPO = judgeResultService.queryJudgeResultByJudgeId(judgeId);
-        JudgeStatus judgeStatus = judgeStatusService.selectAsViewJudgeStatusById(judgeId);
-        resultJsonVO.addInfo(judgeResultPO);
-        resultJsonVO.addInfo(judgeStatus);
+        JudgeResult judgeResult = judgeResultService.queryJudgeResultByJudgeId(judgeId);
+        JudgeStatusVO judgeStatusVO = judgeStatusService.selectAsViewJudgeStatusById(judgeId);
+        resultJsonVO.addInfo(judgeResult);
+        resultJsonVO.addInfo(judgeStatusVO);
         return resultJsonVO;
     }
 }

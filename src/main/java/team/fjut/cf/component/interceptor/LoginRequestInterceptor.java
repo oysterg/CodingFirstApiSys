@@ -27,9 +27,6 @@ import java.io.PrintWriter;
 public class LoginRequestInterceptor implements HandlerInterceptor {
     private final Logger log = LoggerFactory.getLogger(LoginRequestInterceptor.class);
 
-    //@Autowired
-    //private TokenManager redisTokenManager;
-
     @Autowired
     private JwtTokenManager jwtTokenManager;
 

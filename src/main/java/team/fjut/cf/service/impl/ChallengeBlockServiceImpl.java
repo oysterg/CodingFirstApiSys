@@ -105,7 +105,6 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
         result.setName(challengeBlockPO.getName());
         result.setDescription(challengeBlockPO.getDescription());
         result.setBlockType(ChallengeBlockType.getNameByID(challengeBlockPO.getBlockType()));
-        // TODO
         Integer totalScore = challengeBlockProblemMapper.selectTotalScoreByBlockId(blockId);
         result.setTotalScore(totalScore);
         Integer getScore = challengeBlockProblemMapper.selectScoredByBlockIdAndUsername(blockId, username);

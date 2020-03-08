@@ -9,16 +9,21 @@ import org.springframework.transaction.annotation.Transactional;
 import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.mapper.*;
 import team.fjut.cf.pojo.enums.SubmitResult;
-import team.fjut.cf.pojo.po.JudgeResultPO;
-import team.fjut.cf.pojo.po.JudgeStatusPO;
+import team.fjut.cf.pojo.po.JudgeResult;
+import team.fjut.cf.pojo.po.JudgeStatus;
+import team.fjut.cf.pojo.po.ProblemInfo;
 import team.fjut.cf.pojo.po.UserProblemSolved;
-import team.fjut.cf.pojo.vo.JudgeStatus;
+import team.fjut.cf.pojo.vo.JudgeStatusVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 import team.fjut.cf.service.ChallengeBlockService;
 import team.fjut.cf.service.JudgeStatusService;
+import tk.mybatis.mapper.entity.Example;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author axiang [2019/10/30]
@@ -50,83 +55,139 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
     LocalJudgeHttpClient localJudgeHttpClient;
 
     @Override
-    public Integer insert(JudgeStatusPO judgeStatusPO) {
-        return judgeStatusMapper.insert(judgeStatusPO);
+    public Integer insert(JudgeStatus judgeStatus) {
+        return judgeStatusMapper.insertSelective(judgeStatus);
+    }
+
+    /**
+     * 如果提交成功进行的操作如下
+     * 首先对题目信息表进行操作，提交成功则 +1 提交数
+     * 如果是用户第一次提交则 +1 提交用户数
+     * 插入一条到解题记录表中
+     *
+     * @param judgeStatus
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Boolean ifSubmitSuccess(JudgeStatus judgeStatus) {
+        String username = judgeStatus.getUsername();
+        Integer problemId = judgeStatus.getProblemId();
+        // 创建 题目信息表的检索条件
+        Example exampleProbInfo = new Example(ProblemInfo.class);
+        exampleProbInfo.createCriteria().andEqualTo("problemId", problemId);
+        // 取得了problemId题目的数据
+        ProblemInfo problemInfo = problemInfoMapper.selectOneByExample(exampleProbInfo);
+        //题目ID的题目提交总数+1
+        problemInfo.setTotalSubmit(problemInfo.getTotalSubmit() + 1);
+        // 创建 题目解答表的检索条件
+        Example exampleUserSolved = new Example(UserProblemSolved.class);
+        exampleUserSolved.createCriteria().andEqualTo("username", username)
+                .andEqualTo("problemId", problemId);
+        // 查询解答题目表中的记录
+        UserProblemSolved userProblemSolved = userProblemSolvedMapper.selectOneByExample(exampleUserSolved);
+        // 如果解答表中没有先前的解答记录，代表是用户第一次答这题
+        if (Objects.isNull(userProblemSolved)) {
+            // 则题目ID的题目提交用户总数+1
+            problemInfo.setTotalSubmitUser(problemInfo.getTotalSubmitUser() + 1);
+            // 同时插入一条新的解答表记录
+            UserProblemSolved newSolvedRecord = new UserProblemSolved();
+            newSolvedRecord.setUsername(username);
+            newSolvedRecord.setProblemId(problemId);
+            newSolvedRecord.setTryCount(1);
+            newSolvedRecord.setSolvedCount(0);
+            newSolvedRecord.setLastTryTime(new Date());
+            userProblemSolvedMapper.insertSelective(newSolvedRecord);
+        } else {
+            userProblemSolved.setTryCount(userProblemSolved.getTryCount() + 1);
+            userProblemSolved.setLastTryTime(new Date());
+            userProblemSolvedMapper.updateByExampleSelective(userProblemSolved, exampleUserSolved);
+
+        }
+        // 更新题目表
+        problemInfoMapper.updateByExampleSelective(problemInfo, exampleProbInfo);
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateIfSubmitSuccess(JudgeStatusPO judgeStatusPO) {
-        String username = judgeStatusPO.getUsername();
-        Integer problemId = judgeStatusPO.getProblemId();
-        // 题目ID的题目提交总数+1
-        problemInfoMapper.updateTotalSubmitAddOne(problemId);
-        Integer count = judgeStatusMapper.selectCountByUsernameAndProblemId(username, problemId);
-        // 如果用户是第一次提交该题，则题目的总提交用户数+1
-        if (count == 1) {
-            problemInfoMapper.updateTotalSubmitUserAddOne(problemId);
-        }
-        // 查询解答记录表中该题的解答记录是否存在
-        Integer countSolvedRecord = userProblemSolvedMapper.selectCountByUsernameAndProblemId(username, problemId);
-        if (countSolvedRecord == 0) {
-            UserProblemSolved userProblemSolved = new UserProblemSolved();
-            userProblemSolved.setUsername(username);
-            userProblemSolved.setProblemId(problemId);
-            userProblemSolved.setTryCount(1);
-            userProblemSolved.setSolvedCount(0);
-            userProblemSolved.setLastTryTime(new Date());
-            userProblemSolvedMapper.insert(userProblemSolved);
-        } else {
-            // 尝试次数+1
-            userProblemSolvedMapper.updateTryCountAddOne(username, problemId);
-            //
-            userProblemSolvedMapper.updateLastTryTime(username, problemId);
-        }
-        return true;
+    public void ifLocalJudgeError(JudgeStatus judgeStatus) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        judgeStatus.setResult(SubmitResult.ERROR.getCode());
+        // 更新评测记录中的评测结果为ERROR （提交失败）
+        judgeStatusMapper.updateByPrimaryKeySelective(judgeStatus);
+        // 更新评测结果内容
+        JudgeResult judgeResult = new JudgeResult();
+        judgeResult.setJudgeId(judgeStatus.getId());
+        judgeResult.setInfo("本地评测机可能断开连接。失败于 " + dateFormat.format(new Date()));
+        judgeResultMapper.insertSelective(judgeResult);
     }
 
     @Override
-    public Boolean updateIfSubmitFail(Integer judgeId) {
+    public void ifSubmitError(JudgeStatus judgeStatus) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        judgeStatus.setResult(SubmitResult.ERROR.getCode());
         // 更新评测记录中的评测结果为ERROR （提交失败）
-        judgeStatusMapper.updateResultById(judgeId, SubmitResult.ERROR.getCode());
+        judgeStatusMapper.updateByPrimaryKeySelective(judgeStatus);
         // 更新评测结果内容
-        JudgeResultPO judgeResultPO = new JudgeResultPO();
-        judgeResultPO.setJudgeId(judgeId);
-        judgeResultPO.setInfo("Submit to local judge system fail at " + new Date().toString());
-        judgeResultMapper.insert(judgeResultPO);
-        return true;
+        JudgeResult judgeResult = new JudgeResult();
+        judgeResult.setJudgeId(judgeStatus.getId());
+        judgeResult.setInfo("提交到本地评测机失败。失败于 " + dateFormat.format(new Date()));
+        judgeResultMapper.insertSelective(judgeResult);
     }
 
+    /**
+     * 主要逻辑：
+     * 首先从本地评测机拿数据
+     * 如果评测机还在评测，更新评测结果表，并循环多次
+     * 如果拿到了结果，交由handleLocalJudgeReturns方法处理
+     * handleLocalJudgeReturns方法会把结果插入评测结果反馈表，并返回评测的真实结果
+     * 如果始终拿不到结果，也更新用户解决表
+     * @param judgeStatus
+     * @throws Exception
+     */
     @Async
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void selectFromLocalJudgeAsync(JudgeStatusPO judgeStatusPO) throws Exception {
+    public void queryResultFromLocalJudge(JudgeStatus judgeStatus) throws Exception {
+        int rid = judgeStatus.getId();
+        JudgeStatus newJudgeStatus = new JudgeStatus();
+        newJudgeStatus.setId(judgeStatus.getId());
         // 评测结果
         String judgingStr = "judging";
+        // 退出循环标记
         boolean quitLoop = false;
+        // 循环次数
         int times = 100;
-        // TODO: 可以根据活跃线程数executor.getActiveCount()来设置获取时间间隔times
+        // 线程睡眠时间
+        int sleepTime = 2000;
         do {
-            JSONObject jsonObject = localJudgeHttpClient.getResultFromLocalJudge(judgeStatusPO.getId());
+            // 从评测机中取得对应RunId的对应结果JSON
+            JSONObject jsonObject = localJudgeHttpClient.getResultFromLocalJudge(rid);
+            // 如果评测机返回状态为success，则继续
             if ("success".equals(jsonObject.getString("ret"))) {
                 JSONObject resultJsonObj = JSONObject.parseObject(jsonObject.getString("result"));
+                // 更新评测结果
                 judgingStr = resultJsonObj.getString("type");
                 // 如果代码在评测等待中，则更新评测结果为评测等待
                 if ("padding".equals(judgingStr)) {
-                    judgeStatusMapper.updateResultById(judgeStatusPO.getId(), SubmitResult.PENDING.getCode());
+                    newJudgeStatus.setResult(SubmitResult.PENDING.getCode());
+                    judgeStatusMapper.updateByPrimaryKeySelective(newJudgeStatus);
                 }
                 // 如果代码在评测中，则更新状态
                 else if ("judging".equals(judgingStr)) {
-                    judgeStatusMapper.updateResultById(judgeStatusPO.getId(), SubmitResult.JUDGING.getCode());
+                    newJudgeStatus.setResult(SubmitResult.JUDGING.getCode());
+                    judgeStatusMapper.updateByPrimaryKeySelective(newJudgeStatus);
                 }
                 // 如果代码评测结果为编译失败，则更新状态
                 else if ("CE".equals(judgingStr)) {
                     // 插入数据库表中评测结果为CE
-                    JudgeResultPO judgeResultPO = new JudgeResultPO();
-                    judgeResultPO.setJudgeId(judgeStatusPO.getId());
-                    judgeResultPO.setInfo(resultJsonObj.getString("info"));
-                    judgeResultMapper.insert(judgeResultPO);
-                    judgeStatusMapper.updateResultById(judgeStatusPO.getId(), SubmitResult.CE.getCode());
+                    JudgeResult judgeResult = new JudgeResult();
+                    judgeResult.setJudgeId(judgeStatus.getId());
+                    judgeResult.setInfo(resultJsonObj.getString("info"));
+                    judgeResultMapper.insertSelective(judgeResult);
+                    newJudgeStatus.setResult(SubmitResult.CE.getCode());
+                    judgeStatusMapper.updateByPrimaryKeySelective(newJudgeStatus);
                     // 退出循环
                     quitLoop = true;
                 }
@@ -134,44 +195,45 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
                 else {
                     JSONArray retJsonArr = resultJsonObj.getJSONArray("ret");
                     // 评测机返回多组不同IO的评测记录，交由处理反馈结果
-                    judgingStr = handleLocalJudgeReturns(retJsonArr, judgeStatusPO);
+                    judgingStr = handleLocalJudgeReturns(retJsonArr, judgeStatus);
                     quitLoop = true;
                 }
             } else {
                 quitLoop = true;
             }
-            Thread.sleep(2000);
             times--;
+            Thread.sleep(2000);
         } while (times > 0 && !quitLoop);
         // 200s的获取结果执行完毕或者拿到AC/CE编译的结果后执行
-        String username = judgeStatusPO.getUsername();
-        Integer problemId = judgeStatusPO.getProblemId();
-        // 如果用户AC了这道题，执行的逻辑
-        // FIXME: SCORE的题目没有计入数据，需要修BUG
-        if ("AC".equalsIgnoreCase(judgingStr)) {
+        String username = judgeStatus.getUsername();
+        Integer problemId = judgeStatus.getProblemId();
+        Example exampleProbInfo = new Example(ProblemInfo.class);
+        exampleProbInfo.createCriteria().andEqualTo("problemId", problemId);
+        ProblemInfo currentProbInfo = problemInfoMapper.selectOneByExample(exampleProbInfo);
+
+        // 如果用户AC了这道题或者SCORE拿了100分
+        if ("AC".equalsIgnoreCase(judgingStr) || "SC 100".equalsIgnoreCase(judgingStr)) {
             // 题目 AC 数量加一
-            problemInfoMapper.updateTotalAcAddOne(problemId);
-            // 查询用户以前是否解决过该题
-            Integer count = judgeStatusMapper.selectCountIfAcByUsernameAndProblemId(username, problemId);
-            // 如果是第一次解决该题
-            if (count == 1) {
-                // 用户AC数量加一
-                userBaseInfoMapper.updateAcNumAddOneByUsername(username);
-                // 题目AC用户数量加一
-                problemInfoMapper.updateTotalAcUserAddOne(problemId);
+            currentProbInfo.setTotalAc(currentProbInfo.getTotalAc() + 1);
+            // 创建 题目解答表的检索条件
+            Example exampleUserSolved = new Example(UserProblemSolved.class);
+            exampleUserSolved.createCriteria().andEqualTo("username", username)
+                    .andEqualTo("problemId", problemId);
+            // 查询解答题目表中的记录
+            UserProblemSolved userProblemSolved = userProblemSolvedMapper.selectOneByExample(exampleUserSolved);
+            //如果用户第一次解决这题
+            if (userProblemSolved.getSolvedCount() == 0) {
+                currentProbInfo.setTotalAcUser(currentProbInfo.getTotalAcUser() + 1);
+                userProblemSolved.setSolvedCount(1);
+                userProblemSolved.setFirstSolvedTime(new Date());
             }
-            /* 更新题目解决表 */
-            // 解题ac次数加一
-            userProblemSolvedMapper.updateSolvedCountAddOne(username, problemId);
-            // 查询题目解决表中是否有记录
-            UserProblemSolved userSolvedRecord = userProblemSolvedMapper.selectByUsernameAndProblemId(username, problemId);
-            // 如果第一次解答该题
-            if (userSolvedRecord.getSolvedCount() == 1) {
-                // 更新第一次解决时间
-                userProblemSolvedMapper.updateFirstSolvedTime(username, problemId);
+            // 如果用户不是第一次解决了这题，前面已经解决过了
+            else {
+                userProblemSolved.setSolvedCount(userProblemSolved.getSolvedCount() + 1);
             }
-            // 挑战模式的更新逻辑
-            challengeBlockService.updateOpenBlock(username, problemId);
+            userProblemSolvedMapper.updateByPrimaryKeySelective(userProblemSolved);
+            problemInfoMapper.updateByPrimaryKeySelective(currentProbInfo);
+
         }
         // 用户尝试过该题目，但没有解决
         else {
@@ -182,13 +244,13 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
      * 处理本地评测机返回值的业务
      *
      * @param retJsonArr
-     * @param judgeStatusPO
+     * @param judgeStatus
      * @return
      */
-    private String handleLocalJudgeReturns(JSONArray retJsonArr, JudgeStatusPO judgeStatusPO) {
-        JudgeResultPO judgeResultPO = new JudgeResultPO();
+    @Transactional(rollbackFor = Exception.class)
+    protected String handleLocalJudgeReturns(JSONArray retJsonArr, JudgeStatus judgeStatus) {
         String ans;
-        String resultStr = "";
+        StringBuilder resultStr = new StringBuilder();
         String resStatus = "";
         int time = 0;
         int memory = 0;
@@ -198,43 +260,44 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         boolean isScore = false;
         for (int i = 0; i < retJsonArr.size(); i++) {
             resStatus = retJsonArr.getJSONArray(i).getString(1);
-            resultStr += ("测试结果：【" + resStatus + "】 ");
-            resultStr += ("测试文件：【" + retJsonArr.getJSONArray(i).getString(0) + "】 ");
+            resultStr.append("测试结果：【").append(resStatus).append("】 ");
+            resultStr.append("测试文件：【").append(retJsonArr.getJSONArray(i).getString(0)).append("】 ");
             if ("SC".equals(resStatus)) {
                 int score = retJsonArr.getJSONArray(i).getInteger(5);
                 getScore += score;
-                resultStr += ("得分：【" + score + "】 ");
+                resultStr.append("得分：【").append(score).append("】 ");
                 isScore = true;
-
                 time += retJsonArr.getJSONArray(i).getInteger(2);
-                resultStr += ("用时：【" + retJsonArr.getJSONArray(i).getInteger(2) + "MS】 ");
+                resultStr.append("用时：【").append(retJsonArr.getJSONArray(i).getInteger(2)).append("MS】 ");
             } else if ("MLE".equals(resStatus) || "OLE".equals(resStatus)) {
                 time += retJsonArr.getJSONArray(i).getInteger(4);
-                resultStr += ("用时：【" + retJsonArr.getJSONArray(i).getInteger(4) + "MS】 ");
+                resultStr.append("用时：【").append(retJsonArr.getJSONArray(i).getInteger(4)).append("MS】 ");
             } else {
                 time += retJsonArr.getJSONArray(i).getInteger(2);
-                resultStr += ("用时：【" + retJsonArr.getJSONArray(i).getInteger(2) + "MS】 ");
+                resultStr.append("用时：【").append(retJsonArr.getJSONArray(i).getInteger(2)).append("MS】 ");
             }
             memory = Math.max(memory, retJsonArr.getJSONArray(i).getInteger(3));
-            resultStr += ("内存：【" + retJsonArr.getJSONArray(i).getInteger(3) + "KB】\n");
+            resultStr.append("内存：【").append(retJsonArr.getJSONArray(i).getInteger(3)).append("KB】\n");
         }
-        judgeResultPO.setInfo(resultStr);
-        judgeResultPO.setJudgeId(judgeStatusPO.getId());
-        judgeResultMapper.insert(judgeResultPO);
+        JudgeResult judgeResult = new JudgeResult();
+        judgeResult.setInfo(resultStr.toString());
+        judgeResult.setJudgeId(judgeStatus.getId());
+        judgeResultMapper.insertSelective(judgeResult);
         // 如果是得分题
         if (isScore) {
             // 设置得分
-            judgeStatusPO.setScore(getScore / retJsonArr.size());
+            int finalScore = getScore / retJsonArr.size();
+            judgeStatus.setScore(finalScore);
             // 设置结果
-            judgeStatusPO.setResult(SubmitResult.SC.getCode());
-            ans = "SC";
+            judgeStatus.setResult(SubmitResult.SC.getCode());
+            ans = "SC " + finalScore;
         } else {
-            judgeStatusPO.setResult(SubmitResult.valueOf(resStatus).getCode());
+            judgeStatus.setResult(SubmitResult.valueOf(resStatus).getCode());
             ans = resStatus;
         }
-        judgeStatusPO.setTimeUsed(time + "MS");
-        judgeStatusPO.setMemoryUsed(memory + "KB");
-        judgeStatusMapper.updateAfterJudgedById(judgeStatusPO);
+        judgeStatus.setTimeUsed(time + "MS");
+        judgeStatus.setMemoryUsed(memory + "KB");
+        judgeStatusMapper.updateByPrimaryKeySelective(judgeStatus);
         return ans;
     }
 
@@ -250,7 +313,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
     }
 
     @Override
-    public JudgeStatus selectAsViewJudgeStatusById(Integer id) {
+    public JudgeStatusVO selectAsViewJudgeStatusById(Integer id) {
         // FIXME:这里需要修改
         return null;
         //ViewJudgeStatus viewJudgeStatus = viewJudgeStatusMapper.queryById(id);

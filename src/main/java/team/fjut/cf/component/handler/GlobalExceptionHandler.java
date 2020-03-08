@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
 
     /**
-     * FIXME: 405处理不生效，由默认的 DefaultHandlerExceptionResolver 处理
+     * 405处理不生效，由默认的 DefaultHandlerExceptionResolver 处理
      * 405 - 请求不支持
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
