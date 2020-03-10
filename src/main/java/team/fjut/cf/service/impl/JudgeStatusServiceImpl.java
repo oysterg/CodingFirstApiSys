@@ -179,6 +179,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
                     JudgeResult judgeResult = new JudgeResult();
                     judgeResult.setJudgeId(judgeStatus.getId());
                     judgeResult.setInfo(resultJsonObj.getString("info"));
+                    judgeResult.setTime(new Date());
                     judgeResultMapper.insertSelective(judgeResult);
                     newJudgeStatus.setResult(SubmitResult.CE.getCode());
                     judgeStatusMapper.updateByPrimaryKeySelective(newJudgeStatus);
@@ -276,6 +277,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         JudgeResult judgeResult = new JudgeResult();
         judgeResult.setInfo(resultStr.toString());
         judgeResult.setJudgeId(judgeStatus.getId());
+        judgeResult.setTime(new Date());
         judgeResultMapper.insertSelective(judgeResult);
         // 如果是得分题
         if (isScore) {
@@ -319,9 +321,13 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         Example example = new Example(UserCustomInfo.class);
         example.createCriteria().andEqualTo("username", judgeStatus.getUsername());
         String nickname = userCustomInfoMapper.selectOneByExample(example).getNickname();
-        result.setNick(nickname);
+        result.setNickname(nickname);
         result.setProblemId(judgeStatus.getProblemId());
-        result.setResult(SubmitResult.getNameByCode(judgeStatus.getResult()) + " " + judgeStatus.getScore());
+        if (Objects.nonNull(judgeStatus.getScore())) {
+            result.setResult(SubmitResult.getNameByCode(judgeStatus.getResult()) + " " + judgeStatus.getScore());
+        } else {
+            result.setResult(SubmitResult.getNameByCode(judgeStatus.getResult()));
+        }
         result.setSubmitTime(judgeStatus.getSubmitTime());
         result.setUsername(judgeStatus.getUsername());
         return result;

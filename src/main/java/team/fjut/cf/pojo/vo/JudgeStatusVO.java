@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 public class JudgeStatusVO {
     Integer id;
-    String nick;
+    String nickname;
     String username;
     Integer problemId;
     String result;

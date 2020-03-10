@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/judge_result")
+@RequestMapping("/judgeResult")
 public class JudgeResultController {
     @Autowired
     JudgeStatusService judgeStatusService;
@@ -26,7 +26,7 @@ public class JudgeResultController {
     JudgeResultService judgeResultService;
 
     @LoginRequired
-    @GetMapping("/info")
+    @PostMapping("/info")
     public ResultJsonVO getJudgeResult(@RequestParam("judgeId")Integer judgeId)
     {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
