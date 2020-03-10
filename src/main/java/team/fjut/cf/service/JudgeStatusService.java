@@ -79,7 +79,7 @@ public interface JudgeStatusService {
      * @param id
      * @return
      */
-    JudgeStatusVO selectAsViewJudgeStatusById(Integer id);
+    JudgeStatusVO selectJudgeStatus(Integer id);
 
     /**
      * 根据用户名查询评测记录条数

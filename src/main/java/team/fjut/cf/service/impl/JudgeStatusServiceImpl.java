@@ -8,14 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.mapper.*;
+import team.fjut.cf.pojo.enums.CodeLanguage;
 import team.fjut.cf.pojo.enums.SubmitResult;
-import team.fjut.cf.pojo.po.JudgeResult;
-import team.fjut.cf.pojo.po.JudgeStatus;
-import team.fjut.cf.pojo.po.ProblemInfo;
-import team.fjut.cf.pojo.po.UserProblemSolved;
+import team.fjut.cf.pojo.po.*;
 import team.fjut.cf.pojo.vo.JudgeStatusVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
-import team.fjut.cf.service.ChallengeBlockService;
 import team.fjut.cf.service.JudgeStatusService;
 import tk.mybatis.mapper.entity.Example;
 
@@ -31,7 +28,7 @@ import java.util.Objects;
 @Service
 public class JudgeStatusServiceImpl implements JudgeStatusService {
     @Autowired
-    UserBaseInfoMapper userBaseInfoMapper;
+    UserCustomInfoMapper userCustomInfoMapper;
 
     @Autowired
     ProblemInfoMapper problemInfoMapper;
@@ -43,13 +40,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
     JudgeResultMapper judgeResultMapper;
 
     @Autowired
-    ViewJudgeStatusMapper viewJudgeStatusMapper;
-
-    @Autowired
     UserProblemSolvedMapper userProblemSolvedMapper;
-
-    @Autowired
-    ChallengeBlockService challengeBlockService;
 
     @Autowired
     LocalJudgeHttpClient localJudgeHttpClient;
@@ -120,6 +111,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         JudgeResult judgeResult = new JudgeResult();
         judgeResult.setJudgeId(judgeStatus.getId());
         judgeResult.setInfo("本地评测机可能断开连接。失败于 " + dateFormat.format(new Date()));
+        judgeResult.setTime(new Date());
         judgeResultMapper.insertSelective(judgeResult);
     }
 
@@ -133,6 +125,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         JudgeResult judgeResult = new JudgeResult();
         judgeResult.setJudgeId(judgeStatus.getId());
         judgeResult.setInfo("提交到本地评测机失败。失败于 " + dateFormat.format(new Date()));
+        judgeResult.setTime(new Date());
         judgeResultMapper.insertSelective(judgeResult);
     }
 
@@ -143,6 +136,7 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
      * 如果拿到了结果，交由handleLocalJudgeReturns方法处理
      * handleLocalJudgeReturns方法会把结果插入评测结果反馈表，并返回评测的真实结果
      * 如果始终拿不到结果，也更新用户解决表
+     *
      * @param judgeStatus
      * @throws Exception
      */
@@ -313,28 +307,24 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
     }
 
     @Override
-    public JudgeStatusVO selectAsViewJudgeStatusById(Integer id) {
-        // FIXME:这里需要修改
-        return null;
-        //ViewJudgeStatus viewJudgeStatus = viewJudgeStatusMapper.queryById(id);
-        //JudgeStatus judgeStatus = new JudgeStatus();
-        //judgeStatus.setUsername(viewJudgeStatus.getUsername());
-        //// 如果是Score的，带上分值
-        //if (viewJudgeStatus.getResult() == SubmitResult.SC.getCode()) {
-        //    judgeStatus.setResult(SubmitResult.getNameByCode(viewJudgeStatus.getResult()) + " " + viewJudgeStatus.getScore());
-        //} else {
-        //    judgeStatus.setResult(SubmitResult.getNameByCode(viewJudgeStatus.getResult()));
-        //}
-        //judgeStatus.setSubmitTime(viewJudgeStatus.getSubmitTime());
-        //judgeStatus.setProblemId(viewJudgeStatus.getProblemId());
-        //judgeStatus.setMemoryUsed(viewJudgeStatus.getMemoryUsed());
-        //judgeStatus.setTimeUsed(viewJudgeStatus.getTimeUsed());
-        //judgeStatus.setNick(viewJudgeStatus.getNick());
-        //judgeStatus.setCode(viewJudgeStatus.getCode());
-        //judgeStatus.setCodeLength(viewJudgeStatus.getCodeLength());
-        //judgeStatus.setLanguage(CodeLanguage.getNameByCode(viewJudgeStatus.getLanguage()));
-        //judgeStatus.setId(viewJudgeStatus.getId());
-        //return judgeStatus;
+    public JudgeStatusVO selectJudgeStatus(Integer id) {
+        JudgeStatus judgeStatus = judgeStatusMapper.selectByPrimaryKey(id);
+        JudgeStatusVO result = new JudgeStatusVO();
+        result.setId(judgeStatus.getId());
+        result.setCode(judgeStatus.getCode());
+        result.setCodeLength(judgeStatus.getCodeLength());
+        result.setLanguage(CodeLanguage.getNameByCode(judgeStatus.getLanguage()));
+        result.setMemoryUsed(judgeStatus.getMemoryUsed());
+        result.setTimeUsed(judgeStatus.getTimeUsed());
+        Example example = new Example(UserCustomInfo.class);
+        example.createCriteria().andEqualTo("username", judgeStatus.getUsername());
+        String nickname = userCustomInfoMapper.selectOneByExample(example).getNickname();
+        result.setNick(nickname);
+        result.setProblemId(judgeStatus.getProblemId());
+        result.setResult(SubmitResult.getNameByCode(judgeStatus.getResult()) + " " + judgeStatus.getScore());
+        result.setSubmitTime(judgeStatus.getSubmitTime());
+        result.setUsername(judgeStatus.getUsername());
+        return result;
     }
 
     @Override

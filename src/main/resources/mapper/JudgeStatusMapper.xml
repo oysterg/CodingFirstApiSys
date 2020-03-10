@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.JudgeStatusMapper">
 
-
-
     <select id="selectCountByDay" resultType="team.fjut.cf.pojo.vo.StatusCountVO">
         SELECT COUNT(id) totalCount,
             SUM(result=1) acCount,
@@ -12,15 +10,6 @@
 	        WHERE  submit_time >= DATE_SUB(NOW(), INTERVAL #{days} DAY)
             GROUP BY DATE(submit_time);
     </select>
-
-    <select id="selectCountByUsernameAndProblemId" resultType="java.lang.Integer">
-        SELECT COUNT(*)
-        FROM t_judge_status
-        WHERE username = #{username}
-        AND problem_id = #{problemId};
-    </select>
-
-
 
     <select id="selectCountByUsername" resultType="java.lang.Integer">
         SELECT COUNT(*)

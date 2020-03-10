@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author axiang [2019/10/18]
@@ -18,4 +19,5 @@ public class JudgeResult {
     Integer id;
     Integer judgeId;
     String info;
+    Date time;
 }

@@ -19,15 +19,6 @@ public interface JudgeStatusMapper extends Mapper<JudgeStatus> {
      */
     List<StatusCountVO> selectCountByDay(@Param("days") int days);
 
-    /**
-     * 根据用户名和题目ID查询提交总数
-     *
-     * @param username
-     * @param problemId
-     * @return
-     */
-    Integer selectCountByUsernameAndProblemId(@Param("username") String username,
-                                              @Param("problemId") Integer problemId);
 
 
     /**

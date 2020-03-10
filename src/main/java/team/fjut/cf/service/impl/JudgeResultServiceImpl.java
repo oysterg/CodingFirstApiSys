@@ -5,6 +5,9 @@ import team.fjut.cf.pojo.po.JudgeResult;
 import team.fjut.cf.service.JudgeResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 /**
  * @author axiang [2019/11/8]
@@ -15,7 +18,10 @@ public class JudgeResultServiceImpl implements JudgeResultService {
     JudgeResultMapper judgeResultMapper;
 
     @Override
-    public JudgeResult queryJudgeResultByJudgeId(Integer judgeId) {
-        return judgeResultMapper.selectByJudgeId(judgeId);
+    public List<JudgeResult> selectJudgeResult(Integer judgeId) {
+        Example example = new Example(JudgeResult.class);
+        example.orderBy("time").asc();
+        example.createCriteria().andEqualTo("judgeId", judgeId);
+        return judgeResultMapper.selectByExample(example);
     }
 }
