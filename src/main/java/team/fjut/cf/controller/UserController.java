@@ -14,7 +14,7 @@ import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
-import team.fjut.cf.util.CheckUsernameUtils;
+import team.fjut.cf.util.JsonFileUtils;
 import team.fjut.cf.util.IpUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,7 +110,7 @@ public class UserController {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "注册的用户已存在！");
             return resultJsonVO;
         }
-        boolean isRestrict = CheckUsernameUtils.isUsernameRestrict(username);
+        boolean isRestrict = JsonFileUtils.isUsernameRestrict(username);
         if (isRestrict) {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户名中含有关键字，请选择新的用户名后重试");
             return resultJsonVO;
@@ -135,7 +135,6 @@ public class UserController {
 
         if (ans) {
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "用户注册成功！");
-            // FIXME: 迁移到业务层
             //// 插入挑战模式解锁记录
             //ChallengeUserOpenBlockPO challengeUserOpenBlockPO = new ChallengeUserOpenBlockPO();
             //challengeUserOpenBlockPO.setUsername(username);

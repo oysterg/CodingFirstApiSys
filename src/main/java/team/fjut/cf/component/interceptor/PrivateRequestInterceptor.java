@@ -68,8 +68,6 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
             // 如果token存在，则开始校验
             else {
                 TokenStatus status = jwtTokenManager.checkToken(token);
-                System.out.println(token);
-                System.out.println(status);
                 // 如果token验证成功,检查username是否为本人，如果不是，则失败
                 if (status == TokenStatus.IS_TRUE) {
                     TokenModel tokenModel = jwtTokenManager.getTokenModel(token);

@@ -12,7 +12,7 @@ import team.fjut.cf.pojo.vo.UserAcbBorderVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.pojo.vo.UserRatingBorderVO;
 import team.fjut.cf.service.UserInfoService;
-import team.fjut.cf.service.UserMessageService;
+import team.fjut.cf.util.JsonFileUtils;
 import team.fjut.cf.util.SHAUtils;
 import team.fjut.cf.util.UUIDUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -45,7 +45,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     UserTitleMapper userTitleMapper;
 
     @Autowired
-    UserMessageService userMessageService;
+    UserMessageMapper userMessageMapper;
 
     @Autowired
     EmailTool emailTool;
@@ -82,15 +82,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         //sendEmailBO.setText(userBaseInfoPO.getUsername() + "您好：\n"+"欢迎注册一码当先，请点击以下链接激活账号："
         //+"http://xxxxxxxx");
         //emailTool.sendEmail(sendEmailBO);
+
         // 发送注册成功站内消息
-        // FIXME: 站内消息表更改
-        //UserMessage userMessage = new UserMessage();
-        //userMessage.setUsername(userBaseInfo.getUsername());
-        //userMessage.setTitle("欢迎注册一码当先在线编程系统");
-        //userMessage.setStatus(0);
-        //userMessage.setText("欢迎注册一码当先在线编程系统，目前我们正在进行内测，功能并未完全开发完毕，如果遇到错误，请通过页面最下方的bug反馈进行反馈哦");
-        //userMessage.setTime(new Date());
-        //userMessageService.insert(userMessage);
+        UserMessage userMessage = new UserMessage();
+        userMessage.setToUsername(userBaseInfo.getUsername());
+        userMessage.setFromUsername("SYSTEM");
+        userMessage.setTitle("亲爱的 "+userBaseInfo.getUsername()+" ，欢迎注册一码当先！");
+        userMessage.setText(JsonFileUtils.getMsgTemplate("welcome"));
+        userMessage.setTime(new Date());
+        userMessageMapper.insertSelective(userMessage);
         return ans1 == 1 && ans2 == 1 && ans3 == 1;
     }
 
@@ -156,8 +156,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         System.out.println(num2);
         return (num1 == 1) && (num2 == 1);
     }
-
-
 
 
     @Override

@@ -15,7 +15,7 @@ public enum MessageStatusType {
     /**
      * 标记
      */
-    STAR(2, "已标记");
+    STARED(2, "已标记");
 
     private int code;
     private String name;

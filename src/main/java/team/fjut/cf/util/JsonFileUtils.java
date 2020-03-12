@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
  * @author axiang [2020/3/12]
  */
 
-public class CheckUsernameUtils {
+public class JsonFileUtils {
     public static boolean isUsernameRestrict(String username) {
         try {
             Resource resource = new ClassPathResource("conf/keyword.json");
@@ -30,6 +30,19 @@ public class CheckUsernameUtils {
         } catch (Exception e) {
 
             return true;
+        }
+    }
+
+    public static String getMsgTemplate(String name) {
+        try {
+            Resource resource = new ClassPathResource("conf/MsgTemplate.json");
+            final String str = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
+            JSONObject jsonObject = JSONObject.parseObject(str);
+            Object obj = jsonObject.get(name);
+            return obj.toString();
+        } catch (Exception e) {
+
+            return "";
         }
     }
 

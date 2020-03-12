@@ -46,7 +46,6 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             String token = request.getHeader("token");
             // 如果token不存在
             if (StringUtils.isEmpty(token)) {
-
                 ResultJsonVO resultJsonVO = new ResultJsonVO();
                 resultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
                 returnJson(response, JSONObject.toJSONString(resultJsonVO));
@@ -55,7 +54,6 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             // 如果token存在，则开始校验
             else {
                 TokenStatus status = jwtTokenManager.checkToken(token);
-                System.out.println(status.toString());
                 // 如果token验证成功，不再拦截
                 if (status == TokenStatus.IS_TRUE) {
                     return true;

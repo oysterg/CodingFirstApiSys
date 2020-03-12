@@ -10,7 +10,7 @@ import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.MallGoodsService;
 import team.fjut.cf.service.UserInfoService;
-import team.fjut.cf.util.CheckUsernameUtils;
+import team.fjut.cf.util.JsonFileUtils;
 
 /**
  * @author axiang [2019/10/21]
@@ -31,7 +31,7 @@ public class TestController {
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        System.out.println(CheckUsernameUtils.isUsernameRestrict("axiangcoding"));
+        System.out.println(JsonFileUtils.isUsernameRestrict("axiangcoding"));
         return resultJsonVO;
     }
 }

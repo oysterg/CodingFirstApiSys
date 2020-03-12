@@ -1,5 +1,6 @@
 package team.fjut.cf.service;
 
+import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.UserMessageListVO;
 
 import java.util.List;
@@ -9,6 +10,48 @@ import java.util.List;
  */
 public interface UserMessageService {
 
+
+    /**
+     * 删除id为 messageId 的消息
+     *
+     * @param messageId
+     * @return
+     */
+    int delete(int messageId);
+
+    /**
+     * 删除全部
+     *
+     * @param username
+     * @return
+     */
+    int deleteAll(String username);
+
+    /**
+     * 设置消息状态
+     *
+     * @param messageId
+     * @param status
+     * @return
+     */
+    int setStatus(int messageId, int status);
+
+    /**
+     * 设置收件人为username的用户的全部消息状态
+     *
+     * @param username
+     * @param status
+     * @return
+     */
+    int setAllStatus(String username, int status);
+
+    /**
+     * 根据ID查询用户消息
+     *
+     * @param messageId
+     * @return
+     */
+    UserMessage selectById(int messageId);
 
     /**
      * 根据条件分页查询用户消息记录
@@ -35,7 +78,7 @@ public interface UserMessageService {
      * @param title
      * @return
      */
-    Integer countByConditions(String toUsername,
-                              String fromUsername, Integer status, String title);
+    int countByConditions(String toUsername,
+                          String fromUsername, Integer status, String title);
 
 }

@@ -9,7 +9,6 @@ import java.util.List;
  * @author axiang [2019/10/18]
  */
 public interface UserPermissionMapper {
-
     /**
      * 插入一条用户权限详情
      *

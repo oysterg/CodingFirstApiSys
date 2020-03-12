@@ -14,5 +14,4 @@ public class UserMessageListVO {
     Date time;
     String fromUsername;
     String title;
-    String text;
 }

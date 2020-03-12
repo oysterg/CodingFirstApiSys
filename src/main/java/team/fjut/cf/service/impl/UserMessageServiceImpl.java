@@ -22,6 +22,47 @@ public class UserMessageServiceImpl implements UserMessageService {
     @Autowired
     UserMessageMapper userMessageMapper;
 
+
+    @Override
+    public int setStatus(int messageId, int status) {
+        UserMessage userMessage = new UserMessage();
+        userMessage.setId(messageId);
+        userMessage.setStatus(status);
+        return userMessageMapper.updateByPrimaryKeySelective(userMessage);
+    }
+
+    @Override
+    public int setAllStatus(String username, int status) {
+        Example example = new Example(UserMessage.class);
+        // 已标记的内容不会更改
+        example.createCriteria().andEqualTo("toUsername", username)
+                .andNotEqualTo("status", MessageStatusType.STARED.getCode());
+        UserMessage userMessage = new UserMessage();
+        userMessage.setStatus(status);
+        return userMessageMapper.updateByExampleSelective(userMessage, example);
+    }
+
+
+    @Override
+    public int delete(int messageId) {
+        UserMessage userMessage = new UserMessage();
+        userMessage.setId(messageId);
+        return userMessageMapper.deleteByPrimaryKey(userMessage);
+    }
+
+    @Override
+    public int deleteAll(String username) {
+        Example example = new Example(UserMessage.class);
+        example.createCriteria().andEqualTo("toUsername", username)
+                .andNotEqualTo("status", 2);
+        return userMessageMapper.deleteByExample(example);
+    }
+
+    @Override
+    public UserMessage selectById(int messageId) {
+        return userMessageMapper.selectByPrimaryKey(messageId);
+    }
+
     @Override
     public List<UserMessageListVO> pagesByConditions(int pageNum, int pageSize,
                                                      String toUsername,
@@ -49,15 +90,14 @@ public class UserMessageServiceImpl implements UserMessageService {
             temp.setTitle(item.getTitle());
             temp.setTime(item.getTime());
             temp.setStatus(MessageStatusType.getNameByCode(item.getStatus()));
-            temp.setText(item.getText());
             results.add(temp);
         }
         return results;
     }
 
     @Override
-    public Integer countByConditions(String toUsername,
-                                     String fromUsername, Integer status, String title) {
+    public int countByConditions(String toUsername,
+                                 String fromUsername, Integer status, String title) {
         Example example = new Example(UserMessage.class);
         example.orderBy("time").desc();
         Example.Criteria criteria = example.createCriteria();

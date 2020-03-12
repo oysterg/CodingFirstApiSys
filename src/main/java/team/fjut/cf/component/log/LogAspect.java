@@ -20,7 +20,7 @@ import java.util.Objects;
 
 /**
  * AOP切片类
- * 目前仅打印Controller层的方法
+ * 目前仅打印Controller和异常处理的方法
  *
  * @author axiang [2019/10/22]
  */
