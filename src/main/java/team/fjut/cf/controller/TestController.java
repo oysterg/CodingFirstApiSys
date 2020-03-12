@@ -10,6 +10,7 @@ import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.MallGoodsService;
 import team.fjut.cf.service.UserInfoService;
+import team.fjut.cf.util.CheckUsernameUtils;
 
 /**
  * @author axiang [2019/10/21]
@@ -30,9 +31,7 @@ public class TestController {
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        //List<ViewProblemInfo> pages = viewProblemInfoService.pagesByConditions(1, 20, null, "%A + B%", null);
-        //resultJsonVO.addInfo(pages);
-        resultJsonVO.addInfo(userAuthService.selectExistByUsername("axiangcoding"));
+        System.out.println(CheckUsernameUtils.isUsernameRestrict("axiangcoding"));
         return resultJsonVO;
     }
 }

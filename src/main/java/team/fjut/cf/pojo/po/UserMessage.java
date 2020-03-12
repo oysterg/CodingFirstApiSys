@@ -17,11 +17,10 @@ public class UserMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
     Integer id;
-    String username;
+    String toUsername;
+    String fromUsername;
     Integer status;
     String title;
     String text;
     Date time;
-
-
 }

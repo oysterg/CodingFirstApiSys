@@ -14,6 +14,7 @@ import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
+import team.fjut.cf.util.CheckUsernameUtils;
 import team.fjut.cf.util.IpUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,7 +60,7 @@ public class UserController {
             return resultJsonVO;
         }
         // 用户名不存在
-        if (!userInfoService.selectExistByUsername(username)) {
+        if (!userInfoService.isUsernameExist(username)) {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "登录失败！用户不存在！");
             return resultJsonVO;
         }
@@ -104,9 +105,14 @@ public class UserController {
                                      @RequestParam("motto") String motto,
                                      @RequestParam("avatarUrl") String avatarUrl) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        Boolean isExist = userInfoService.selectExistByUsername(username);
+        Boolean isExist = userInfoService.isUsernameExist(username);
         if (isExist) {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "注册的用户已存在！");
+            return resultJsonVO;
+        }
+        boolean isRestrict = CheckUsernameUtils.isUsernameRestrict(username);
+        if (isRestrict) {
+            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户名中含有关键字，请选择新的用户名后重试");
             return resultJsonVO;
         }
         UserBaseInfo userBaseInfo = new UserBaseInfo();
@@ -151,7 +157,7 @@ public class UserController {
     }
 
     @LoginRequired
-    @GetMapping("/info")
+    @PostMapping("/info")
     public ResultJsonVO getUserInfo(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         UserBaseInfo userBaseInfoVO = userInfoService.selectByUsername(username);
@@ -163,8 +169,17 @@ public class UserController {
         return resultJsonVO;
     }
 
+
+    @PostMapping("/info/custom")
+    public ResultJsonVO getUserCustomerInfo(@RequestParam("username") String username) {
+        ResultJsonVO resultJsonVO = new ResultJsonVO();
+        UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
+        resultJsonVO.addInfo(userCustomInfoVO);
+        return resultJsonVO;
+    }
+
     @LoginRequired
-    @GetMapping("/award")
+    @PostMapping("/award")
     public ResultJsonVO getUserAwardList(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
         List<String> awardStr = borderHonorRankService.selectByUsername(username);

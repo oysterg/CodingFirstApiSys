@@ -83,13 +83,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         //+"http://xxxxxxxx");
         //emailTool.sendEmail(sendEmailBO);
         // 发送注册成功站内消息
-        UserMessage userMessage = new UserMessage();
-        userMessage.setUsername(userBaseInfo.getUsername());
-        userMessage.setTitle("欢迎注册一码当先在线编程系统");
-        userMessage.setStatus(0);
-        userMessage.setText("欢迎注册一码当先在线编程系统，目前我们正在进行内测，功能并未完全开发完毕，如果遇到错误，请通过页面最下方的bug反馈进行反馈哦");
-        userMessage.setTime(new Date());
-        userMessageService.insert(userMessage);
+        // FIXME: 站内消息表更改
+        //UserMessage userMessage = new UserMessage();
+        //userMessage.setUsername(userBaseInfo.getUsername());
+        //userMessage.setTitle("欢迎注册一码当先在线编程系统");
+        //userMessage.setStatus(0);
+        //userMessage.setText("欢迎注册一码当先在线编程系统，目前我们正在进行内测，功能并未完全开发完毕，如果遇到错误，请通过页面最下方的bug反馈进行反馈哦");
+        //userMessage.setTime(new Date());
+        //userMessageService.insert(userMessage);
         return ans1 == 1 && ans2 == 1 && ans3 == 1;
     }
 
@@ -144,7 +145,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 
     @Override
-    public Boolean selectExistByUsername(String username) {
+    public Boolean isUsernameExist(String username) {
         Example example = new Example(UserAuth.class);
         example.createCriteria().andEqualTo("username", username);
         int num1 = userAuthMapper.selectCountByExample(example);

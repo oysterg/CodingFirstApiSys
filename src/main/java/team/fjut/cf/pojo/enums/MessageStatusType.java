@@ -1,34 +1,26 @@
 package team.fjut.cf.pojo.enums;
 
 /**
- * oj对应枚举类
- *
- * @author axiang [2019/10/23]
+ * @author axiang [2020/3/12]
  */
-public enum OjId {
-    DEFAULT(-1, "默认"),
-    HDU(0, "HDU"),
-    BNUOJ(1, "BNUOJ"),
-    NBUT(2, "NBUT"),
-    PKU(3, "PKU"),
-    HUST(4, "HUST"),
-    CF(5, "CF"),
-    CODE_VS(6, "CodeVs"),
-    LOCAL(7, "自主出题"),
-    AC_DREAM(8, "AcDream"),
-    FOJ(9, "FOJ"),
-    LOCAL_GAME(10, "自主出题（游戏）"),
-    CF_GYM(11, "CF_Gym"),
-    OTHER(12, "其他"),
-    BZOJ(13, "BZOJ"),
-    ZOJ(14, "ZOJ"),
-    SPOJ(15, "SPOJ");
-
+public enum MessageStatusType {
+    /**
+     * 未读
+     */
+    NO_READ(0, "未读"),
+    /**
+     * 已读
+     */
+    HAVE_READ(1, "已读"),
+    /**
+     * 标记
+     */
+    STAR(2, "已标记");
 
     private int code;
     private String name;
 
-    OjId(int code, String name) {
+    MessageStatusType(int code, String name) {
         this.code = code;
         this.name = name;
     }
@@ -50,7 +42,7 @@ public enum OjId {
     }
 
     public static String getNameByCode(int code) {
-        for (OjId item : OjId.values()) {
+        for (MessageStatusType item : MessageStatusType.values()) {
             if (item.getCode() == code) {
                 return item.getName();
             }

@@ -27,7 +27,7 @@ spring:
     # 获取连接时最大等待时间，单位毫秒
     maxWait: 60000
     # 最小连接池数量
-    minIdle: 1
+    minIdle: 5
     timeBetweenEvictionRunsMillis: 60000
     # 连接保持空闲而不被驱逐的最长时间
     minEvictableIdleTimeMillis: 300000

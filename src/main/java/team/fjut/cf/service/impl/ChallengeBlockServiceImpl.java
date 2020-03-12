@@ -1,5 +1,9 @@
 package team.fjut.cf.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team.fjut.cf.mapper.ChallengeBlockConditionMapper;
 import team.fjut.cf.mapper.ChallengeBlockMapper;
 import team.fjut.cf.mapper.ChallengeBlockProblemMapper;
@@ -8,16 +12,11 @@ import team.fjut.cf.pojo.enums.ChallengeBlockType;
 import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
 import team.fjut.cf.pojo.po.ChallengeBlockPO;
 import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
-import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.ChallengeBlockConditionVO;
 import team.fjut.cf.pojo.vo.ChallengeBlockVO;
 import team.fjut.cf.pojo.vo.UserChallengeBlockVO;
 import team.fjut.cf.service.ChallengeBlockService;
 import team.fjut.cf.service.UserMessageService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -45,13 +44,14 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
     @Override
     public Integer unlockBlock(ChallengeUserOpenBlockPO challengeUserOpenBlockPO) {
         Integer integer = challengeUserOpenBlockMapper.insert(challengeUserOpenBlockPO);
-        UserMessage userMessage = new UserMessage();
-        userMessage.setUsername(challengeUserOpenBlockPO.getUsername());
-        userMessage.setTime(challengeUserOpenBlockPO.getUnlockTime());
-        userMessage.setTitle("恭喜您解锁了新的挑战模式模块！");
-        userMessage.setText("恭喜您解锁了新的挑战模式模块，快进去看看吧");
-        userMessage.setStatus(0);
-        userMessageService.insert(userMessage);
+        // FIXME: 站内消息表更改
+        //UserMessage userMessage = new UserMessage();
+        //userMessage.setUsername(challengeUserOpenBlockPO.getUsername());
+        //userMessage.setTime(challengeUserOpenBlockPO.getUnlockTime());
+        //userMessage.setTitle("恭喜您解锁了新的挑战模式模块！");
+        //userMessage.setText("恭喜您解锁了新的挑战模式模块，快进去看看吧");
+        //userMessage.setStatus(0);
+        //userMessageService.insert(userMessage);
         return integer;
     }
 

@@ -72,7 +72,7 @@ public class ResultJsonVO {
         return "ResultJsonVO {\n" +
                 " code=" + code +
                 ",\n msg='" + msg + '\'' +
-                ",\n datas= \"不允许查看\"" +
+                ",\n datas= \"日志中不允许查看\"" +
                 "\n}";
     }
 }

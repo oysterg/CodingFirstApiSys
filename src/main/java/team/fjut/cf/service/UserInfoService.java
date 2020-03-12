@@ -38,7 +38,7 @@ public interface UserInfoService {
      * @param username
      * @return
      */
-    Boolean selectExistByUsername(String username);
+    Boolean isUsernameExist(String username);
 
 
 

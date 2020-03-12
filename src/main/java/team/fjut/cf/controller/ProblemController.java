@@ -122,7 +122,7 @@ public class ProblemController {
     @GetMapping("/recommend")
     public ResultJsonVO getRecommendProblem(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        Boolean isExist = userInfoService.selectExistByUsername(username);
+        Boolean isExist = userInfoService.isUsernameExist(username);
         if (!isExist) {
             resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户不存在");
             return resultJsonVO;

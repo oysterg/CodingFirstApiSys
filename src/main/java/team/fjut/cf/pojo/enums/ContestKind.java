@@ -4,11 +4,29 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/11/18]
  */
 public enum ContestKind {
+    /**
+     * 练习
+     */
     PRACTICE(0, "练习"),
+    /**
+     * 积分
+     */
     RATING(1, "积分"),
+    /**
+     * 趣味
+     */
     INTEREST(2, "趣味"),
+    /**
+     * 正式
+     */
     OFFICIAL(3, "正式"),
+    /**
+     * 隐藏
+     */
     HIDE(4, "隐藏"),
+    /**
+     * DIY
+     */
     DIY(5, "DIY");
 
     private int code;
