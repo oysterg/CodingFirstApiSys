@@ -43,6 +43,8 @@ public class GlobalExceptionHandler {
     /**
      * 405处理不生效，由默认的 DefaultHandlerExceptionResolver 处理
      * 405 - 请求不支持
+     * @param e
+     * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResultJsonVO handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
@@ -61,27 +63,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResultJsonVO handleException(Exception e) {
         ResultJsonVO resultJson = new ResultJsonVO();
-        String exceptionMessage;
+        String exceptionMsg;
         if (e instanceof ArrayIndexOutOfBoundsException) {
-            exceptionMessage = "[ex0002]: 数组越界错误";
+            exceptionMsg = "[ex0002]: 数组越界错误";
         } else if (e instanceof NullPointerException) {
-            exceptionMessage = "[ex0003]: 空指针错误";
+            exceptionMsg = "[ex0003]: 空指针错误";
         } else if (e instanceof ResourceAccessException) {
-            exceptionMessage = "[ex0004]: 服务器请求外部资源异常";
+            exceptionMsg = "[ex0004]: 服务器请求外部资源异常";
         } else if ((e instanceof PoolException) || (e instanceof QueryTimeoutException)) {
-            exceptionMessage = "[ex0005]: Redis数据库异常";
+            exceptionMsg = "[ex0005]: Redis数据库异常";
         } else if (e instanceof ConnectException)
         {
-            exceptionMessage = "[ex0006]: 数据库异常";
+            exceptionMsg = "[ex0006]: 数据库异常";
         }
-        // 其他未指名的运行时异常在倒数第二个捕获
+        // 其他未知名的运行时异常在倒数第二个捕获
         else if (e instanceof RuntimeException) {
-            exceptionMessage = "[ex0001]: 系统运行异常";
+            exceptionMsg = "[ex0001]: 系统运行异常";
         } else {
-            exceptionMessage = "[ex0000]: 服务端异常";
+            exceptionMsg = "[ex0000]: 服务端异常";
         }
-        resultJson.setStatus(ResultJsonCode.SYSTEM_ERROR, exceptionMessage);
-        logger.error(exceptionMessage, e);
+        resultJson.setStatus(ResultJsonCode.SYSTEM_ERROR, exceptionMsg);
+        logger.error(exceptionMsg, e);
         return resultJson;
     }
 

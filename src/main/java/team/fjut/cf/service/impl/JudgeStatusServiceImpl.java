@@ -163,12 +163,11 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
                 JSONObject resultJsonObj = JSONObject.parseObject(jsonObject.getString("result"));
                 // 更新评测结果
                 judgingStr = resultJsonObj.getString("type");
-                // 如果代码在评测等待中，则更新评测结果为评测等待
+                // 如果代码在评测等待中，则不做操作
                 if ("padding".equals(judgingStr)) {
                     newJudgeStatus.setResult(SubmitResult.PENDING.getCode());
-                    judgeStatusMapper.updateByPrimaryKeySelective(newJudgeStatus);
                 }
-                // 如果代码在评测中，则更新状态
+                // 如果代码在评测中，则不更新
                 else if ("judging".equals(judgingStr)) {
                     newJudgeStatus.setResult(SubmitResult.JUDGING.getCode());
                     judgeStatusMapper.updateByPrimaryKeySelective(newJudgeStatus);

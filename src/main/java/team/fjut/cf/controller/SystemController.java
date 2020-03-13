@@ -1,7 +1,7 @@
 package team.fjut.cf.controller;
 
 import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.SystemInfoPO;
+import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.SystemInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +22,12 @@ public class SystemController {
     @GetMapping("/info")
     public ResultJsonVO getSystemInfo(@RequestParam("name") String name) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        SystemInfoPO systemInfoPO = systemInfoService.selectByName(name);
-        if (Objects.isNull(systemInfoPO)) {
+        SystemInfo systemInfo = systemInfoService.selectOne(name);
+        if (Objects.isNull(systemInfo)) {
             resultJsonVO.setStatus(ResultJsonCode.RESOURCE_NOT_EXIST, "未找到相应内容");
             return resultJsonVO;
         }
-        resultJsonVO.addInfo(systemInfoPO);
+        resultJsonVO.addInfo(systemInfo);
         resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
         return resultJsonVO;
 

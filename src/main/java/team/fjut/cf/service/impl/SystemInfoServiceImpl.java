@@ -3,8 +3,9 @@ package team.fjut.cf.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.fjut.cf.mapper.SystemInfoMapper;
-import team.fjut.cf.pojo.po.SystemInfoPO;
+import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.service.SystemInfoService;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author axiang [2019/10/30]
@@ -16,17 +17,21 @@ public class SystemInfoServiceImpl implements SystemInfoService {
 
 
     @Override
-    public Integer insert(SystemInfoPO systemInfoPO) {
-        return systemInfoMapper.insert(systemInfoPO);
+    public int insert(SystemInfo systemInfo) {
+
+        return systemInfoMapper.insertSelective(systemInfo);
     }
 
     @Override
-    public Integer update(SystemInfoPO systemInfoPO) {
-        return systemInfoMapper.update(systemInfoPO);
+    public Integer update(SystemInfo systemInfo) {
+
+        return systemInfoMapper.updateByPrimaryKeySelective(systemInfo);
     }
 
     @Override
-    public SystemInfoPO selectByName(String name) {
-        return systemInfoMapper.selectByName(name);
+    public SystemInfo selectOne(String name) {
+        Example example = new Example(SystemInfo.class);
+        example.createCriteria().andEqualTo("name", name);
+        return systemInfoMapper.selectOneByExample(example);
     }
 }
