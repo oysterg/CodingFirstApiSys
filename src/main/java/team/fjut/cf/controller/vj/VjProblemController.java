@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
+import team.fjut.cf.component.judge.vjudge.pojo.ProblemDescription;
 import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemHtmlParams;
 import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.po.VjProblemInfo;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.SystemInfoService;
+import team.fjut.cf.service.VjProblemInfoService;
 
 import java.util.Date;
 import java.util.Objects;
@@ -27,9 +30,12 @@ public class VjProblemController {
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
     @Autowired
+    VjProblemInfoService vjProblemInfoService;
+
+    @Autowired
     SystemInfoService systemInfoService;
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     public ResultJsonVO getVJProblemList(@RequestParam("pageNum") Integer pageNum,
                                          @RequestParam("pageSize") Integer pageSize,
                                          @RequestParam(value = "OJId", required = false) String OJId,
@@ -63,15 +69,54 @@ public class VjProblemController {
         return resultJsonVO;
     }
 
-    @GetMapping("/info")
-    public ResultJsonVO getProblemInfo(@RequestParam("OJId") String OJId,
+    /**
+     * 获取题目信息
+     * 执行逻辑如下：
+     * 1. 先到本地查找是否有缓存的记录
+     * 2. 如果没有，则到VJ上获取数据并返回，插入新的数据库记录
+     * 3. 如果有，且缓存时间不超过15分钟，则直接返回数据库中记录
+     * 4. 如果有，但缓存时间超过15分钟，重新到VJ上获取数据并返回，同时更新数据库记录
+     *
+     * @param oJId
+     * @param probNum
+     * @param username
+     * @return
+     */
+    @PostMapping("/info")
+    public ResultJsonVO getProblemInfo(@RequestParam("OJId") String oJId,
                                        @RequestParam("probNum") String probNum,
                                        @RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
         RequestProblemHtmlParams params = new RequestProblemHtmlParams();
-        params.setOJId(OJId);
+        params.setOJId(oJId);
         params.setProbNum(probNum);
-        resultJsonVO.addInfo(virtualJudgeHttpClient.getProblemInfo(params));
+        VjProblemInfo vjProblemInfo = vjProblemInfoService.select(oJId, probNum);
+        if (Objects.isNull(vjProblemInfo)) {
+            vjProblemInfo = new VjProblemInfo();
+            ProblemDescription problemDescription = (ProblemDescription) virtualJudgeHttpClient.getProblemInfo(params);
+            resultJsonVO.addInfo(problemDescription);
+            String data = JSONObject.toJSONString(problemDescription);
+            vjProblemInfo.setOjId(oJId);
+            vjProblemInfo.setProbNum(probNum);
+            vjProblemInfo.setTime(new Date());
+            vjProblemInfo.setData(data);
+            vjProblemInfoService.insert(vjProblemInfo);
+        } else {
+            // 如果超过了15分钟，重新获取并更新数据
+            if (System.currentTimeMillis() - vjProblemInfo.getTime().getTime()
+                    >= 1000 * 60 * 15) {
+                ProblemDescription problemDescription = (ProblemDescription) virtualJudgeHttpClient.getProblemInfo(params);
+                resultJsonVO.addInfo(problemDescription);
+                String data = JSONObject.toJSONString(problemDescription);
+                vjProblemInfo.setData(data);
+                vjProblemInfo.setTime(new Date());
+                vjProblemInfoService.update(vjProblemInfo);
+            } else {
+                String data = vjProblemInfo.getData();
+                Object obj = JSONObject.parse(data);
+                resultJsonVO.addInfo(obj);
+            }
+        }
         return resultJsonVO;
     }
 

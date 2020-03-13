@@ -29,6 +29,7 @@ public class VjUtilController {
 
     @Autowired
     VirtualJudgeHttpClient virtualJudgeHttpClient;
+
     /**
      * 获取VJudge的 remoteOjs的json数据
      * 获取后缓存到数据库中
