@@ -17,7 +17,6 @@ public class VjProblemInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
     Integer id;
-
     String ojId;
     String probNum;
     String data;

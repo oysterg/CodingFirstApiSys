@@ -5,12 +5,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.fjut.cf.component.redis.RedisUtils;
+import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
-import team.fjut.cf.service.MallGoodsService;
-import team.fjut.cf.service.UserInfoService;
-import team.fjut.cf.util.JsonFileUtils;
 
 /**
  * @author axiang [2019/10/21]
@@ -20,18 +17,14 @@ import team.fjut.cf.util.JsonFileUtils;
 @RequestMapping("/test")
 public class TestController {
     @Autowired
-    MallGoodsService mallGoodsService;
-
-    @Autowired
-    RedisUtils redisUtils;
-
-    @Autowired
-    UserInfoService userAuthService;
+    VirtualJudgeHttpClient virtualJudgeHttpClient;
 
     @GetMapping("/test")
     public ResultJsonVO testMethod() {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        System.out.println(JsonFileUtils.isUsernameRestrict("axiangcoding"));
+        virtualJudgeHttpClient.userLogin("axiangcoding", "wuyuxiang");
+        Object o = virtualJudgeHttpClient.checkIsLogin();
+        System.out.println(o.toString());
         return resultJsonVO;
     }
 }

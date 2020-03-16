@@ -5,6 +5,7 @@ import java.util.Date;
 /**
  * @author axiang [2019/11/12]
  */
+
 public class UserSealRecordPO {
     private Integer id;
     private String username;

@@ -123,8 +123,6 @@ public class UserController {
         userBaseInfo.setMotto(motto);
         userBaseInfo.setRegisterTime(new Date());
         userBaseInfo.setRating(0);
-        userBaseInfo.setRanking(0);
-        userBaseInfo.setAcNum(0);
         userBaseInfo.setAcb(0);
         UserAuth userAuth = new UserAuth();
         userAuth.setPassword(password);

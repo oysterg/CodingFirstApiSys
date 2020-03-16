@@ -10,13 +10,6 @@ import java.util.List;
  * @author axiang [2019/10/11]
  */
 public interface UserBaseInfoMapper extends Mapper<UserBaseInfo> {
-    /**
-     * 更新用户AC题数+1
-     *
-     * @param username
-     * @return
-     */
-    Integer updateAcNumAddOneByUsername(@Param("username") String username);
 
 
     /**

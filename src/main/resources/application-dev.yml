@@ -23,7 +23,7 @@ cf:
   config:
     # 权限拦截器
     authInterceptor:
-      enable: true
+      enable: false
     # jwt相关配置
     jwt:
       # jwt默认过期时间为 1000*60*60*8 毫秒
@@ -52,11 +52,7 @@ cf:
       user:
         username: axiangcoding
         password: wuyuxiang
-      problemListUrl: https://vjudge.net/problem/data
-      remoteOJsUrl: https://vjudge.net/util/remoteOJs
-      problemHtmlUrl: https://vjudge.net/problem/%s
-      checkLoginStatusUrl: https://vjudge.net/user/checkLogInStatus
-      doLoginUrl: https://vjudge.net/user/login
+
     local:
       localJudgePath: http://192.168.122.129:8100
     file:

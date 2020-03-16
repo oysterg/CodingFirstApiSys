@@ -219,7 +219,6 @@ public class UserInfoServiceImpl implements UserInfoService {
             userAcbBorderVO.setUsername(userBase.getUsername());
             // FIXME: 昵称换表了
             //userAcbBorderVO.setNick(userBase.getNick());
-            userAcbBorderVO.setAcNum(userBase.getAcNum());
             userAcNumBorderVOS.add(userAcbBorderVO);
         }
         return userAcNumBorderVOS;

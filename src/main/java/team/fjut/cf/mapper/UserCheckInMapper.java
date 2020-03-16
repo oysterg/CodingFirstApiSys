@@ -1,32 +1,29 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.UserCheckInPO;
+import team.fjut.cf.pojo.po.UserCheckIn;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
+ * 用户签到 mapper
  * @author axiang [2019/10/23]
  */
-public interface UserCheckInMapper {
-    /**
-     * 插入一条签到记录
-     *
-     * @param userCheckInPO
-     * @return
-     */
-    Integer insert(@Param("userCheckInPO") UserCheckInPO userCheckInPO);
+public interface UserCheckInMapper extends Mapper<UserCheckIn> {
 
     /**
      * 根据用户名查询全部用户签到记录
+     *
      * @param username
      * @return
      */
-    List<UserCheckInPO> selectCheckInByUsername(@Param("username") String username);
+    List<UserCheckIn> selectCheckInByUsername(@Param("username") String username);
 
 
     /**
      * 根据用户名查询用户今天的签到次数
+     *
      * @param username
      * @return
      */
@@ -34,9 +31,10 @@ public interface UserCheckInMapper {
 
     /**
      * 根据用户查询签到记录
+     *
      * @param username
      * @return
      */
-    List<UserCheckInPO> selectByUsername(@Param("username") String username);
+    List<UserCheckIn> selectByUsername(@Param("username") String username);
 
 }

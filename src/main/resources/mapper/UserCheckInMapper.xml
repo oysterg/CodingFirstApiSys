@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserCheckInMapper">
-    <insert id="insert">
-        INSERT INTO t_user_check_in
-        (id,
-        username,
-        check_time,
-        info,
-        ip_address
-        )
-        VALUES
-        (#{userCheckInPO.id},
-        #{userCheckInPO.username},
-        #{userCheckInPO.checkTime},
-        #{userCheckInPO.info},
-        #{userCheckInPO.ipAddress}
-        );
-    </insert>
 
-    <select id="selectCheckInByUsername" resultType="team.fjut.cf.pojo.po.UserCheckInPO">
+    <select id="selectCheckInByUsername" resultType="team.fjut.cf.pojo.po.UserCheckIn">
         SELECT
         id,
         username,
@@ -31,7 +15,7 @@
         ORDER BY check_time DESC;
     </select>
 
-    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCheckInPO">
+    <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCheckIn">
         SELECT
         id,
         username,

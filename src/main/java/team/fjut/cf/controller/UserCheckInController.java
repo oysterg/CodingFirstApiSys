@@ -2,7 +2,7 @@ package team.fjut.cf.controller;
 
 import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.po.UserCheckInPO;
+import team.fjut.cf.pojo.po.UserCheckIn;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
 import team.fjut.cf.service.UserCheckInService;
 import team.fjut.cf.util.IpUtils;
@@ -18,26 +18,17 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/check_in")
+@RequestMapping("/user/checkIn")
 public class UserCheckInController {
     @Autowired
     UserCheckInService userCheckInService;
 
     @PrivateRequired
-    @GetMapping("/list")
-    public ResultJsonVO getUserCheckIn(@RequestParam("username") String username,
-                                       @RequestParam("pageNum") Integer pageNum,
-                                       @RequestParam("pageSize") Integer pageSize) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
-        if (pageNum == null) {
-            pageNum = 0;
-        }
-        if (pageSize == null) {
-            pageSize = 30;
-        }
-        // 这里一次性查询全部签到记录，暂不用到分页
-        List<UserCheckInPO> userCheckInPOS = userCheckInService.selectByUsername(username);
-        resultJsonVO.addInfo(userCheckInPOS);
+    @PostMapping("/list")
+    public ResultJsonVO getUserCheckIn(@RequestParam("username") String username) {
+        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        List<UserCheckIn> userCheckIns = userCheckInService.select(username);
+        resultJsonVO.addInfo(userCheckIns);
         return resultJsonVO;
     }
 
@@ -45,12 +36,12 @@ public class UserCheckInController {
     @PostMapping("/check")
     public ResultJsonVO userCheckIn(HttpServletRequest request, String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        UserCheckInPO userCheckInPO = new UserCheckInPO();
-        userCheckInPO.setUsername(username);
-        userCheckInPO.setIpAddress(IpUtils.getClientIpAddress(request));
-        userCheckInPO.setCheckTime(new Date());
-        userCheckInPO.setInfo("日常签到");
-        Integer count = userCheckInService.insert(userCheckInPO);
+        UserCheckIn userCheckIn = new UserCheckIn();
+        userCheckIn.setUsername(username);
+        userCheckIn.setIpAddress(IpUtils.getClientIpAddress(request));
+        userCheckIn.setCheckTime(new Date());
+        userCheckIn.setInfo("日常签到");
+        Integer count = userCheckInService.insert(userCheckIn);
         if (1 == count) {
             resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "签到成功");
         } else {
@@ -60,15 +51,11 @@ public class UserCheckInController {
     }
 
     @PrivateRequired
-    @GetMapping("/is_checked")
+    @GetMapping("/isChecked")
     public ResultJsonVO getUserIsChecked(@RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        Integer count = userCheckInService.selectCountTodayCheckInByUsername(username);
-        if (0 == count) {
-            resultJsonVO.addInfo(false);
-        } else {
-            resultJsonVO.addInfo(true);
-        }
+        boolean todayUserCheckIn = userCheckInService.isTodayUserCheckIn(username);
+        resultJsonVO.addInfo(todayUserCheckIn);
         return resultJsonVO;
     }
 

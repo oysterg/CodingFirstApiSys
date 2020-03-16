@@ -3,7 +3,7 @@
 <!-- 分级别异步文件日志输出配置 -->
 <configuration>
     <!-- 日志级别 -->
-    <property name="logLevel" value="INFO"/>
+    <property name="logLevel" value="WARN"/>
     <!-- 日志地址 -->
     <property name="logPath" value="./logs"/>
     <!-- 最大保存时间 -->

@@ -6,25 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
- * 用户基础信息实体类
- *
- * @author axiang [2019/10/11]
+ * @author axiang [2020/3/15]
  */
 @Data
-@Table(name = "t_user_base_info")
-public class UserBaseInfo {
+@Table(name = "t_user_setting")
+public class UserSetting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
     Integer id;
     String username;
-    Integer gender;
-    String email;
-    String phone;
-    String motto;
-    Date registerTime;
-    Integer rating;
-    Integer acb;
+    String settings;
+
 }

@@ -2,11 +2,14 @@ package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.UserCheckInMapper;
-import team.fjut.cf.pojo.po.UserCheckInPO;
+import team.fjut.cf.pojo.po.UserCheckIn;
 import team.fjut.cf.service.UserCheckInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.fjut.cf.util.TimeUtils;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,24 +21,33 @@ public class UserCheckInServiceImpl implements UserCheckInService {
     UserCheckInMapper userCheckInMapper;
 
     @Override
-    public List<UserCheckInPO> selectByUsername(String username) {
-        return userCheckInMapper.selectCheckInByUsername(username);
+    public Integer insert(UserCheckIn userCheckIn) {
+        return userCheckInMapper.insertSelective(userCheckIn);
     }
 
     @Override
-    public Integer selectCountTodayCheckInByUsername(String username) {
-        return userCheckInMapper.selectCountTodayCheckInByUsername(username);
+    public List<UserCheckIn> select(String username) {
+        Example example = new Example(UserCheckIn.class);
+        example.orderBy("checkTime").desc();
+        example.createCriteria().andEqualTo("username", username);
+        return userCheckInMapper.selectByExample(example);
     }
 
     @Override
-    public List<UserCheckInPO> pagesByUsername(String username, Integer pageNum, Integer pageSize) {
+    public boolean isTodayUserCheckIn(String username) {
+        Example example = new Example(UserCheckIn.class);
+        example.createCriteria().andEqualTo("username", username)
+                .andGreaterThanOrEqualTo("checkTime", TimeUtils.initDateByDay())
+                .andLessThanOrEqualTo("checkTime", new Date());
+        return userCheckInMapper.selectCountByExample(example) == 1;
+    }
+
+    @Override
+    public List<UserCheckIn> pagesByUsername(String username, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<UserCheckInPO> userCheckInPOS = userCheckInMapper.selectByUsername(username);
-        return userCheckInPOS;
+        List<UserCheckIn> userCheckIns = userCheckInMapper.selectByUsername(username);
+        return userCheckIns;
     }
 
-    @Override
-    public Integer insert(UserCheckInPO userCheckInPO) {
-        return userCheckInMapper.insert(userCheckInPO);
-    }
+
 }

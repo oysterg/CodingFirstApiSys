@@ -6,8 +6,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.component.judge.vjudge.pojo.ProblemDescription;
-import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemHtmlParams;
-import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
+import team.fjut.cf.component.judge.vjudge.pojo.ProblemHtmlParams;
+import team.fjut.cf.component.judge.vjudge.pojo.ProblemListParams;
 import team.fjut.cf.pojo.enums.ResultJsonCode;
 import team.fjut.cf.pojo.po.VjProblemInfo;
 import team.fjut.cf.pojo.vo.ResultJsonVO;
@@ -44,7 +44,7 @@ public class VjProblemController {
                                          @RequestParam(value = "title", required = false) String title,
                                          @RequestParam(value = "source", required = false) String source) {
         ResultJsonVO resultJsonVO = new ResultJsonVO();
-        RequestProblemListParams params = new RequestProblemListParams();
+        ProblemListParams params = new ProblemListParams();
         params.setStart((pageNum - 1) * pageSize);
         params.setLength(pageSize);
         params.setOJId(StringUtils.isEmpty(OJId) ? "All" : OJId);
@@ -87,7 +87,7 @@ public class VjProblemController {
                                        @RequestParam("probNum") String probNum,
                                        @RequestParam("username") String username) {
         ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        RequestProblemHtmlParams params = new RequestProblemHtmlParams();
+        ProblemHtmlParams params = new ProblemHtmlParams();
         params.setOJId(oJId);
         params.setProbNum(probNum);
         VjProblemInfo vjProblemInfo = vjProblemInfoService.select(oJId, probNum);

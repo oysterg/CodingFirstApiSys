@@ -8,7 +8,7 @@
     <!-- 最大保存时间 -->
     <property name="maxHistory" value="10"/>
     <!-- 异步缓冲队列的深度,该值会影响性能.默认值为256 -->
-    <property name="queueSize" value="512"/>
+    <property name="queueSize" value="256"/>
     <!--日志文件名前缀-->
     <property name="name" value="dev"/>
 
@@ -44,7 +44,7 @@
 
 
     <!--配置mybatis sql 日志-->
-    <logger name="team.fjut.cf.mapper" level="DEBUG"/>
+    <logger name="team.fjut.cf.mapper" level="INFO"/>
     <!-- 基于INFO处理日志：具体控制台或者文件对日志级别的处理还要看所在appender配置的filter，如果没有配置filter，则使用root配置 -->
     <root level="${logLevel}">
         <appender-ref ref="STDOUT" />

@@ -82,3 +82,13 @@ pagehelper:
   supportMethodsArguments: true
   params: count=countSql
 
+# 自定义配置
+cf:
+  config:
+    vj:
+      problemListUrl: https://vjudge.net/problem/data
+      remoteOJsUrl: https://vjudge.net/util/remoteOJs
+      problemHtmlUrl: https://vjudge.net/problem/%s
+      checkLoginStatusUrl: https://vjudge.net/user/checkLogInStatus
+      doLoginUrl: https://vjudge.net/user/login
+      submitUrl: https://vjudge.net/problem/submit
