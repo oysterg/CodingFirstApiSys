@@ -1,9 +1,9 @@
 package team.fjut.cf.controller;
 
 import team.fjut.cf.component.interceptor.LoginRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.MallGoodsPO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.MallGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,27 +22,27 @@ public class MallController {
     MallGoodsService mallGoodsService;
 
     @GetMapping("/list")
-    public ResultJsonVO getMallGoodsList(@RequestParam("pageNum") Integer pageNum,
-                                         @RequestParam("pageSize") Integer pageSize) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getMallGoodsList(@RequestParam("pageNum") Integer pageNum,
+                                       @RequestParam("pageSize") Integer pageSize) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         List<MallGoodsPO> mallGoodsPOS = mallGoodsService.pages(pageNum, pageSize);
         Integer count = mallGoodsService.selectAllCount();
-        resultJsonVO.addInfo(mallGoodsPOS);
-        resultJsonVO.addInfo(count);
-        return resultJsonVO;
+        resultJson.addInfo(mallGoodsPOS);
+        resultJson.addInfo(count);
+        return resultJson;
     }
 
     @LoginRequired
     @GetMapping("/info")
-    public ResultJsonVO getMallGoods(@RequestParam("id") Integer id) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getMallGoods(@RequestParam("id") Integer id) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         MallGoodsPO mallGoodsPO = mallGoodsService.selectByGoodsId(id);
         if (Objects.isNull(mallGoodsPO)) {
-            resultJsonVO.setStatus(ResultJsonCode.RESOURCE_NOT_EXIST);
+            resultJson.setStatus(ResultCode.RESOURCE_NOT_EXIST);
         } else {
-            resultJsonVO.addInfo(mallGoodsPO);
+            resultJson.addInfo(mallGoodsPO);
         }
-        return resultJsonVO;
+        return resultJson;
     }
 
 }

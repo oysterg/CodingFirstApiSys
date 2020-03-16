@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.enums.ResultCode;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.util.Enums2ListUtils;
 
 import java.util.Date;
@@ -19,30 +19,30 @@ import java.util.Date;
 public class UtilController {
 
     @GetMapping("/serverTime")
-    public ResultJsonVO getServerTime() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(new Date());
-        return resultJsonVO;
+    public ResultJson getServerTime() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(new Date());
+        return resultJson;
     }
 
     @GetMapping("/bugTypes")
-    public ResultJsonVO getBugTypes() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(Enums2ListUtils.parseBugType());
-        return resultJsonVO;
+    public ResultJson getBugTypes() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(Enums2ListUtils.parseBugType());
+        return resultJson;
     }
 
     @GetMapping("/codeLanguage")
-    public ResultJsonVO getCodeLanguage() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(Enums2ListUtils.parseCodeLanguage());
-        return resultJsonVO;
+    public ResultJson getCodeLanguage() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(Enums2ListUtils.parseCodeLanguage());
+        return resultJson;
     }
 
     @GetMapping("/submitResult")
-    public ResultJsonVO getSubmitResult() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(Enums2ListUtils.parseSubmitResult());
-        return resultJsonVO;
+    public ResultJson getSubmitResult() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(Enums2ListUtils.parseSubmitResult());
+        return resultJson;
     }
 }

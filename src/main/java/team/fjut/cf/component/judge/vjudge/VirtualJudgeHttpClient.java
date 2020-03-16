@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import team.fjut.cf.component.judge.OnlineJudgeHttpClient;
-import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemHtmlParams;
-import team.fjut.cf.component.judge.vjudge.pojo.RequestProblemListParams;
+import team.fjut.cf.component.judge.vjudge.pojo.ProblemHtmlParams;
+import team.fjut.cf.component.judge.vjudge.pojo.ProblemListParams;
+import team.fjut.cf.component.judge.vjudge.pojo.SubmitParams;
+import team.fjut.cf.component.judge.vjudge.pojo.VjAccount;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +70,12 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
     private String doLoginUrl;
 
     /**
+     * 提交评测 URL
+     */
+    @Value("${cf.config.vj.submitUrl}")
+    private String submitUrl;
+
+    /**
      * 初始化类
      */
     public VirtualJudgeHttpClient() {
@@ -81,7 +89,7 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
      * @param params
      * @return
      */
-    public JSONObject postProblemList(RequestProblemListParams params) {
+    public JSONObject postProblemList(ProblemListParams params) {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("start", params.getStart());
         map.add("length", params.getLength());
@@ -118,7 +126,7 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
      * @param params
      * @return
      */
-    public Object getProblemInfo(RequestProblemHtmlParams params) {
+    public Object getProblemInfo(ProblemHtmlParams params) {
         String realUrl = String.format(problemHtmlUrl, params.getOJId() + "-" + params.getProbNum());
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(headers);
@@ -131,7 +139,7 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
      *
      * @return
      */
-    public Object checkIsLogin() {
+    public String checkIsLogin() {
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = doPost(checkLoginStatusUrl, request);
@@ -141,14 +149,12 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
     /**
      * 用户登录
      *
-     * @param username
-     * @param password
      * @return
      */
-    public Object userLogin(String username, String password) {
+    public Object userLogin(VjAccount vjAccount) {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-        map.add("username", username);
-        map.add("password", password);
+        map.add("username", vjAccount.getUsername());
+        map.add("password", vjAccount.getPassword());
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
         ResponseEntity<String> responseEntity = doPost(doLoginUrl, request);
@@ -156,6 +162,26 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
         cookies.add(responseEntity.getHeaders().get("Set-Cookie").get(0));
         headers.put(HttpHeaders.COOKIE, cookies);
         return virtualJudgeResponseParser.extractBodyAsString(responseEntity);
+    }
+
+    /**
+     * 提交问题解答
+     *
+     * @param params
+     * @return
+     */
+    public JSONObject submitProblem(SubmitParams params) {
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("language", params.getLanguage());
+        map.add("share", params.getShare());
+        map.add("source", params.getSource());
+        map.add("captcha", params.getCaptcha());
+        map.add("oj", params.getOj());
+        map.add("probNum", params.getProbNum());
+        HttpEntity<MultiValueMap<String, Object>> request =
+                new HttpEntity<>(map, headers);
+        ResponseEntity<String> responseEntity = doPost(submitUrl, request);
+        return virtualJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
     }
 
 }

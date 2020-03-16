@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.SystemInfo;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.SystemInfoService;
 
 import java.util.Date;
@@ -38,15 +38,15 @@ public class VjUtilController {
      * @return
      */
     @GetMapping("/ojs")
-    public ResultJsonVO getVJRemoteOJs() {
+    public ResultJson getVJRemoteOJs() {
         String nameInDb = "vj_remote_ojs";
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         // 先找一下数据库中是否有缓存这个数据
         SystemInfo systemInfo = systemInfoService.selectOne(nameInDb);
         //如果没有缓存，则去vj站点获取
         if (Objects.isNull(systemInfo)) {
             JSONObject oJs = virtualJudgeHttpClient.postRemoteOJs();
-            resultJsonVO.addInfo(oJs);
+            resultJson.addInfo(oJs);
             systemInfo = new SystemInfo();
             systemInfo.setName(nameInDb);
             systemInfo.setValue(oJs.toJSONString());
@@ -59,16 +59,16 @@ public class VjUtilController {
             if (System.currentTimeMillis() - systemInfo.getInsertTime().getTime()
                     >= 1000 * 60 * 60 * 4) {
                 JSONObject oJs = virtualJudgeHttpClient.postRemoteOJs();
-                resultJsonVO.addInfo(oJs);
+                resultJson.addInfo(oJs);
                 systemInfo.setValue(oJs.toJSONString());
                 systemInfo.setInsertTime(new Date());
                 systemInfoService.update(systemInfo);
             } else {
                 String value = systemInfo.getValue();
                 JSONObject jsonObject = JSONObject.parseObject(value);
-                resultJsonVO.addInfo(jsonObject);
+                resultJson.addInfo(jsonObject);
             }
         }
-        return resultJsonVO;
+        return resultJson;
     }
 }

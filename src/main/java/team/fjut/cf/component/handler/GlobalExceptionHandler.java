@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.ResourceAccessException;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.enums.ResultCode;
+import team.fjut.cf.pojo.vo.ResultJson;
 
 import java.net.ConnectException;
 
@@ -34,9 +34,9 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler({MissingServletRequestParameterException.class, TypeMismatchException.class, IllegalArgumentException.class, IllegalStateException.class})
-    public ResultJsonVO conversionErrorHandler(Exception ex) {
+    public ResultJson conversionErrorHandler(Exception ex) {
         logger.error("请求参数异常！", ex);
-        return new ResultJsonVO(ResultJsonCode.BAD_REQUEST, "请求参数不合法！");
+        return new ResultJson(ResultCode.BAD_REQUEST, "请求参数不合法！");
     }
 
 
@@ -47,10 +47,10 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResultJsonVO handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-        ResultJsonVO resultJson = new ResultJsonVO();
+    public ResultJson handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
+        ResultJson resultJson = new ResultJson();
         String exceptionMessage = "请求方法不支持！";
-        resultJson.setStatus(ResultJsonCode.METHOD_NOT_SUPPORTED, exceptionMessage);
+        resultJson.setStatus(ResultCode.METHOD_NOT_SUPPORTED, exceptionMessage);
         return resultJson;
     }
 
@@ -61,8 +61,8 @@ public class GlobalExceptionHandler {
      * @return 返回json
      */
     @ExceptionHandler(Exception.class)
-    public ResultJsonVO handleException(Exception e) {
-        ResultJsonVO resultJson = new ResultJsonVO();
+    public ResultJson handleException(Exception e) {
+        ResultJson resultJson = new ResultJson();
         String exceptionMsg;
         if (e instanceof ArrayIndexOutOfBoundsException) {
             exceptionMsg = "[ex0002]: 数组越界错误";
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
         } else {
             exceptionMsg = "[ex0000]: 服务端异常";
         }
-        resultJson.setStatus(ResultJsonCode.SYSTEM_ERROR, exceptionMsg);
+        resultJson.setStatus(ResultCode.SYSTEM_ERROR, exceptionMsg);
         logger.error(exceptionMsg, e);
         return resultJson;
     }

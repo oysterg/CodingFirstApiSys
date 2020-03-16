@@ -1,6 +1,6 @@
 package team.fjut.cf.component.log;
 
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.util.IpUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -76,10 +76,10 @@ public class LogAspect {
 
     }
 
-    @AfterReturning(returning = "resultJsonVO", pointcut = "controllerMethod()")
-    public void logAfterRequestReturning(ResultJsonVO resultJsonVO) {
+    @AfterReturning(returning = "resultJson", pointcut = "controllerMethod()")
+    public void logAfterRequestReturning(ResultJson resultJson) {
         if (controllerLogEnable) {
-            String requestLog = "\n请求结果：\n" + resultJsonVO.toString() +
+            String requestLog = "\n请求结果：\n" + resultJson.toString() +
                     "\n============= 离开Controller =============\n";
             logger.info(requestLog);
         }
@@ -97,10 +97,10 @@ public class LogAspect {
 
     }
 
-    @AfterReturning(returning = "resultJsonVO", pointcut = "handlerMethod()")
-    public void logAfterHandlerReturning(ResultJsonVO resultJsonVO) {
+    @AfterReturning(returning = "resultJson", pointcut = "handlerMethod()")
+    public void logAfterHandlerReturning(ResultJson resultJson) {
         if (handlerLogEnable) {
-            String logStr = "\n请求结果：\n" + resultJsonVO.toString() +
+            String logStr = "\n请求结果：\n" + resultJson.toString() +
                     "\n============= 离开ExceptionHandler =============\n";
             logger.info(logStr);
         }

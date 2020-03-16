@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.JudgeStatus;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 import team.fjut.cf.pojo.vo.StatusListVO;
 import team.fjut.cf.service.JudgeStatusService;
@@ -35,14 +35,14 @@ public class JudgeStatusController {
     LocalJudgeHttpClient localJudgeHttpClient;
 
     @GetMapping("/list")
-    public ResultJsonVO getStatusList(@RequestParam("pageNum") Integer pageNum,
-                                      @RequestParam("pageSize") Integer pageSize,
-                                      @RequestParam(value = "contestId", required = false) Integer contestId,
-                                      @RequestParam(value = "nickname", required = false) String nickname,
-                                      @RequestParam(value = "problemId", required = false) Integer problemId,
-                                      @RequestParam(value = "result", required = false) Integer result,
-                                      @RequestParam(value = "language", required = false) Integer language) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getStatusList(@RequestParam("pageNum") Integer pageNum,
+                                    @RequestParam("pageSize") Integer pageSize,
+                                    @RequestParam(value = "contestId", required = false) Integer contestId,
+                                    @RequestParam(value = "nickname", required = false) String nickname,
+                                    @RequestParam(value = "problemId", required = false) Integer problemId,
+                                    @RequestParam(value = "result", required = false) Integer result,
+                                    @RequestParam(value = "language", required = false) Integer language) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         if (null == pageNum) {
             pageNum = 1;
         }
@@ -56,16 +56,16 @@ public class JudgeStatusController {
         }
         List<StatusListVO> statusListVOS = viewJudgeStatusService.pagesByConditions(pageNum, pageSize, contestId, nickname, problemId, result, language);
         int count = viewJudgeStatusService.countByConditions(contestId, nickname, problemId, result, language);
-        resultJsonVO.addInfo(statusListVOS);
-        resultJsonVO.addInfo(count);
-        return resultJsonVO;
+        resultJson.addInfo(statusListVOS);
+        resultJson.addInfo(count);
+        return resultJson;
     }
 
     @GetMapping("/count")
-    public ResultJsonVO getStatusCountByDay(@RequestParam(value = "days", required = false) String daysStr) {
+    public ResultJson getStatusCountByDay(@RequestParam(value = "days", required = false) String daysStr) {
         int days;
         days = daysStr == null ? 60 : Integer.parseInt(daysStr);
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+        ResultJson resultJson = new ResultJson();
         HashMap<Date, StatusCountVO> hashMap = new HashMap<>(105);
         for (int i = 0; i < days; i++) {
             Calendar calendar = Calendar.getInstance();
@@ -97,9 +97,9 @@ public class JudgeStatusController {
         }
         //按时间升序
         Collections.sort(ans, Comparator.comparing(StatusCountVO::getSubmitDay));
-        resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(ans);
-        return resultJsonVO;
+        resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(ans);
+        return resultJson;
     }
 
     /**
@@ -119,12 +119,12 @@ public class JudgeStatusController {
      */
     @PrivateRequired
     @PostMapping("/submit")
-    public ResultJsonVO submitToLocalJudge(@RequestParam("problemId") Integer problemId,
-                                           @RequestParam("code") String code,
-                                           @RequestParam("language") String languageStr,
-                                           @RequestParam("username") String username,
-                                           @RequestParam(value = "contestId", required = false) Integer contestId) throws Exception {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson submitToLocalJudge(@RequestParam("problemId") Integer problemId,
+                                         @RequestParam("code") String code,
+                                         @RequestParam("language") String languageStr,
+                                         @RequestParam("username") String username,
+                                         @RequestParam(value = "contestId", required = false) Integer contestId) throws Exception {
+        ResultJson resultJson = new ResultJson();
         Date currentTime = new Date();
         // 目前支持语言 JAVA Python2 C/C++
         int language = ("JAVA").equalsIgnoreCase(languageStr) ?
@@ -159,8 +159,8 @@ public class JudgeStatusController {
         } catch (Exception e) {
             // 请求评测机出现异常，返回失败状态
             judgeStatusService.ifLocalJudgeError(judgeStatus);
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！评测机连接异常");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "提交代码到本地评测机失败！评测机连接异常");
+            return resultJson;
         }
         // 如果提交到本地评测机成功，则
         if ("success".equals(jsonObject.getString("ret"))) {
@@ -168,14 +168,14 @@ public class JudgeStatusController {
             judgeStatusService.ifSubmitSuccess(judgeStatus);
             // 启用异步Service获取结果
             judgeStatusService.queryResultFromLocalJudge(judgeStatus);
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "提交评测成功！");
+            resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "提交评测成功！");
         }
         // 如果请求评测机成功，但评测机返回失败结论
         else {
             // 更新数据库表，返回结果
             judgeStatusService.ifSubmitError(judgeStatus);
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "提交代码到本地评测机失败！评测机内部异常");
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "提交代码到本地评测机失败！评测机内部异常");
         }
-        return resultJsonVO;
+        return resultJson;
     }
 }

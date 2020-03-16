@@ -4,7 +4,7 @@ package team.fjut.cf.component.judge.vjudge.pojo;
  * VJ 请求题目html页面参数
  * @author axiang [2020/2/18]
  */
-public class RequestProblemHtmlParams {
+public class ProblemHtmlParams {
     private String OJId;
     private String probNum;
 

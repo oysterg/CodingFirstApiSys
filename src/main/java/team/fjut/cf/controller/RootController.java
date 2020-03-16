@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.enums.ResultCode;
+import team.fjut.cf.pojo.vo.ResultJson;
 
 /**
  * 根路径下的 Controller
@@ -17,8 +17,8 @@ import team.fjut.cf.pojo.vo.ResultJsonVO;
 @RequestMapping("/")
 public class RootController {
     @GetMapping("/")
-    public ResultJsonVO getRootInfo() throws InterruptedException {
+    public ResultJson getRootInfo() throws InterruptedException {
         //Thread.sleep(1000);
-        return new ResultJsonVO(ResultJsonCode.TOKEN_OUTDATED);
+        return new ResultJson(ResultCode.TOKEN_OUTDATED);
     }
 }

@@ -1,9 +1,9 @@
 package team.fjut.cf.controller;
 
 import team.fjut.cf.component.interceptor.PrivateRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCheckIn;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.UserCheckInService;
 import team.fjut.cf.util.IpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +25,17 @@ public class UserCheckInController {
 
     @PrivateRequired
     @PostMapping("/list")
-    public ResultJsonVO getUserCheckIn(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getUserCheckIn(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         List<UserCheckIn> userCheckIns = userCheckInService.select(username);
-        resultJsonVO.addInfo(userCheckIns);
-        return resultJsonVO;
+        resultJson.addInfo(userCheckIns);
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/check")
-    public ResultJsonVO userCheckIn(HttpServletRequest request, String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson userCheckIn(HttpServletRequest request, String username) {
+        ResultJson resultJson = new ResultJson();
         UserCheckIn userCheckIn = new UserCheckIn();
         userCheckIn.setUsername(username);
         userCheckIn.setIpAddress(IpUtils.getClientIpAddress(request));
@@ -43,20 +43,20 @@ public class UserCheckInController {
         userCheckIn.setInfo("日常签到");
         Integer count = userCheckInService.insert(userCheckIn);
         if (1 == count) {
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "签到成功");
+            resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "签到成功");
         } else {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "签到失败");
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "签到失败");
         }
-        return resultJsonVO;
+        return resultJson;
     }
 
     @PrivateRequired
     @GetMapping("/isChecked")
-    public ResultJsonVO getUserIsChecked(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getUserIsChecked(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         boolean todayUserCheckIn = userCheckInService.isTodayUserCheckIn(username);
-        resultJsonVO.addInfo(todayUserCheckIn);
-        return resultJsonVO;
+        resultJson.addInfo(todayUserCheckIn);
+        return resultJson;
     }
 
 }

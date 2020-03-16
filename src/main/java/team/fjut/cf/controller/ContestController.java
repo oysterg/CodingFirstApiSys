@@ -5,12 +5,12 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.pojo.enums.CodeLanguage;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.ContestInfoPO;
 import team.fjut.cf.pojo.po.ContestProblemPO;
 import team.fjut.cf.pojo.vo.ContestListVO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.ContestInfoService;
 import team.fjut.cf.service.ContestProblemService;
 import team.fjut.cf.service.JudgeStatusService;
@@ -38,13 +38,13 @@ public class ContestController {
     ViewJudgeStatusService viewJudgeStatusService;
 
     @GetMapping("/list")
-    public ResultJsonVO getContestList(@RequestParam("kind") Integer kind,
-                                       @RequestParam("pageNum") Integer pageNum,
-                                       @RequestParam("pageSize") Integer pageSize,
-                                       @RequestParam(value = "searchName", required = false) String searchName,
-                                       @RequestParam(value = "searchPermission", required = false) Integer searchPermission,
-                                       @RequestParam(value = "searchStatus", required = false) Integer searchStatus) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getContestList(@RequestParam("kind") Integer kind,
+                                     @RequestParam("pageNum") Integer pageNum,
+                                     @RequestParam("pageSize") Integer pageSize,
+                                     @RequestParam(value = "searchName", required = false) String searchName,
+                                     @RequestParam(value = "searchPermission", required = false) Integer searchPermission,
+                                     @RequestParam(value = "searchStatus", required = false) Integer searchStatus) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         if (StringUtils.isEmpty(searchName)) {
             searchName = null;
         } else {
@@ -52,40 +52,40 @@ public class ContestController {
         }
         List<ContestListVO> contestListVOS = contestInfoService.pagesByConditions(kind, searchName, searchPermission, searchStatus, pageNum, pageSize);
         Integer count = contestInfoService.selectCountByConditions(kind, searchName, searchPermission, searchStatus);
-        resultJsonVO.addInfo(contestListVOS);
-        resultJsonVO.addInfo(count);
-        return resultJsonVO;
+        resultJson.addInfo(contestListVOS);
+        resultJson.addInfo(count);
+        return resultJson;
     }
 
     @LoginRequired
     @GetMapping("/info")
-    public ResultJsonVO getContestInfo(@RequestParam("contestId") Integer contestId,
-                                       @RequestParam(value = "username", required = false) String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getContestInfo(@RequestParam("contestId") Integer contestId,
+                                     @RequestParam(value = "username", required = false) String username) {
+        ResultJson resultJson = new ResultJson();
         ContestInfoPO contestInfoPO = contestInfoService.selectByContestId(contestId);
-        resultJsonVO.addInfo(contestInfoPO);
-        return resultJsonVO;
+        resultJson.addInfo(contestInfoPO);
+        return resultJson;
     }
 
     @LoginRequired
     @GetMapping("/problem/list")
-    public ResultJsonVO getContestProblemList(@RequestParam("contestId") Integer contestId) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getContestProblemList(@RequestParam("contestId") Integer contestId) {
+        ResultJson resultJson = new ResultJson();
         List<ContestProblemPO> contestProblemPOS = contestProblemService.selectByContestId(contestId);
-        resultJsonVO.addInfo(contestProblemPOS);
-        return resultJsonVO;
+        resultJson.addInfo(contestProblemPOS);
+        return resultJson;
     }
 
     @LoginRequired
     @GetMapping("/status/list")
-    public ResultJsonVO getContestStatusList(@RequestParam("contestId") Integer contestId,
-                                             @RequestParam("pageNum") Integer pageNum,
-                                             @RequestParam("pageSize") Integer pageSize,
-                                             @RequestParam(value = "nick", required = false) String nick,
-                                             @RequestParam(value = "problemId", required = false) Integer problemId,
-                                             @RequestParam(value = "result", required = false) String resultStr,
-                                             @RequestParam(value = "language", required = false) String languageStr) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getContestStatusList(@RequestParam("contestId") Integer contestId,
+                                           @RequestParam("pageNum") Integer pageNum,
+                                           @RequestParam("pageSize") Integer pageSize,
+                                           @RequestParam(value = "nick", required = false) String nick,
+                                           @RequestParam(value = "problemId", required = false) Integer problemId,
+                                           @RequestParam(value = "result", required = false) String resultStr,
+                                           @RequestParam(value = "language", required = false) String languageStr) {
+        ResultJson resultJson = new ResultJson();
         if (null == pageNum) {
             pageNum = 1;
         }
@@ -114,7 +114,7 @@ public class ContestController {
         //resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
         //resultJsonVO.addInfo(judgeStatuses);
         //resultJsonVO.addInfo(length);
-        return resultJsonVO;
+        return resultJson;
     }
 
 }

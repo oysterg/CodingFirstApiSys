@@ -1,8 +1,8 @@
 package team.fjut.cf.controller;
 
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.ProblemTagPO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.ProblemTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,11 +23,11 @@ public class ProblemTagController {
     ProblemTagService problemTagService;
 
     @GetMapping("/all")
-    public ResultJsonVO getAllProblemTag() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getAllProblemTag() {
+        ResultJson resultJson = new ResultJson();
         List<ProblemTagPO> problemTagPOS = problemTagService.select();
-        resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
-        resultJsonVO.addInfo(problemTagPOS);
-        return resultJsonVO;
+        resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(problemTagPOS);
+        return resultJson;
     }
 }

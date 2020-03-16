@@ -7,11 +7,11 @@ import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.component.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserAuth;
 import team.fjut.cf.pojo.po.UserBaseInfo;
 import team.fjut.cf.pojo.po.UserCustomInfo;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
 import team.fjut.cf.util.JsonFileUtils;
@@ -50,70 +50,70 @@ public class UserController {
     JwtTokenManager jwtTokenManager;
 
     @PostMapping("/login")
-    public ResultJsonVO userLogin(HttpServletRequest request,
-                                  @RequestParam("username") String username,
-                                  @RequestParam("password") String password) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson userLogin(HttpServletRequest request,
+                                @RequestParam("username") String username,
+                                @RequestParam("password") String password) {
+        ResultJson resultJson = new ResultJson();
         Date currentDate = new Date();
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户名或者密码为空！");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户名或者密码为空！");
+            return resultJson;
         }
         // 用户名不存在
         if (!userInfoService.isUsernameExist(username)) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "登录失败！用户不存在！");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "登录失败！用户不存在！");
+            return resultJson;
         }
         // 查询账号是否激活
         boolean isUserLocked = userAuthService.isUserLocked(username);
         if (isUserLocked) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "您的账号还未激活，请到邮箱中点击激活！");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "您的账号还未激活，请到邮箱中点击激活！");
+            return resultJson;
         }
         // 查询登录权限的解锁时间
         Date unlockTime = userAuthService.selectUnlockTime(username);
         // 如果当前时间小于解锁时间，则表示账号还在锁定期，无法登录
         if (0 > currentDate.compareTo(unlockTime)) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "您的账号已暂时被锁定，请稍后登录。如有疑问，请联系管理员");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "您的账号已暂时被锁定，请稍后登录。如有疑问，请联系管理员");
+            return resultJson;
         }
         if (userInfoService.userLogin(username, password)) {
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "登录成功！");
+            resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "登录成功！");
             UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
             TokenModel tokenModel = new TokenModel();
             tokenModel.setIp(IpUtils.getClientIpAddress(request));
             tokenModel.setUsername(username);
             tokenModel.setRole("Undefined");
             String token = jwtTokenManager.createToken(tokenModel);
-            resultJsonVO.addInfo(username);
-            resultJsonVO.addInfo(token);
-            resultJsonVO.addInfo(userCustomInfoVO);
+            resultJson.addInfo(username);
+            resultJson.addInfo(token);
+            resultJson.addInfo(userCustomInfoVO);
         } else {
             Integer attemptCount = userAuthService.selectAttemptNumber(username);
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "登录失败！账号或密码不正确！您还有 " + (Math.max(5 - attemptCount, 0)) + "次机会");
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "登录失败！账号或密码不正确！您还有 " + (Math.max(5 - attemptCount, 0)) + "次机会");
         }
-        return resultJsonVO;
+        return resultJson;
     }
 
     @PostMapping("/register")
-    public ResultJsonVO userRegister(@RequestParam("username") String username,
-                                     @RequestParam("password") String password,
-                                     @RequestParam("nickname") String nickname,
-                                     @RequestParam("gender") Integer gender,
-                                     @RequestParam("email") String email,
-                                     @RequestParam("phone") String phone,
-                                     @RequestParam("motto") String motto,
-                                     @RequestParam("avatarUrl") String avatarUrl) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson userRegister(@RequestParam("username") String username,
+                                   @RequestParam("password") String password,
+                                   @RequestParam("nickname") String nickname,
+                                   @RequestParam("gender") Integer gender,
+                                   @RequestParam("email") String email,
+                                   @RequestParam("phone") String phone,
+                                   @RequestParam("motto") String motto,
+                                   @RequestParam("avatarUrl") String avatarUrl) {
+        ResultJson resultJson = new ResultJson();
         Boolean isExist = userInfoService.isUsernameExist(username);
         if (isExist) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "注册的用户已存在！");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "注册的用户已存在！");
+            return resultJson;
         }
         boolean isRestrict = JsonFileUtils.isUsernameRestrict(username);
         if (isRestrict) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户名中含有关键字，请选择新的用户名后重试");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户名中含有关键字，请选择新的用户名后重试");
+            return resultJson;
         }
         UserBaseInfo userBaseInfo = new UserBaseInfo();
         userBaseInfo.setUsername(username);
@@ -132,7 +132,7 @@ public class UserController {
         Boolean ans = userInfoService.registerUser(userBaseInfo, userAuth, userCustomInfo);
 
         if (ans) {
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS, "用户注册成功！");
+            resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "用户注册成功！");
             //// 插入挑战模式解锁记录
             //ChallengeUserOpenBlockPO challengeUserOpenBlockPO = new ChallengeUserOpenBlockPO();
             //challengeUserOpenBlockPO.setUsername(username);
@@ -140,48 +140,48 @@ public class UserController {
             //challengeUserOpenBlockPO.setUnlockTime(new Date());
             //challengeBlockService.unlockBlock(challengeUserOpenBlockPO);
         } else {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户注册失败！");
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户注册失败！");
         }
-        return resultJsonVO;
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/logout")
-    public ResultJsonVO userLogOut(String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson userLogOut(String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         jwtTokenManager.deleteToken(username);
-        return resultJsonVO;
+        return resultJson;
     }
 
     @LoginRequired
     @PostMapping("/info")
-    public ResultJsonVO getUserInfo(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getUserInfo(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson();
         UserBaseInfo userBaseInfoVO = userInfoService.selectByUsername(username);
         UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
         Integer totalSubmit = judgeStatusService.selectCountByUsername(username);
-        resultJsonVO.addInfo(userBaseInfoVO);
-        resultJsonVO.addInfo(userCustomInfoVO);
-        resultJsonVO.addInfo(totalSubmit);
-        return resultJsonVO;
+        resultJson.addInfo(userBaseInfoVO);
+        resultJson.addInfo(userCustomInfoVO);
+        resultJson.addInfo(totalSubmit);
+        return resultJson;
     }
 
 
     @PostMapping("/info/custom")
-    public ResultJsonVO getUserCustomerInfo(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getUserCustomerInfo(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson();
         UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
-        resultJsonVO.addInfo(userCustomInfoVO);
-        return resultJsonVO;
+        resultJson.addInfo(userCustomInfoVO);
+        return resultJson;
     }
 
     @LoginRequired
     @PostMapping("/award")
-    public ResultJsonVO getUserAwardList(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getUserAwardList(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson();
         List<String> awardStr = borderHonorRankService.selectByUsername(username);
-        resultJsonVO.addInfo(awardStr);
-        return resultJsonVO;
+        resultJson.addInfo(awardStr);
+        return resultJson;
     }
 
 }

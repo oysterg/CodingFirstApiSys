@@ -3,7 +3,7 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.util.UUIDUtils;
 
 import java.io.IOException;
@@ -28,9 +28,9 @@ public class UploadController {
     private String avatarPath;
 
     @PostMapping("/avatar")
-    public ResultJsonVO uploadAvatar(@RequestParam("avatar") final MultipartFile file)
+    public ResultJson uploadAvatar(@RequestParam("avatar") final MultipartFile file)
             throws IOException {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+        ResultJson resultJson = new ResultJson();
         final byte[] bytes = file.getBytes();
         String randFileName = UUIDUtils.getUUID32();
         int len = file.getOriginalFilename().split("\\.").length;
@@ -40,8 +40,8 @@ public class UploadController {
         }
         final Path path = Paths.get(avatarPath + randFileName + "." + suffix);
         Files.write(path, bytes);
-        resultJsonVO.addInfo(randFileName + "." + suffix);
-        return resultJsonVO;
+        resultJson.addInfo(randFileName + "." + suffix);
+        return resultJson;
     }
 
 

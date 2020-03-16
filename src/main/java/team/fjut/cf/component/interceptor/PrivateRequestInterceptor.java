@@ -12,8 +12,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import team.fjut.cf.component.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.component.token.TokenStatus;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.enums.ResultCode;
+import team.fjut.cf.pojo.vo.ResultJson;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,9 +60,9 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
             String token = request.getHeader("token");
             // 如果token不存在
             if (StringUtils.isEmpty(token)) {
-                ResultJsonVO resultJsonVO = new ResultJsonVO();
-                resultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
-                returnJson(response, JSONObject.toJSONString(resultJsonVO));
+                ResultJson resultJson = new ResultJson();
+                resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
+                returnJson(response, JSONObject.toJSONString(resultJson));
                 return false;
             }
             // 如果token存在，则开始校验
@@ -74,24 +74,24 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
                     if (Objects.equals(username, tokenModel.getUsername())) {
                         return true;
                     } else {
-                        ResultJsonVO resultJsonVO = new ResultJsonVO();
-                        resultJsonVO.setStatus(ResultJsonCode.PERMISSION_NOT_ENOUGH, "权限不足");
-                        returnJson(response, JSONObject.toJSONString(resultJsonVO));
+                        ResultJson resultJson = new ResultJson();
+                        resultJson.setStatus(ResultCode.PERMISSION_NOT_ENOUGH, "权限不足");
+                        returnJson(response, JSONObject.toJSONString(resultJson));
                         return false;
                     }
                 }
                 // 如果验证失败，则让其登录
                 else if (status == TokenStatus.IS_FAIL) {
-                    ResultJsonVO resultJsonVO = new ResultJsonVO();
-                    resultJsonVO.setStatus(ResultJsonCode.USER_NOT_LOGIN, "请登录后重试");
-                    returnJson(response, JSONObject.toJSONString(resultJsonVO));
+                    ResultJson resultJson = new ResultJson();
+                    resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
+                    returnJson(response, JSONObject.toJSONString(resultJson));
                     return false;
                 }
                 // 如果验证为过期token，则让其重新登录
                 else if (status == TokenStatus.IS_OUTDATED) {
-                    ResultJsonVO resultJsonVO = new ResultJsonVO();
-                    resultJsonVO.setStatus(ResultJsonCode.TOKEN_OUTDATED, "token过期，请重新登录");
-                    returnJson(response, JSONObject.toJSONString(resultJsonVO));
+                    ResultJson resultJson = new ResultJson();
+                    resultJson.setStatus(ResultCode.TOKEN_OUTDATED, "token过期，请重新登录");
+                    returnJson(response, JSONObject.toJSONString(resultJson));
                     return false;
                 } else {
                     return false;

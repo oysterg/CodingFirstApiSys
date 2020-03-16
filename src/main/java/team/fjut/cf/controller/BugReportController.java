@@ -2,9 +2,9 @@ package team.fjut.cf.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.BugReport;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.BugReportedService;
 
 import java.util.Date;
@@ -30,12 +30,12 @@ public class BugReportController {
      * @return
      */
     @PostMapping("/report")
-    public ResultJsonVO insertReport(@RequestParam("username") String username,
-                                     @RequestParam("currentPath") String currentPath,
-                                     @RequestParam(value = "type", defaultValue = "0") Integer type,
-                                     @RequestParam("title") String title,
-                                     @RequestParam("text") String text) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson insertReport(@RequestParam("username") String username,
+                                   @RequestParam("currentPath") String currentPath,
+                                   @RequestParam(value = "type", defaultValue = "0") Integer type,
+                                   @RequestParam("title") String title,
+                                   @RequestParam("text") String text) {
+        ResultJson resultJson = new ResultJson();
         BugReport bugReport = new BugReport();
         bugReport.setUsername(username);
         bugReport.setCurrentPath(currentPath);
@@ -46,10 +46,10 @@ public class BugReportController {
         bugReport.setReportTime(new Date());
         Integer ans = bugReportedService.insert(bugReport);
         if (1 == ans) {
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
+            resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
         } else {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL);
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL);
         }
-        return resultJsonVO;
+        return resultJson;
     }
 }

@@ -3,10 +3,10 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.LoginRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.JudgeResult;
 import team.fjut.cf.pojo.vo.JudgeStatusVO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.JudgeResultService;
 import team.fjut.cf.service.JudgeStatusService;
 
@@ -27,13 +27,13 @@ public class JudgeResultController {
 
     @LoginRequired
     @PostMapping("/info")
-    public ResultJsonVO getJudgeResult(@RequestParam("judgeId")Integer judgeId)
+    public ResultJson getJudgeResult(@RequestParam("judgeId")Integer judgeId)
     {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         List<JudgeResult> judgeResults = judgeResultService.selectJudgeResult(judgeId);
         JudgeStatusVO judgeStatusVO = judgeStatusService.selectJudgeStatus(judgeId);
-        resultJsonVO.addInfo(judgeResults);
-        resultJsonVO.addInfo(judgeStatusVO);
-        return resultJsonVO;
+        resultJson.addInfo(judgeResults);
+        resultJson.addInfo(judgeStatusVO);
+        return resultJson;
     }
 }

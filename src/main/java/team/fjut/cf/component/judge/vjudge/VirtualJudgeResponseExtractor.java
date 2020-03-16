@@ -28,7 +28,9 @@ public class VirtualJudgeResponseExtractor extends OnlineJudgeResponseExtractor 
      */
     @Override
     protected JSONObject extractBodyAsJsonObject(ResponseEntity<String> response) {
-        return super.extractBodyAsJsonObject(response);
+        JSONObject jsonObject = super.extractBodyAsJsonObject(response);
+        jsonObject.put("response_time", response.getHeaders().getDate());
+        return jsonObject;
     }
 
     /**

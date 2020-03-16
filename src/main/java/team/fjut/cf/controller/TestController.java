@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.enums.ResultCode;
+import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.util.JsonFileUtils;
 
 /**
  * @author axiang [2019/10/21]
@@ -20,11 +21,9 @@ public class TestController {
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
     @GetMapping("/test")
-    public ResultJsonVO testMethod() {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
-        virtualJudgeHttpClient.userLogin("axiangcoding", "wuyuxiang");
-        Object o = virtualJudgeHttpClient.checkIsLogin();
-        System.out.println(o.toString());
-        return resultJsonVO;
+    public ResultJson testMethod() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        JsonFileUtils.getRandomVJAccount();
+        return resultJson;
     }
 }

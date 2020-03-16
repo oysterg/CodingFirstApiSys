@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.PrivateRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserMessage;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserMessageListVO;
 import team.fjut.cf.service.UserMessageService;
 
@@ -35,14 +35,14 @@ public class UserMessageController {
      */
     @PrivateRequired
     @PostMapping("/list")
-    public ResultJsonVO getUserMessageList(@RequestParam("pageNum") int pageNum,
-                                           @RequestParam("pageSize") int pageSize,
-                                           @RequestParam("username") String toUsername,
-                                           @RequestParam(value = "fromUsername", required = false) String fromUsername,
-                                           @RequestParam(value = "status", required = false) Integer status,
-                                           @RequestParam(value = "title", required = false) String title
+    public ResultJson getUserMessageList(@RequestParam("pageNum") int pageNum,
+                                         @RequestParam("pageSize") int pageSize,
+                                         @RequestParam("username") String toUsername,
+                                         @RequestParam(value = "fromUsername", required = false) String fromUsername,
+                                         @RequestParam(value = "status", required = false) Integer status,
+                                         @RequestParam(value = "title", required = false) String title
     ) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         if (StringUtils.isEmpty(fromUsername)) {
             fromUsername = null;
         }
@@ -53,69 +53,69 @@ public class UserMessageController {
         }
         List<UserMessageListVO> userMessageListVOS = userMessageService.pagesByConditions(pageNum, pageSize, toUsername, fromUsername, status, title);
         Integer count = userMessageService.countByConditions(toUsername, fromUsername, status, title);
-        resultJsonVO.addInfo(userMessageListVOS);
-        resultJsonVO.addInfo(count);
-        return resultJsonVO;
+        resultJson.addInfo(userMessageListVOS);
+        resultJson.addInfo(count);
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/info")
-    public ResultJsonVO getMessageInfo(@RequestParam("messageId") int messageId) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getMessageInfo(@RequestParam("messageId") int messageId) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         UserMessage userMessage = userMessageService.selectById(messageId);
-        resultJsonVO.addInfo(userMessage);
-        return resultJsonVO;
+        resultJson.addInfo(userMessage);
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/notRead/count")
-    public ResultJsonVO getUserNotReadMsgCount(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getUserNotReadMsgCount(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         Integer count = userMessageService.countByConditions(username, null, 0, null);
-        resultJsonVO.addInfo(count);
-        return resultJsonVO;
+        resultJson.addInfo(count);
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/setStatus")
-    public ResultJsonVO setMessageStatus(@RequestParam("messageId") int messageId,
-                                         @RequestParam("status") int status) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson setMessageStatus(@RequestParam("messageId") int messageId,
+                                       @RequestParam("status") int status) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         int i = userMessageService.setStatus(messageId, status);
         if (i != 1) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL);
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL);
         }
-        return resultJsonVO;
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/setStatus/all")
-    public ResultJsonVO setAllMessageStatus(@RequestParam("username") String username,
-                                            @RequestParam("status") int status) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson setAllMessageStatus(@RequestParam("username") String username,
+                                          @RequestParam("status") int status) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         int i = userMessageService.setAllStatus(username, status);
-        resultJsonVO.addInfo(i);
-        return resultJsonVO;
+        resultJson.addInfo(i);
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/delete")
-    public ResultJsonVO deleteMessage(@RequestParam("messageId") int messageId) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson deleteMessage(@RequestParam("messageId") int messageId) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         int i = userMessageService.delete(messageId);
         if (i != 1) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL);
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL);
         }
-        return resultJsonVO;
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/delete/all")
-    public ResultJsonVO deleteAllMessage(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson deleteAllMessage(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         int i = userMessageService.deleteAll(username);
-        resultJsonVO.addInfo(i);
-        return resultJsonVO;
+        resultJson.addInfo(i);
+        return resultJson;
     }
 
 }

@@ -5,11 +5,14 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import team.fjut.cf.component.judge.vjudge.pojo.VjAccount;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 /**
  * 读取用户名关键字json文件
+ *
  * @author axiang [2020/3/12]
  */
 
@@ -42,6 +45,23 @@ public class JsonFileUtils {
             return obj.toString();
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    public static VjAccount getRandomVJAccount() {
+        try {
+            Resource resource = new ClassPathResource("conf/VJAccounts.json");
+            final String str = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
+            JSONArray array = JSONObject.parseArray(str);
+            Random random = new Random();
+            int randInt = random.nextInt(array.size());
+            JSONObject o = (JSONObject) array.get(randInt);
+            VjAccount vjAccount = new VjAccount();
+            vjAccount.setUsername(o.get("user").toString());
+            vjAccount.setPassword(o.get("pwd").toString());
+            return vjAccount;
+        } catch (Exception e) {
+            return new VjAccount();
         }
     }
 

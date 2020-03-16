@@ -2,9 +2,9 @@ package team.fjut.cf.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.DiscussPostPO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.DiscussPostService;
 
 import java.util.List;
@@ -20,18 +20,18 @@ public class DiscussController {
     DiscussPostService discussPostService;
 
     @GetMapping("/post/list")
-    public ResultJsonVO getPostList(@RequestParam("pageNum") Integer pageNum,
-                                    @RequestParam("pageSize") Integer pageSize) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO();
+    public ResultJson getPostList(@RequestParam("pageNum") Integer pageNum,
+                                  @RequestParam("pageSize") Integer pageSize) {
+        ResultJson resultJson = new ResultJson();
         List<DiscussPostPO> discussPostPOS = discussPostService.pages(pageNum, pageSize);
         Integer count = discussPostService.allCount();
         if (discussPostPOS.size() != 0) {
-            resultJsonVO.setStatus(ResultJsonCode.REQUIRED_SUCCESS);
-            resultJsonVO.addInfo(discussPostPOS);
-            resultJsonVO.addInfo(count);
+            resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
+            resultJson.addInfo(discussPostPOS);
+            resultJson.addInfo(count);
         } else {
-            resultJsonVO.setStatus(ResultJsonCode.RESOURCE_NOT_EXIST);
+            resultJson.setStatus(ResultCode.RESOURCE_NOT_EXIST);
         }
-        return resultJsonVO;
+        return resultJson;
     }
 }

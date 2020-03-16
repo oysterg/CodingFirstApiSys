@@ -12,7 +12,7 @@ package team.fjut.cf.component.judge.vjudge.pojo;
  *
  * @author axiang [2020/2/10]
  */
-public class RequestProblemListParams {
+public class ProblemListParams {
     private int start;
     private int length;
     private String OJId;

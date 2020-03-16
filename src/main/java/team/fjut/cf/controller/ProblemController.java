@@ -5,10 +5,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.component.interceptor.PrivateRequired;
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.*;
 import team.fjut.cf.pojo.vo.ProblemListVO;
-import team.fjut.cf.pojo.vo.ResultJsonVO;
+import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserRadarVO;
 import team.fjut.cf.service.*;
 
@@ -55,13 +55,13 @@ public class ProblemController {
      * @return
      */
     @GetMapping("/list")
-    public ResultJsonVO getProblemLimit(@RequestParam("pageNum") Integer pageNum,
-                                        @RequestParam("pageSize") Integer pageSize,
-                                        @RequestParam(value = "problemId", required = false) Integer problemId,
-                                        @RequestParam(value = "tagId", required = false) Integer tagId,
-                                        @RequestParam(value = "title", required = false) String title,
-                                        @RequestParam(value = "username", required = false) String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getProblemLimit(@RequestParam("pageNum") Integer pageNum,
+                                      @RequestParam("pageSize") Integer pageSize,
+                                      @RequestParam(value = "problemId", required = false) Integer problemId,
+                                      @RequestParam(value = "tagId", required = false) Integer tagId,
+                                      @RequestParam(value = "title", required = false) String title,
+                                      @RequestParam(value = "username", required = false) String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         if (pageNum == null) {
             pageNum = 0;
         }
@@ -77,59 +77,59 @@ public class ProblemController {
         }
         List<ProblemListVO> problemLists = viewProblemInfoService.pagesByConditions(pageNum, pageSize, problemId, title, tagId, username);
         int count = viewProblemInfoService.countByConditions(problemId, title, tagId);
-        resultJsonVO.addInfo(problemLists);
-        resultJsonVO.addInfo(count);
-        return resultJsonVO;
+        resultJson.addInfo(problemLists);
+        resultJson.addInfo(count);
+        return resultJson;
     }
 
     @PostMapping("/info")
-    public ResultJsonVO getProblemInfo(@RequestParam(value = "username", required = false) String username,
-                                       @RequestParam("problemId") Integer problemId) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getProblemInfo(@RequestParam(value = "username", required = false) String username,
+                                     @RequestParam("problemId") Integer problemId) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         ProblemInfo problemInfo = problemInfoService.selectProblemInfo(problemId);
         ProblemView problemView = problemViewService.selectView(problemId);
         List<ProblemSample> problemSamples = problemSampleService.selectSamples(problemId);
-        resultJsonVO.addInfo(problemInfo);
-        resultJsonVO.addInfo(problemView);
-        resultJsonVO.addInfo(problemSamples);
+        resultJson.addInfo(problemInfo);
+        resultJson.addInfo(problemView);
+        resultJson.addInfo(problemSamples);
 
-        return resultJsonVO;
+        return resultJson;
     }
 
     @PrivateRequired
     @PostMapping("/userSolved")
-    public ResultJsonVO getUserSolved(@RequestParam("username") String username,
-                                      @RequestParam("problemId") Integer problemId) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getUserSolved(@RequestParam("username") String username,
+                                    @RequestParam("problemId") Integer problemId) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         UserProblemSolved userProblemSolved = new UserProblemSolved();
         if (!StringUtils.isEmpty(username)) {
             userProblemSolved = userProblemSolvedService.selectUserSolved(username, problemId);
         }
-        resultJsonVO.addInfo(userProblemSolved);
-        return resultJsonVO;
+        resultJson.addInfo(userProblemSolved);
+        return resultJson;
     }
 
     @LoginRequired
     @GetMapping("/radar")
-    public ResultJsonVO getProblemRadar(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getProblemRadar(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         List<UserRadarVO> userRadarVOS = problemService.selectUserProblemRadarByUsername(username);
-        resultJsonVO.addInfo(userRadarVOS);
-        return resultJsonVO;
+        resultJson.addInfo(userRadarVOS);
+        return resultJson;
     }
 
     @PrivateRequired
     @GetMapping("/recommend")
-    public ResultJsonVO getRecommendProblem(@RequestParam("username") String username) {
-        ResultJsonVO resultJsonVO = new ResultJsonVO(ResultJsonCode.REQUIRED_SUCCESS);
+    public ResultJson getRecommendProblem(@RequestParam("username") String username) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         Boolean isExist = userInfoService.isUsernameExist(username);
         if (!isExist) {
-            resultJsonVO.setStatus(ResultJsonCode.BUSINESS_FAIL, "用户不存在");
-            return resultJsonVO;
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户不存在");
+            return resultJson;
         }
         List<ProblemInfo> problems = problemService.selectRecommendProblemsByUsername(username);
-        resultJsonVO.addInfo(problems);
-        return resultJsonVO;
+        resultJson.addInfo(problems);
+        return resultJson;
     }
 
 

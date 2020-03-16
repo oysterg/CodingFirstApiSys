@@ -6,31 +6,31 @@ package team.fjut.cf.pojo.vo;
  * @author axiang [2019/10/8]
  */
 
-import team.fjut.cf.pojo.enums.ResultJsonCode;
+import team.fjut.cf.pojo.enums.ResultCode;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResultJsonVO {
+public class ResultJson {
     private Integer code;
     private String msg;
     private List<Object> datas;
 
 
-    public ResultJsonVO() {
+    public ResultJson() {
         datas = new ArrayList<>();
     }
 
-    public ResultJsonVO(ResultJsonCode resultJsonCode) {
+    public ResultJson(ResultCode resultCode) {
         datas = new ArrayList<>();
-        this.code = resultJsonCode.getCode();
-        this.msg = resultJsonCode.getName();
+        this.code = resultCode.getCode();
+        this.msg = resultCode.getName();
     }
 
-    public ResultJsonVO(ResultJsonCode resultJsonCode, String msg) {
+    public ResultJson(ResultCode resultCode, String msg) {
         datas = new ArrayList<>();
-        this.code = resultJsonCode.getCode();
+        this.code = resultCode.getCode();
         this.msg = msg;
     }
 
@@ -50,13 +50,13 @@ public class ResultJsonVO {
         return datas;
     }
 
-    public void setStatus(ResultJsonCode resultJsonCode) {
-        this.code = resultJsonCode.getCode();
+    public void setStatus(ResultCode resultCode) {
+        this.code = resultCode.getCode();
     }
 
-    public void setStatus(ResultJsonCode resultJsonCode, String msg) {
-        this.code = resultJsonCode.getCode();
-        this.msg = StringUtils.isEmpty(msg) ? resultJsonCode.getName() : msg;
+    public void setStatus(ResultCode resultCode, String msg) {
+        this.code = resultCode.getCode();
+        this.msg = StringUtils.isEmpty(msg) ? resultCode.getName() : msg;
     }
 
     public void cleanDatas() {
