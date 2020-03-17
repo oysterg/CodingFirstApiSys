@@ -92,3 +92,4 @@ cf:
       checkLoginStatusUrl: https://vjudge.net/user/checkLogInStatus
       doLoginUrl: https://vjudge.net/user/login
       submitUrl: https://vjudge.net/problem/submit
+      captchaUrl: https://vjudge.net/util/captcha

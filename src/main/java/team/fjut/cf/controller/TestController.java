@@ -1,14 +1,15 @@
 package team.fjut.cf.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
-import team.fjut.cf.pojo.enums.ResultCode;
-import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.util.JsonFileUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author axiang [2019/10/21]
@@ -20,10 +21,14 @@ public class TestController {
     @Autowired
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
-    @GetMapping("/test")
-    public ResultJson testMethod() {
-        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        JsonFileUtils.getRandomVJAccount();
-        return resultJson;
+
+    @GetMapping(value = "/test", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] testMethod() throws IOException {
+        String s = virtualJudgeHttpClient.checkIsLogin();
+        System.out.println("============================== " + s);
+        InputStream captcha = virtualJudgeHttpClient.getCaptcha();
+        byte[] bytes = new byte[captcha.available()];
+        int read = captcha.read(bytes, 0, captcha.available());
+        return bytes;
     }
 }

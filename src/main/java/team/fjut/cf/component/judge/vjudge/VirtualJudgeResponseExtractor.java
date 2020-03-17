@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import team.fjut.cf.component.judge.OnlineJudgeResponseExtractor;
 import team.fjut.cf.component.judge.vjudge.pojo.ProblemDescription;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,13 @@ public class VirtualJudgeResponseExtractor extends OnlineJudgeResponseExtractor 
         return super.getResponseBody(response);
     }
 
+    /**
+     * 将body解析为输入流
+     *
+     */
+    public InputStream extractBodyAsInputStream(ResponseEntity<Resource> response) throws IOException {
+        return response.getBody().getInputStream();
+    }
     /**
      * 提取VJ题目详情页面的HTML中的题目信息
      *
