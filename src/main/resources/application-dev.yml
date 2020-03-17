@@ -31,7 +31,7 @@ cf:
       tokenSecret: tokentoken
     # 控制器日志
     controllerLog:
-      enable: true
+      enable: false
     # 异常处理器日志
     handlerLog:
       enable: true

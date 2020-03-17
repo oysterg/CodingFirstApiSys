@@ -84,7 +84,7 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
     @Value("${cf.config.vj.captchaUrl}")
     private String captchaUrl;
 
-   /**
+    /**
      * 初始化类
      */
     public VirtualJudgeHttpClient() {
@@ -200,10 +200,11 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
      */
     public InputStream getCaptcha() throws IOException {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-        map.add(String.valueOf(System.currentTimeMillis()) ,null);
+        String currentCaptchaUrl = new StringBuilder().append(captchaUrl).append("?").append(System.currentTimeMillis()).toString();
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
-        ResponseEntity<Resource> responseEntity = doPostAsResource(captchaUrl, request);
+        System.out.println(currentCaptchaUrl);
+        ResponseEntity<Resource> responseEntity = doPostAsResource(currentCaptchaUrl, request);
         return virtualJudgeResponseParser.extractBodyAsInputStream(responseEntity);
     }
 }

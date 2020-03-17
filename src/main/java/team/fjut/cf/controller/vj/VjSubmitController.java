@@ -45,6 +45,7 @@ public class VjSubmitController {
                                     @RequestParam("probNum") String probNum,
                                     @RequestParam("language") String language,
                                     @RequestParam("source") String source,
+                                    @RequestParam("captcha") String captcha,
                                     @RequestParam("username") String username) throws IOException {
         ResultJson resultJson = new ResultJson();
 
@@ -55,7 +56,7 @@ public class VjSubmitController {
         params.setShare("0");
         String newSource = source.replaceAll("\\+", "%2B");
         params.setSource(Base64.getEncoder().encodeToString(newSource.getBytes(StandardCharsets.UTF_8)));
-        params.setCaptcha("");
+        params.setCaptcha(captcha);
         if (virtualJudgeHttpClient.checkIsLogin().equals("false")) {
             virtualJudgeHttpClient.userLogin(JsonFileUtils.getRandomVJAccount());
         }
@@ -75,10 +76,10 @@ public class VjSubmitController {
         // FIXME: 验证码错误，对应不上
         else if ("true".equals(jsonObject.get("captcha").toString())) {
             System.out.println(jsonObject.toJSONString());
-            InputStream captcha = virtualJudgeHttpClient.getCaptcha();
+            InputStream captchaInputStream = virtualJudgeHttpClient.getCaptcha();
             String filename = UUIDUtils.getUUID32() + ".jpg";
             File captchaFile = new File(picPath + filename);
-            FileUtils.copyInputStreamToFile(captcha,  captchaFile);
+            FileUtils.copyInputStreamToFile(captchaInputStream,  captchaFile);
             resultJson.addInfo("/image/pic/" + filename);
             resultJson.setStatus(ResultCode.MORE_ACTION_NEEDED);
         } else {
