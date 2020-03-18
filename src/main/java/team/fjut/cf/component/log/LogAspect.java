@@ -1,19 +1,18 @@
 package team.fjut.cf.component.log;
 
-import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.util.IpUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.util.IpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -26,8 +25,9 @@ import java.util.Objects;
  */
 @Aspect
 @Component
+@Slf4j
 public class LogAspect {
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Value("${cf.config.controllerLog.enable}")
     private boolean controllerLogEnable;
@@ -71,7 +71,7 @@ public class LogAspect {
                 logStr.append(" ").append(paramNames[paramNames.length - 1]).append(": ").append(paramValues[paramNames.length - 1]).append("\n");
                 logStr.append("}\n");
             }
-            logger.info(logStr.toString());
+            log.info(logStr.toString());
         }
 
     }
@@ -81,7 +81,7 @@ public class LogAspect {
         if (controllerLogEnable) {
             String requestLog = "\n请求结果：\n" + resultJson.toString() +
                     "\n============= 离开Controller =============\n";
-            logger.info(requestLog);
+            log.info(requestLog);
         }
 
     }
@@ -92,7 +92,7 @@ public class LogAspect {
             StringBuilder logStr = new StringBuilder();
             logStr.append("\n============= 进入ExceptionHandler =============\n");
             logStr.append("处理方法名称 = {").append(joinPoint.getSignature().getDeclaringTypeName()).append(".").append(joinPoint.getSignature().getName()).append("},\n");
-            logger.info(logStr.toString());
+            log.info(logStr.toString());
         }
 
     }
@@ -102,7 +102,7 @@ public class LogAspect {
         if (handlerLogEnable) {
             String logStr = "\n请求结果：\n" + resultJson.toString() +
                     "\n============= 离开ExceptionHandler =============\n";
-            logger.info(logStr);
+            log.info(logStr);
         }
     }
 

@@ -9,9 +9,22 @@ package team.fjut.cf.component.token;
  * @author axiang
  */
 public enum TokenStatus {
+    /**
+     * Token校验失败
+     */
     IS_FAIL(0),
+    /**
+     * Token校验成功
+     */
     IS_TRUE(1),
-    IS_OUTDATED(2);
+    /**
+     * Token过期
+     */
+    IS_OUTDATED(2),
+    /**
+     * 是游客
+     */
+    IS_GUEST(3);
 
     private int code;
 

@@ -22,16 +22,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
+ * VJ评测Controller
+ *
  * @author axiang [2020/3/16]
  */
 @RestController
 @CrossOrigin
 @RequestMapping("/vj/judgeResult")
-public class VjSubmitController {
+public class VjJudgeResultController {
 
-    @Value("${cf.config.file.picPath}")
-    String picPath;
-
+    @Value("${cf.config.file.tempPath}")
+    String tempPath;
 
     @Autowired
     VirtualJudgeHttpClient virtualJudgeHttpClient;
@@ -48,7 +49,6 @@ public class VjSubmitController {
                                     @RequestParam("captcha") String captcha,
                                     @RequestParam("username") String username) throws IOException {
         ResultJson resultJson = new ResultJson();
-
         SubmitParams params = new SubmitParams();
         params.setOj(oj);
         params.setProbNum(probNum);
@@ -57,7 +57,7 @@ public class VjSubmitController {
         String newSource = source.replaceAll("\\+", "%2B");
         params.setSource(Base64.getEncoder().encodeToString(newSource.getBytes(StandardCharsets.UTF_8)));
         params.setCaptcha(captcha);
-        if (virtualJudgeHttpClient.checkIsLogin().equals("false")) {
+        if ("false".equals(virtualJudgeHttpClient.checkIsLogin())) {
             virtualJudgeHttpClient.userLogin(JsonFileUtils.getRandomVJAccount());
         }
         JSONObject jsonObject = virtualJudgeHttpClient.submitProblem(params);
@@ -72,14 +72,12 @@ public class VjSubmitController {
             vjJudgeResultService.insert(vjJudgeResult);
             //    TODO： 异步线程获取结果
         }
-        // 需要验证码
-        // FIXME: 验证码错误，对应不上
+        // 需要验证码时，告诉前端需要更多操作
         else if ("true".equals(jsonObject.get("captcha").toString())) {
-            System.out.println(jsonObject.toJSONString());
             InputStream captchaInputStream = virtualJudgeHttpClient.getCaptcha();
             String filename = UUIDUtils.getUUID32() + ".jpg";
-            File captchaFile = new File(picPath + filename);
-            FileUtils.copyInputStreamToFile(captchaInputStream,  captchaFile);
+            File captchaFile = new File(tempPath + filename);
+            FileUtils.copyInputStreamToFile(captchaInputStream, captchaFile);
             resultJson.addInfo("/image/pic/" + filename);
             resultJson.setStatus(ResultCode.MORE_ACTION_NEEDED);
         } else {

@@ -47,14 +47,15 @@ public class JwtTokenManager implements TokenManager {
     public String createToken(TokenModel model) {
         Date expireAt = new Date(System.currentTimeMillis() + expireTime);
         String token = JWT.create()
-                .withIssuer("auth0")
-                .withIssuedAt(new Date(System.currentTimeMillis()))
+                .withIssuer("CodingFirst")
+                .withIssuedAt(new Date())
                 .withClaim("username", model.getUsername())
                 .withClaim("role", model.getRole())
                 .withClaim("ip", model.getIp())
                 .withExpiresAt(expireAt)
                 .sign(Algorithm.HMAC256(tokenSecret));
-        redisUtils.set(model.getUsername(), token);
+        // Redis中设置默认 1 天过期
+        redisUtils.set(model.getUsername(), token, 60 * 60 * 4);
         return token;
     }
 
@@ -64,11 +65,16 @@ public class JwtTokenManager implements TokenManager {
         String username = "";
         try {
             JWTVerifier verifier = JWT.require(Algorithm.HMAC256(tokenSecret)).
-                    withIssuer("auth0")
+                    withIssuer("CodingFirst")
                     .build();
             // 如果不报错，代表解码成功，为我们签发的token
             DecodedJWT jwt = verifier.verify(token);
             username = jwt.getClaim("username").asString();
+            String role = jwt.getClaim("role").asString();
+            // 如果校验为游客，直接退出
+            if ("Guest".equals(role)) {
+                return TokenStatus.IS_GUEST;
+            }
             // 去redis中找到username对应的token
             String tokenInRedis = (String) redisUtils.get(username);
             // 如果在redis中保存的token和待校验的token一致，代表token有效
@@ -96,9 +102,9 @@ public class JwtTokenManager implements TokenManager {
 
     @Override
     public TokenModel getTokenModel(String token) {
-        if (checkToken(token) == TokenStatus.IS_TRUE) {
+        if (checkToken(token) == TokenStatus.IS_TRUE || checkToken(token) == TokenStatus.IS_GUEST) {
             TokenModel result = new TokenModel();
-            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(tokenSecret)).withIssuer("auth0").build();
+            JWTVerifier verifier = JWT.require(Algorithm.HMAC256(tokenSecret)).withIssuer("CodingFirst").build();
             DecodedJWT jwt = verifier.verify(token);
             result.setUsername(jwt.getClaim("username").asString());
             result.setRole(jwt.getClaim("role").asString());

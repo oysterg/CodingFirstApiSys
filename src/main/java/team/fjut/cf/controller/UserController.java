@@ -16,6 +16,7 @@ import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
 import team.fjut.cf.util.JsonFileUtils;
 import team.fjut.cf.util.IpUtils;
+import team.fjut.cf.util.UUIDUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -49,12 +50,48 @@ public class UserController {
     @Autowired
     JwtTokenManager jwtTokenManager;
 
+    @Autowired
+    UserCaptchaService userCaptchaService;
+
+    /**
+     * 获取游客token
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/guest/token")
+    public ResultJson requireGuestToken(HttpServletRequest request) {
+
+        ResultJson resultJson = new ResultJson();
+        TokenModel tokenModel = new TokenModel();
+        tokenModel.setIp(IpUtils.getClientIpAddress(request));
+        tokenModel.setUsername(UUIDUtils.getUUID32());
+        tokenModel.setRole("Guest");
+        String token = jwtTokenManager.createToken(tokenModel);
+        resultJson.addInfo(token);
+        return resultJson;
+    }
+
     @PostMapping("/login")
     public ResultJson userLogin(HttpServletRequest request,
                                 @RequestParam("username") String username,
-                                @RequestParam("password") String password) {
+                                @RequestParam("password") String password,
+                                @RequestParam(value = "captcha") String captchaValue) {
         ResultJson resultJson = new ResultJson();
         Date currentDate = new Date();
+        // 未登录时有游客token
+        String guestToken = request.getHeader("token");
+        TokenModel guestTokenModel = jwtTokenManager.getTokenModel(guestToken);
+        // 检查验证码
+        int i = userCaptchaService.checkCaptcha(guestTokenModel.getUsername(), captchaValue);
+        if (i == 0) {
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "验证码错误");
+            return resultJson;
+        } else if (i == 2) {
+            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
+            return resultJson;
+        }
+
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户名或者密码为空！");
             return resultJson;
@@ -83,7 +120,7 @@ public class UserController {
             TokenModel tokenModel = new TokenModel();
             tokenModel.setIp(IpUtils.getClientIpAddress(request));
             tokenModel.setUsername(username);
-            tokenModel.setRole("Undefined");
+            tokenModel.setRole("User");
             String token = jwtTokenManager.createToken(tokenModel);
             resultJson.addInfo(username);
             resultJson.addInfo(token);

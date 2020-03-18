@@ -1,8 +1,7 @@
 package team.fjut.cf.component.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -24,8 +23,8 @@ import java.io.PrintWriter;
  * @author axiang [2019/10/23]
  */
 @Component
+@Slf4j
 public class LoginRequestInterceptor implements HandlerInterceptor {
-    private final Logger log = LoggerFactory.getLogger(LoginRequestInterceptor.class);
 
     @Autowired
     private JwtTokenManager jwtTokenManager;
@@ -48,28 +47,37 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             if (StringUtils.isEmpty(token)) {
                 ResultJson resultJson = new ResultJson();
                 resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
-                returnJson(response, JSONObject.toJSONString(resultJson));
+                returnJsonObj(response, JSONObject.toJSONString(resultJson));
                 return false;
             }
             // 如果token存在，则开始校验
             else {
+                String tokenRole = "User";
+                // 校验token状态
                 TokenStatus status = jwtTokenManager.checkToken(token);
-                // 如果token验证成功，不再拦截
+                // 如果token验证成功
                 if (status == TokenStatus.IS_TRUE) {
                     return true;
+                }
+                else if(status == TokenStatus.IS_GUEST)
+                {
+                    ResultJson resultJson = new ResultJson();
+                    resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
+                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
+                    return false;
                 }
                 // 如果验证失败，则让其登录
                 else if (status == TokenStatus.IS_FAIL) {
                     ResultJson resultJson = new ResultJson();
                     resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
-                    returnJson(response, JSONObject.toJSONString(resultJson));
+                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
                     return false;
                 }
                 // 如果验证为过期token，则让其重新登录
                 else if (status == TokenStatus.IS_OUTDATED) {
                     ResultJson resultJson = new ResultJson();
                     resultJson.setStatus(ResultCode.TOKEN_OUTDATED, "token过期，请重新登录");
-                    returnJson(response, JSONObject.toJSONString(resultJson));
+                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
                     return false;
                 } else {
                     return false;
@@ -79,7 +87,7 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
     }
 
 
-    private void returnJson(HttpServletResponse response, String json) {
+    private void returnJsonObj(HttpServletResponse response, String json) {
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
@@ -87,7 +95,7 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             writer = response.getWriter();
             writer.print(json);
         } catch (IOException e) {
-            log.error("response error", e);
+            log.error("请求返回错误：", e);
         } finally {
             if (writer != null) {
                 writer.close();

@@ -11,6 +11,7 @@ public enum ResultCode {
     METHOD_NOT_SUPPORTED(10002, "请求的方法不支持！"),
     BAD_REQUEST(10003, "参数异常"),
     MORE_ACTION_NEEDED(10004, "需要更多的操作"),
+    REFRESH_CAPTCHA(10005,"刷新验证码"),
     USER_NOT_LOGIN(20001, "未登录"),
     PERMISSION_NOT_ENOUGH(20002, "权限不足"),
     TOKEN_OUTDATED(20003, "Token过期"),

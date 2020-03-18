@@ -2,8 +2,7 @@ package team.fjut.cf.component.interceptor;
 
 
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -27,9 +26,8 @@ import java.util.Objects;
  * @author axiang [2019/10/9]
  */
 @Component
+@Slf4j
 public class PrivateRequestInterceptor implements HandlerInterceptor {
-
-    private final Logger log = LoggerFactory.getLogger(PrivateRequestInterceptor.class);
 
     @Autowired
     private JwtTokenManager jwtTokenManager;
@@ -68,7 +66,7 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
             // 如果token存在，则开始校验
             else {
                 TokenStatus status = jwtTokenManager.checkToken(token);
-                // 如果token验证成功,检查username是否为本人，如果不是，则失败
+                // 如果token验证成功, 检查username是否为本人，如果不是，则失败
                 if (status == TokenStatus.IS_TRUE) {
                     TokenModel tokenModel = jwtTokenManager.getTokenModel(token);
                     if (Objects.equals(username, tokenModel.getUsername())) {

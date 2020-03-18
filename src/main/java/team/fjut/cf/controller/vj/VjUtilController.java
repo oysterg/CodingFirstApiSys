@@ -2,7 +2,6 @@ package team.fjut.cf.controller.vj;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +12,6 @@ import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.SystemInfoService;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 
@@ -76,17 +73,4 @@ public class VjUtilController {
         return resultJson;
     }
 
-    /**
-     * 从VJ获取验证码
-     *
-     * @return
-     * @throws IOException
-     */
-    @GetMapping(value = "/captcha", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getCaptcha() throws IOException {
-        InputStream captcha = virtualJudgeHttpClient.getCaptcha();
-        byte[] bytes = new byte[captcha.available()];
-        int read = captcha.read(bytes, 0, captcha.available());
-        return bytes;
-    }
 }

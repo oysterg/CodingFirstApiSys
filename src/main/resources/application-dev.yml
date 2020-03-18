@@ -23,7 +23,7 @@ cf:
   config:
     # 权限拦截器
     authInterceptor:
-      enable: false
+      enable: true
     # jwt相关配置
     jwt:
       # jwt默认过期时间为 1000*60*60*8 毫秒
@@ -31,7 +31,7 @@ cf:
       tokenSecret: tokentoken
     # 控制器日志
     controllerLog:
-      enable: false
+      enable: true
     # 异常处理器日志
     handlerLog:
       enable: true
@@ -57,5 +57,6 @@ cf:
       localJudgePath: http://192.168.122.129:8100
     file:
       globalPath: D://testfile/
+      tempPath: D://testfile/temp/
       picPath: D://testfile/pic/
       avatarPath: D://testfile/avatar/

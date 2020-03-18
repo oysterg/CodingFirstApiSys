@@ -32,6 +32,9 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     @Value("${cf.config.file.avatarPath}")
     private String avatarPath;
 
+    @Value("${cf.config.file.tempPath}")
+    private String tempPath;
+
     @Autowired
     private LoginRequestInterceptor loginRequestInterceptor;
 
@@ -58,7 +61,8 @@ public class ControllerConfiguration implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 重定向资源到图片文件夹,
+        // 重定向资源
+        registry.addResourceHandler("/image/temp/**").addResourceLocations("file:" + tempPath);
         registry.addResourceHandler("/image/pic/**").addResourceLocations("file:" + picPath);
         registry.addResourceHandler("/image/avatar/**").addResourceLocations("file:" + avatarPath);
     }
