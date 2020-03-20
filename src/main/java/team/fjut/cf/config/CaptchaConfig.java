@@ -15,7 +15,7 @@ import java.util.Properties;
 public class CaptchaConfig {
     @Bean
     public DefaultKaptcha captchaProducer() {
-        com.google.code.kaptcha.impl.DefaultKaptcha defaultKaptcha = new com.google.code.kaptcha.impl.DefaultKaptcha();
+        DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
         // 图片边框
         properties.setProperty("kaptcha.border", "yes");
