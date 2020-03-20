@@ -61,6 +61,7 @@ public class JwtTokenManager implements TokenManager {
 
     @Override
     public TokenStatus checkToken(String token) {
+        String guestRole = "Guest";
         // 首先对token校验，取出username关键信息
         String username = "";
         try {
@@ -72,7 +73,7 @@ public class JwtTokenManager implements TokenManager {
             username = jwt.getClaim("username").asString();
             String role = jwt.getClaim("role").asString();
             // 如果校验为游客，直接退出
-            if ("Guest".equals(role)) {
+            if (guestRole.equals(role)) {
                 return TokenStatus.IS_GUEST;
             }
             // 去redis中找到username对应的token

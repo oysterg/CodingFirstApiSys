@@ -76,7 +76,7 @@ public class UserController {
     public ResultJson userLogin(HttpServletRequest request,
                                 @RequestParam("username") String username,
                                 @RequestParam("password") String password,
-                                @RequestParam(value = "captcha") String captchaValue) {
+                                @RequestParam("captcha") String captchaValue) {
         ResultJson resultJson = new ResultJson();
         Date currentDate = new Date();
         // 未登录时有游客token
@@ -85,7 +85,7 @@ public class UserController {
         // 检查验证码
         int i = userCaptchaService.checkCaptcha(guestTokenModel.getUsername(), captchaValue);
         if (i == 0) {
-            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "验证码错误");
+            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
             return resultJson;
         } else if (i == 2) {
             resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
@@ -133,15 +133,29 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResultJson userRegister(@RequestParam("username") String username,
+    public ResultJson userRegister(HttpServletRequest request,
+                                   @RequestParam("username") String username,
                                    @RequestParam("password") String password,
                                    @RequestParam("nickname") String nickname,
                                    @RequestParam("gender") Integer gender,
                                    @RequestParam("email") String email,
                                    @RequestParam("phone") String phone,
                                    @RequestParam("motto") String motto,
-                                   @RequestParam("avatarUrl") String avatarUrl) {
+                                   @RequestParam("avatarUrl") String avatarUrl,
+                                   @RequestParam("captcha") String captchaValue) {
         ResultJson resultJson = new ResultJson();
+        // 未登录时有游客token
+        String guestToken = request.getHeader("token");
+        TokenModel guestTokenModel = jwtTokenManager.getTokenModel(guestToken);
+        // 检查验证码
+        int i = userCaptchaService.checkCaptcha(guestTokenModel.getUsername(), captchaValue);
+        if (i == 0) {
+            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
+            return resultJson;
+        } else if (i == 2) {
+            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
+            return resultJson;
+        }
         Boolean isExist = userInfoService.isUsernameExist(username);
         if (isExist) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "注册的用户已存在！");

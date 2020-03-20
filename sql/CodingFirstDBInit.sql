@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 13/03/2020 16:40:07
+ Date: 20/03/2020 14:09:48
 */
 
 SET NAMES utf8mb4;
@@ -217,7 +217,7 @@ CREATE TABLE `t_judge_result`  (
                                    `time` datetime(0) NULL DEFAULT NULL COMMENT '反馈时间',
                                    PRIMARY KEY (`id`) USING BTREE,
                                    UNIQUE INDEX `judge_id`(`judge_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 169 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_judge_status
@@ -242,22 +242,7 @@ CREATE TABLE `t_judge_status`  (
                                    INDEX `username`(`username`) USING BTREE,
                                    INDEX `result`(`result`) USING BTREE,
                                    INDEX `language`(`language`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for t_log
--- ----------------------------
-DROP TABLE IF EXISTS `t_log`;
-CREATE TABLE `t_log`  (
-                          `id` int(11) NOT NULL AUTO_INCREMENT,
-                          `level` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'default' COMMENT '日志等级：[default, debug, info, warning, error, fatal]',
-                          `info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-                          `time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
-                          `username` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '产生日志的用户名',
-                          `ip_address` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '产生日志的地址',
-                          PRIMARY KEY (`id`) USING BTREE,
-                          INDEX `level`(`level`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 169 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_mall_goods
@@ -353,7 +338,7 @@ CREATE TABLE `t_problem_sample`  (
                                      `input_case` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '输入样例',
                                      `output_case` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '输出样例',
                                      PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3237 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3236 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_problem_star
@@ -412,7 +397,7 @@ CREATE TABLE `t_problem_view`  (
                                    `hint` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提示',
                                    PRIMARY KEY (`id`) USING BTREE,
                                    UNIQUE INDEX `problem_id`(`problem_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2614 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2613 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_rating_record
@@ -441,6 +426,22 @@ CREATE TABLE `t_system_info`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_system_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_system_log`;
+CREATE TABLE `t_system_log`  (
+                                 `id` int(11) NOT NULL AUTO_INCREMENT,
+                                 `request_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'default' COMMENT '请求url路径',
+                                 `http_method` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求方法',
+                                 `ip_address` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请求的IP地址',
+                                 `java_method` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '请求的Java方法名称',
+                                 `params` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '请求参数的json字符串',
+                                 `response_body` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '返回的内容',
+                                 `time` datetime(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '请求时间',
+                                 PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_user_auth
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_auth`;
@@ -456,7 +457,7 @@ CREATE TABLE `t_user_auth`  (
                                 PRIMARY KEY (`id`) USING BTREE,
                                 UNIQUE INDEX `username`(`username`) USING BTREE,
                                 CONSTRAINT `t_user_auth_ibfk_1` FOREIGN KEY (`username`) REFERENCES `t_user_base_info` (`username`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_base_info
@@ -465,24 +466,31 @@ DROP TABLE IF EXISTS `t_user_base_info`;
 CREATE TABLE `t_user_base_info`  (
                                      `id` int(11) NOT NULL AUTO_INCREMENT,
                                      `username` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '16个英文字母的登录名',
-                                     `gender` smallint(6) NULL DEFAULT NULL COMMENT '性别，0为保密，1为男，2为女',
+                                     `gender` smallint(6) NULL DEFAULT 0 COMMENT '性别，0为保密，1为男，2为女',
                                      `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '邮箱',
                                      `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '电话',
                                      `motto` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '个性签名',
                                      `register_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '注册时间',
                                      `rating` int(11) NOT NULL DEFAULT 0 COMMENT '评分',
-                                     `ranking` int(11) NOT NULL DEFAULT 0 COMMENT '排行',
-                                     `ac_num` int(11) NOT NULL DEFAULT 0 COMMENT 'AC题数',
                                      `acb` int(11) NOT NULL DEFAULT 0 COMMENT 'ACB数量',
-                                     `school` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '学校',
-                                     `faculty` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '学院',
-                                     `major` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '专业',
-                                     `cla` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '班级',
-                                     `student_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '学号',
-                                     `graduation_year` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '毕业年份，字符串类型',
                                      PRIMARY KEY (`id`) USING BTREE,
                                      UNIQUE INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_user_captcha
+-- ----------------------------
+DROP TABLE IF EXISTS `t_user_captcha`;
+CREATE TABLE `t_user_captcha`  (
+                                   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '唯一身份名称',
+                                   `captcha_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '验证码值',
+                                   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '验证码创建时间',
+                                   `expire_time` datetime(0) NULL DEFAULT NULL COMMENT '验证码过期时间',
+                                   `is_guest` tinyint(4) NULL DEFAULT NULL COMMENT '是否为游客。0：不是游客；1：是游客',
+                                   PRIMARY KEY (`id`) USING BTREE,
+                                   UNIQUE INDEX `name`(`name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_check_in
@@ -496,7 +504,7 @@ CREATE TABLE `t_user_check_in`  (
                                     `ip_address` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '签到ip地址',
                                     PRIMARY KEY (`id`) USING BTREE,
                                     INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_custom_info
@@ -513,7 +521,7 @@ CREATE TABLE `t_user_custom_info`  (
                                        PRIMARY KEY (`id`) USING BTREE,
                                        UNIQUE INDEX `username`(`username`) USING BTREE,
                                        INDEX `nickname`(`nickname`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_message
@@ -528,7 +536,7 @@ CREATE TABLE `t_user_message`  (
                                    `text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '内容',
                                    `time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '时间',
                                    PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_permission
@@ -559,7 +567,7 @@ CREATE TABLE `t_user_problem_solved`  (
                                           PRIMARY KEY (`id`) USING BTREE,
                                           INDEX `username`(`username`) USING BTREE,
                                           INDEX `problem_id`(`problem_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_seal
@@ -591,6 +599,17 @@ CREATE TABLE `t_user_seal_record`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_user_setting
+-- ----------------------------
+DROP TABLE IF EXISTS `t_user_setting`;
+CREATE TABLE `t_user_setting`  (
+                                   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                                   `username` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户名',
+                                   `settings` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '设置',
+                                   PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_user_title
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_title`;
@@ -620,6 +639,35 @@ CREATE TABLE `t_user_title_record`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_vj_judge_result
+-- ----------------------------
+DROP TABLE IF EXISTS `t_vj_judge_result`;
+CREATE TABLE `t_vj_judge_result`  (
+                                      `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                                      `username` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提交评测用户名',
+                                      `run_id` bigint(20) NOT NULL COMMENT '评测ID',
+                                      `remote_run_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '远程评测ID',
+                                      `oj` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '评测oj名',
+                                      `prob_num` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '题目ID',
+                                      `author` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '评测执行作者，这里指的是vj登录账号',
+                                      `author_id` bigint(20) NULL DEFAULT NULL COMMENT '作者ID，这里指的是vj登录账号',
+                                      `submit_time` datetime(0) NULL DEFAULT NULL COMMENT '提交评测时间',
+                                      `processing` tinyint(1) NULL DEFAULT NULL COMMENT '是否正在评测中',
+                                      `status_type` int(11) NULL DEFAULT NULL COMMENT '评测结果类型',
+                                      `status_canonical` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '评测结果简写',
+                                      `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '评测结果',
+                                      `language` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '评测语言',
+                                      `language_canonical` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '语言简写',
+                                      `code` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '代码',
+                                      `length` int(11) NULL DEFAULT NULL COMMENT '代码长度',
+                                      `additional_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '反馈额外信息',
+                                      `runtime` bigint(20) NULL DEFAULT NULL COMMENT '运行消耗时间',
+                                      `memory` bigint(20) NULL DEFAULT NULL COMMENT '消耗内存',
+                                      `is_open` int(11) NULL DEFAULT NULL COMMENT '是否开放',
+                                      PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_vj_problem_info
 -- ----------------------------
 DROP TABLE IF EXISTS `t_vj_problem_info`;
@@ -630,7 +678,7 @@ CREATE TABLE `t_vj_problem_info`  (
                                       `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '数据内容',
                                       `time` datetime(0) NULL DEFAULT NULL COMMENT '获取时间',
                                       PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for v_judge_status
