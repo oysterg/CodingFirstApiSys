@@ -1,5 +1,6 @@
 package team.fjut.cf.config;
 
+import team.fjut.cf.component.interceptor.CaptchaRequestInterceptor;
 import team.fjut.cf.component.interceptor.LoginRequestInterceptor;
 import team.fjut.cf.component.interceptor.PrivateRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     private String tempPath;
 
     @Autowired
+    private CaptchaRequestInterceptor captchaRequestInterceptor;
+
+    @Autowired
     private LoginRequestInterceptor loginRequestInterceptor;
 
     @Autowired
@@ -49,6 +53,7 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         if (enable) {
+            registry.addInterceptor(captchaRequestInterceptor).addPathPatterns("/**");
             registry.addInterceptor(loginRequestInterceptor).addPathPatterns("/**");
             registry.addInterceptor(privateRequestInterceptor).addPathPatterns("/**");
         }

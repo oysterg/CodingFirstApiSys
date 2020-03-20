@@ -3,6 +3,7 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.component.interceptor.CaptchaRequired;
 import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.component.jwt.JwtTokenManager;
@@ -72,25 +73,15 @@ public class UserController {
         return resultJson;
     }
 
+    @CaptchaRequired
     @PostMapping("/login")
     public ResultJson userLogin(HttpServletRequest request,
                                 @RequestParam("username") String username,
                                 @RequestParam("password") String password,
-                                @RequestParam("captcha") String captchaValue) {
+                                @RequestParam("captcha") String captcha) {
         ResultJson resultJson = new ResultJson();
         Date currentDate = new Date();
-        // 未登录时有游客token
-        String guestToken = request.getHeader("token");
-        TokenModel guestTokenModel = jwtTokenManager.getTokenModel(guestToken);
-        // 检查验证码
-        int i = userCaptchaService.checkCaptcha(guestTokenModel.getUsername(), captchaValue);
-        if (i == 0) {
-            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
-            return resultJson;
-        } else if (i == 2) {
-            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
-            return resultJson;
-        }
+
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户名或者密码为空！");
@@ -132,6 +123,8 @@ public class UserController {
         return resultJson;
     }
 
+
+    @CaptchaRequired
     @PostMapping("/register")
     public ResultJson userRegister(HttpServletRequest request,
                                    @RequestParam("username") String username,
@@ -142,20 +135,9 @@ public class UserController {
                                    @RequestParam("phone") String phone,
                                    @RequestParam("motto") String motto,
                                    @RequestParam("avatarUrl") String avatarUrl,
-                                   @RequestParam("captcha") String captchaValue) {
+                                   @RequestParam("captcha") String captcha) {
         ResultJson resultJson = new ResultJson();
-        // 未登录时有游客token
-        String guestToken = request.getHeader("token");
-        TokenModel guestTokenModel = jwtTokenManager.getTokenModel(guestToken);
-        // 检查验证码
-        int i = userCaptchaService.checkCaptcha(guestTokenModel.getUsername(), captchaValue);
-        if (i == 0) {
-            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
-            return resultJson;
-        } else if (i == 2) {
-            resultJson.setStatus(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
-            return resultJson;
-        }
+
         Boolean isExist = userInfoService.isUsernameExist(username);
         if (isExist) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "注册的用户已存在！");
