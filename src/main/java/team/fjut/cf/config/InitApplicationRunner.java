@@ -48,7 +48,7 @@ public class InitApplicationRunner implements CommandLineRunner {
         for (File file : files) {
             // 文件夹不存在，则创建
             if (!file.exists() && !file.isDirectory()) {
-                boolean mkdir = file.mkdir();
+                boolean mkdir = file.mkdirs();
                 isAllCreated = mkdir & isAllCreated;
             }
         }

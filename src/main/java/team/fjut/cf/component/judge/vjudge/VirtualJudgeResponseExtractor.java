@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import team.fjut.cf.component.judge.OnlineJudgeResponseExtractor;
 import team.fjut.cf.component.judge.vjudge.pojo.ProblemDescription;
+import team.fjut.cf.component.judge.vjudge.pojo.ProblemSolution;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +60,7 @@ public class VirtualJudgeResponseExtractor extends OnlineJudgeResponseExtractor 
      * @param response
      * @return
      */
-    public Object extractProbDesAsObject(ResponseEntity<String> response) {
+    public ProblemDescription extractProbDes(ResponseEntity<String> response) {
         String baseVJUrl = "https://vjudge.net";
         ProblemDescription problemDescription = new ProblemDescription();
         String responseBody = super.getResponseBody(response);
@@ -90,6 +91,19 @@ public class VirtualJudgeResponseExtractor extends OnlineJudgeResponseExtractor 
         problemDescription.setProblemDescriptionUrl(desUrl);
         problemDescription.setVirtualJudgeUrl(originUrl.substring(0, originUrl.length() - 7));
         return problemDescription;
+    }
+
+    /**
+     * 提取VJ题目结果返回JSON中的评测结果信息
+     *
+     * @param response
+     * @return
+     */
+    public ProblemSolution extractProbSolution(ResponseEntity<String> response) {
+        ProblemSolution problemSolution = new ProblemSolution();
+        String body = response.getBody();
+        problemSolution = JSONObject.parseObject(body, ProblemSolution.class);
+        return problemSolution;
     }
 
 }

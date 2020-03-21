@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import team.fjut.cf.component.judge.OnlineJudgeHttpClient;
-import team.fjut.cf.component.judge.vjudge.pojo.ProblemHtmlParams;
-import team.fjut.cf.component.judge.vjudge.pojo.ProblemListParams;
-import team.fjut.cf.component.judge.vjudge.pojo.SubmitParams;
-import team.fjut.cf.component.judge.vjudge.pojo.VjAccount;
+import team.fjut.cf.component.judge.vjudge.pojo.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,6 +76,12 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
     private String submitUrl;
 
     /**
+     * 结果 URL
+     */
+    @Value("${cf.config.vj.solutionUrl}")
+    private String solutionUrl;
+
+    /**
      * 验证码URL
      */
     @Value("${cf.config.vj.captchaUrl}")
@@ -140,7 +143,7 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(headers);
         ResponseEntity<String> responseEntity = doGet(realUrl, request);
-        return virtualJudgeResponseParser.extractProbDesAsObject(responseEntity);
+        return virtualJudgeResponseParser.extractProbDes(responseEntity);
     }
 
     /**
@@ -206,5 +209,19 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
         System.out.println(currentCaptchaUrl);
         ResponseEntity<Resource> responseEntity = doPostAsResource(currentCaptchaUrl, request);
         return virtualJudgeResponseParser.extractBodyAsInputStream(responseEntity);
+    }
+
+
+    /**
+     * 获取结果
+     */
+    public ProblemSolution getResult(String runId) {
+        String url = String.format(solutionUrl, runId);
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("showCode", false);
+        HttpEntity<MultiValueMap<String, Object>> request =
+                new HttpEntity<>(map, headers);
+        ResponseEntity<String> responseEntity = doPost(url, request);
+        return virtualJudgeResponseParser.extractProbSolution(responseEntity);
     }
 }

@@ -74,8 +74,8 @@ public class VjProblemController {
      * 执行逻辑如下：
      * 1. 先到本地查找是否有缓存的记录
      * 2. 如果没有，则到VJ上获取数据并返回，插入新的数据库记录
-     * 3. 如果有，且缓存时间不超过15分钟，则直接返回数据库中记录
-     * 4. 如果有，但缓存时间超过15分钟，重新到VJ上获取数据并返回，同时更新数据库记录
+     * 3. 如果有，且缓存时间不超过7天，则直接返回数据库中记录
+     * 4. 如果有，但缓存时间超过7天，重新到VJ上获取数据并返回，同时更新数据库记录
      *
      * @param oJId
      * @param probNum
@@ -102,9 +102,9 @@ public class VjProblemController {
             vjProblemInfo.setData(data);
             vjProblemInfoService.insert(vjProblemInfo);
         } else {
-            // 如果超过了15分钟，重新获取并更新数据
+            // 如果超过了7天，重新获取并更新数据
             if (System.currentTimeMillis() - vjProblemInfo.getTime().getTime()
-                    >= 1000 * 60 * 15) {
+                    >= 1000 * 60 * 60 * 24 * 7) {
                 ProblemDescription problemDescription = (ProblemDescription) virtualJudgeHttpClient.getProblemInfo(params);
                 resultJson.addInfo(problemDescription);
                 String data = JSONObject.toJSONString(problemDescription);

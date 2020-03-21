@@ -1,17 +1,25 @@
 package team.fjut.cf.controller.vj;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import team.fjut.cf.component.interceptor.LoginRequired;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.SystemInfoService;
+import team.fjut.cf.util.Enums2ListUtils;
+import team.fjut.cf.util.UUIDUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Objects;
 
@@ -25,6 +33,10 @@ import java.util.Objects;
 @RequestMapping("/vj/util")
 public class VjUtilController {
 
+    @Value("${cf.config.file.tempPath}")
+    String tempPath;
+
+
     @Autowired
     SystemInfoService systemInfoService;
 
@@ -34,11 +46,11 @@ public class VjUtilController {
     /**
      * 获取VJudge的 remoteOjs的json数据
      * 获取后缓存到数据库中
-     * 如果数据库中数据落后4小时则重新获取
+     * 如果数据库中数据落后7天则重新获取
      *
      * @return
      */
-    @GetMapping("/ojs")
+    @PostMapping("/ojs")
     public ResultJson getVJRemoteOJs() {
         String nameInDb = "vj_remote_ojs";
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
@@ -56,9 +68,9 @@ public class VjUtilController {
         }
         // 如果已有记录
         else {
-            // 如果超过了4个小时，重新获取并更新数据
+            // 如果超过了7天，重新获取并更新数据
             if (System.currentTimeMillis() - systemInfo.getInsertTime().getTime()
-                    >= 1000 * 60 * 60 * 4) {
+                    >= 1000 * 60 * 60 * 24 * 7) {
                 JSONObject oJs = virtualJudgeHttpClient.postRemoteOJs();
                 resultJson.addInfo(oJs);
                 systemInfo.setValue(oJs.toJSONString());
@@ -72,5 +84,32 @@ public class VjUtilController {
         }
         return resultJson;
     }
+
+    @LoginRequired
+    @PostMapping("/captcha")
+    public ResultJson getCaptcha() throws IOException {
+        ResultJson resultJson = new ResultJson();
+        InputStream captchaInputStream = virtualJudgeHttpClient.getCaptcha();
+        String filename = UUIDUtils.getUUID32() + ".jpg";
+        File captchaFile = new File(tempPath + filename);
+        FileUtils.copyInputStreamToFile(captchaInputStream, captchaFile);
+        resultJson.addInfo("/image/temp/" + filename);
+        return resultJson;
+    }
+
+    @PostMapping("/languageType")
+    public ResultJson getVjLanguageType() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(Enums2ListUtils.parseVJLanguageType());
+        return resultJson;
+    }
+
+    @PostMapping("/statusType")
+    public ResultJson getVjStatusType() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        resultJson.addInfo(Enums2ListUtils.parseVJStatusType());
+        return resultJson;
+    }
+
 
 }

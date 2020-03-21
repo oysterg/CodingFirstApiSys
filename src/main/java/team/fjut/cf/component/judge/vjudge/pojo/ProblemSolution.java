@@ -1,23 +1,14 @@
-package team.fjut.cf.pojo.po;
+package team.fjut.cf.component.judge.vjudge.pojo;
 
 import lombok.Data;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @author axiang [2020/3/16]
+ * @author axiang [2020/3/21]
  */
 @Data
-@Table(name = "t_vj_judge_result")
-public class VjJudgeResult {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
-    Integer id;
-    String username;
+public class ProblemSolution {
     Integer runId;
     String remoteRunId;
     String oj;
@@ -25,7 +16,7 @@ public class VjJudgeResult {
     String author;
     Integer authorId;
     Date submitTime;
-    Integer processing;
+    Boolean processing;
     Integer statusType;
     String statusCanonical;
     String status;
@@ -36,4 +27,5 @@ public class VjJudgeResult {
     String additionalInfo;
     Integer runtime;
     Integer memory;
+    Integer isOpen;
 }

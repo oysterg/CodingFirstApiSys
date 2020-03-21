@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.interceptor.PrivateRequired;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
@@ -11,6 +12,8 @@ import team.fjut.cf.component.judge.vjudge.pojo.SubmitParams;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.VjJudgeResult;
 import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.pojo.vo.VjJudgeResultVO;
+import team.fjut.cf.service.ViewVjJudgeResultService;
 import team.fjut.cf.service.VjJudgeResultService;
 import team.fjut.cf.util.JsonFileUtils;
 import team.fjut.cf.util.UUIDUtils;
@@ -20,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 
 /**
  * VJ评测Controller
@@ -38,7 +43,43 @@ public class VjJudgeResultController {
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
     @Autowired
+    ViewVjJudgeResultService viewVjJudgeResultService;
+
+    @Autowired
     VjJudgeResultService vjJudgeResultService;
+
+    @PostMapping("/list")
+    public ResultJson getResultList(@RequestParam("pageNum") int pageNum,
+                                    @RequestParam("pageSize") int pageSize,
+                                    @RequestParam(value = "nickname", required = false) String nickname,
+                                    @RequestParam(value = "problemId", required = false) String problemId,
+                                    @RequestParam(value = "result", required = false) Integer result,
+                                    @RequestParam(value = "language", required = false) String language) {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        if(StringUtils.isEmpty(nickname))
+        {
+            nickname = null;
+        }
+        if(StringUtils.isEmpty(problemId))
+        {
+            problemId = null;
+        }
+        if(StringUtils.isEmpty(result))
+        {
+            result = null;
+        }
+        if(StringUtils.isEmpty(language))
+        {
+            language = null;
+        }
+        List<VjJudgeResultVO> pages = viewVjJudgeResultService.pagesByConditions(pageNum, pageSize,
+                nickname, problemId, result, language);
+        int count = viewVjJudgeResultService.countByConditions(nickname, problemId, result, language);
+        resultJson.addInfo(pages);
+        resultJson.addInfo(count);
+        return resultJson;
+    }
+
 
     @PrivateRequired
     @PostMapping("/submit")
@@ -68,9 +109,10 @@ public class VjJudgeResultController {
             vjJudgeResult.setProbNum(probNum);
             vjJudgeResult.setUsername(username);
             vjJudgeResult.setCode(source);
+            vjJudgeResult.setSubmitTime(new Date());
             vjJudgeResult.setRunId(Integer.parseInt(jsonObject.get("runId").toString()));
             vjJudgeResultService.insert(vjJudgeResult);
-            //    TODO： 异步线程获取结果
+            vjJudgeResultService.getResultFromVJ(vjJudgeResult);
         }
         // 需要验证码时，告诉前端需要更多操作
         else if ("true".equals(jsonObject.get("captcha").toString())) {
@@ -78,7 +120,7 @@ public class VjJudgeResultController {
             String filename = UUIDUtils.getUUID32() + ".jpg";
             File captchaFile = new File(tempPath + filename);
             FileUtils.copyInputStreamToFile(captchaInputStream, captchaFile);
-            resultJson.addInfo("/image/pic/" + filename);
+            resultJson.addInfo("/image/temp/" + filename);
             resultJson.setStatus(ResultCode.MORE_ACTION_NEEDED);
         } else {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL);

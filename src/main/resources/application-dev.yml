@@ -15,7 +15,6 @@ spring:
     username: axiangcoding@foxmail.com
     password: uqjuaxkpcfzgdgbi
 
-
 logging:
   config: classpath:conf/logback-dev-spring.xml
 
@@ -28,7 +27,7 @@ cf:
     jwt:
       # jwt默认过期时间为 1000*60*60*8 毫秒
       expireTime: 28800000
-      tokenSecret: tokentoken
+      tokenSecret: axiangcoding
     # 控制器日志
     controllerLog:
       enable: true
@@ -47,12 +46,6 @@ cf:
     druid:
       name: admin
       pwd: admin
-    # VJ相关配置
-    vj:
-      user:
-        username: axiangcoding
-        password: wuyuxiang
-
     local:
       localJudgePath: http://192.168.122.129:8100
     file:

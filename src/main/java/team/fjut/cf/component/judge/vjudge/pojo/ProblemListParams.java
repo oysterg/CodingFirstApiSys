@@ -1,5 +1,7 @@
 package team.fjut.cf.component.judge.vjudge.pojo;
 
+import lombok.Data;
+
 /**
  * VJ请求题目相关参数类
  * start 记录开始位置
@@ -12,81 +14,14 @@ package team.fjut.cf.component.judge.vjudge.pojo;
  *
  * @author axiang [2020/2/10]
  */
+@Data
 public class ProblemListParams {
-    private int start;
-    private int length;
-    private String OJId;
-    private String probNum;
-    private String title;
-    private String source;
-    private String category;
+     int start;
+     int length;
+     String OJId;
+     String probNum;
+     String title;
+     String source;
+     String category;
 
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public String getOJId() {
-        return OJId;
-    }
-
-    public void setOJId(String OJId) {
-        this.OJId = OJId;
-    }
-
-    public String getProbNum() {
-        return probNum;
-    }
-
-    public void setProbNum(String probNum) {
-        this.probNum = probNum;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    @Override
-    public String toString() {
-        return "VirtualJudgeRequestProblemParams{" +
-                "start=" + start +
-                ", length=" + length +
-                ", OJId='" + OJId + '\'' +
-                ", probNum='" + probNum + '\'' +
-                ", title='" + title + '\'' +
-                ", source='" + source + '\'' +
-                ", category='" + category + '\'' +
-                '}';
-    }
 }

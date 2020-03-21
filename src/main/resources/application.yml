@@ -75,7 +75,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
-# PageHelper
+# PageHelper插件
 pagehelper:
   helperDialect: mysql
   reasonable: true
@@ -93,3 +93,4 @@ cf:
       doLoginUrl: https://vjudge.net/user/login
       submitUrl: https://vjudge.net/problem/submit
       captchaUrl: https://vjudge.net/util/captcha
+      solutionUrl: https://vjudge.net/solution/data/%s
