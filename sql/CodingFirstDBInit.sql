@@ -11,7 +11,7 @@
  Target Server Version : 80015
  File Encoding         : 65001
 
- Date: 20/03/2020 14:09:48
+ Date: 23/03/2020 15:50:27
 */
 
 SET NAMES utf8mb4;
@@ -490,7 +490,7 @@ CREATE TABLE `t_user_captcha`  (
                                    `is_guest` tinyint(4) NULL DEFAULT NULL COMMENT '是否为游客。0：不是游客；1：是游客',
                                    PRIMARY KEY (`id`) USING BTREE,
                                    UNIQUE INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 38 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_check_in
@@ -504,7 +504,7 @@ CREATE TABLE `t_user_check_in`  (
                                     `ip_address` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '签到ip地址',
                                     PRIMARY KEY (`id`) USING BTREE,
                                     INDEX `username`(`username`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_user_custom_info
@@ -663,9 +663,8 @@ CREATE TABLE `t_vj_judge_result`  (
                                       `additional_info` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '反馈额外信息',
                                       `runtime` bigint(20) NULL DEFAULT NULL COMMENT '运行消耗时间',
                                       `memory` bigint(20) NULL DEFAULT NULL COMMENT '消耗内存',
-                                      `is_open` int(11) NULL DEFAULT NULL COMMENT '是否开放',
                                       PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 21 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_vj_problem_info
@@ -678,7 +677,7 @@ CREATE TABLE `t_vj_problem_info`  (
                                       `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '数据内容',
                                       `time` datetime(0) NULL DEFAULT NULL COMMENT '获取时间',
                                       PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- View structure for v_judge_status
@@ -691,5 +690,24 @@ CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_judge_status` AS selec
 -- ----------------------------
 DROP VIEW IF EXISTS `v_problem_info`;
 CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_problem_info` AS select `tpi`.`id` AS `id`,`tpi`.`problem_id` AS `problem_id`,`tpi`.`title` AS `title`,`tpi`.`belong_oj_id` AS `belong_oj_id`,`tpi`.`belong_problem_id` AS `belong_problem_id`,`tpi`.`author` AS `author`,`tpi`.`total_submit` AS `total_submit`,`tpi`.`total_ac` AS `total_ac`,`tpi`.`total_submit_user` AS `total_submit_user`,`tpi`.`total_ac_user` AS `total_ac_user`,`tpi`.`visible` AS `visible`,`tpi`.`judge_option` AS `judge_option`,`tpd`.`problem_type` AS `problem_type`,`tpd`.`difficult_level` AS `difficult_level` from (`t_problem_info` `tpi` left join `t_problem_difficult` `tpd` on((`tpi`.`problem_id` = `tpd`.`problem_id`)));
+
+-- ----------------------------
+-- View structure for v_vj_judge_result
+-- ----------------------------
+DROP VIEW IF EXISTS `v_vj_judge_result`;
+CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `v_vj_judge_result` AS select `t_vj_judge_result`.`id` AS `id`,`t_vj_judge_result`.`username` AS `username`,`t_vj_judge_result`.`run_id` AS `run_id`,`t_vj_judge_result`.`remote_run_id` AS `remote_run_id`,`t_vj_judge_result`.`oj` AS `oj`,`t_vj_judge_result`.`prob_num` AS `prob_num`,`t_vj_judge_result`.`author` AS `author`,`t_vj_judge_result`.`author_id` AS `author_id`,`t_vj_judge_result`.`submit_time` AS `submit_time`,`t_vj_judge_result`.`processing` AS `processing`,`t_vj_judge_result`.`status_type` AS `status_type`,`t_vj_judge_result`.`status_canonical` AS `status_canonical`,`t_vj_judge_result`.`status` AS `status`,`t_vj_judge_result`.`language` AS `language`,`t_vj_judge_result`.`language_canonical` AS `language_canonical`,`t_vj_judge_result`.`code` AS `code`,`t_vj_judge_result`.`length` AS `length`,`t_vj_judge_result`.`additional_info` AS `additional_info`,`t_vj_judge_result`.`runtime` AS `runtime`,`t_vj_judge_result`.`memory` AS `memory`,`t_user_custom_info`.`nickname` AS `nickname` from (`t_vj_judge_result` left join `t_user_custom_info` on((`t_vj_judge_result`.`username` = `t_user_custom_info`.`username`)));
+
+-- ----------------------------
+-- Event structure for e_del_captcha
+-- ----------------------------
+DROP EVENT IF EXISTS `e_del_captcha`;
+delimiter ;;
+CREATE EVENT `e_del_captcha`
+    ON SCHEDULE
+        EVERY '1' DAY STARTS '2020-01-01 00:00:00'
+    COMMENT '自动删除无效验证码记录'
+    DO delete from t_user_captcha where expire_time < NOW()
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;

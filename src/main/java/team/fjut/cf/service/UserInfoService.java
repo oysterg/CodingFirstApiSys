@@ -5,7 +5,6 @@ import team.fjut.cf.pojo.po.UserBaseInfo;
 import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
 import team.fjut.cf.pojo.vo.UserAcbBorderVO;
-import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.pojo.vo.UserRatingBorderVO;
 
 import java.util.List;
@@ -50,13 +49,7 @@ public interface UserInfoService {
      */
     UserBaseInfo selectByUsername(String username);
 
-    /**
-     * 根据用户名查询用户个性化信息
-     *
-     * @param username
-     * @return
-     */
-    UserCustomInfoVO selectUserCustomInfo(String username);
+
 
     /**
      * 查询ACB榜单

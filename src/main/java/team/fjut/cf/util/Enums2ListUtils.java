@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
+ * 将枚举类型转换为key-value对应类型列表
+ *
  * @author axiang [2020/3/4]
  */
 public class Enums2ListUtils {
@@ -18,51 +20,51 @@ public class Enums2ListUtils {
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (BugType item : BugType.values()) {
             HashMap<String, Object> map = new HashMap<>(2);
-            map.put("value",item.getCode());
+            map.put("value", item.getCode());
             map.put("label", item.getName());
             list.add(map);
         }
         return list;
     }
 
-    public static List<HashMap<String, Object>> parseCodeLanguage(){
+    public static List<HashMap<String, Object>> parseCodeLanguage() {
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (CodeLanguage item : CodeLanguage.values()) {
             HashMap<String, Object> map = new HashMap<>(2);
-            map.put("value",item.getCode());
+            map.put("value", item.getCode());
             map.put("label", item.getName());
             list.add(map);
         }
         return list;
     }
 
-    public static List<HashMap<String, Object>> parseSubmitResult(){
+    public static List<HashMap<String, Object>> parseSubmitResult() {
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (SubmitResult item : SubmitResult.values()) {
             HashMap<String, Object> map = new HashMap<>(2);
-            map.put("value",item.getCode());
+            map.put("value", item.getCode());
             map.put("label", item.getName());
             list.add(map);
         }
         return list;
     }
 
-    public static List<HashMap<String, Object>> parseVJLanguageType(){
+    public static List<HashMap<String, Object>> parseVJLanguageType() {
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (LanguageType item : LanguageType.values()) {
             HashMap<String, Object> map = new HashMap<>(2);
-            map.put("value",item.getKey());
+            map.put("value", item.getKey());
             map.put("label", item.getValue());
             list.add(map);
         }
         return list;
     }
 
-    public static List<HashMap<String, Object>> parseVJStatusType(){
+    public static List<HashMap<String, Object>> parseVJStatusType() {
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (StatusType item : StatusType.values()) {
             HashMap<String, Object> map = new HashMap<>(2);
-            map.put("value",item.getKey());
+            map.put("value", item.getKey());
             map.put("label", item.getValue());
             list.add(map);
         }

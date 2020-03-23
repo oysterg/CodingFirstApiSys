@@ -13,9 +13,10 @@ import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.VjJudgeResult;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.VjJudgeResultVO;
+import team.fjut.cf.service.UserInfoService;
 import team.fjut.cf.service.ViewVjJudgeResultService;
 import team.fjut.cf.service.VjJudgeResultService;
-import team.fjut.cf.util.JsonFileUtils;
+import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.UUIDUtils;
 
 import java.io.File;
@@ -35,6 +36,8 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/vj/judgeResult")
 public class VjJudgeResultController {
+    @Autowired
+    JsonFileTool jsonFileTool;
 
     @Value("${cf.config.file.tempPath}")
     String tempPath;
@@ -48,6 +51,9 @@ public class VjJudgeResultController {
     @Autowired
     VjJudgeResultService vjJudgeResultService;
 
+    @Autowired
+    UserInfoService userInfoService;
+
     @PostMapping("/list")
     public ResultJson getResultList(@RequestParam("pageNum") int pageNum,
                                     @RequestParam("pageSize") int pageSize,
@@ -56,20 +62,16 @@ public class VjJudgeResultController {
                                     @RequestParam(value = "result", required = false) Integer result,
                                     @RequestParam(value = "language", required = false) String language) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        if(StringUtils.isEmpty(nickname))
-        {
+        if (StringUtils.isEmpty(nickname)) {
             nickname = null;
         }
-        if(StringUtils.isEmpty(problemId))
-        {
+        if (StringUtils.isEmpty(problemId)) {
             problemId = null;
         }
-        if(StringUtils.isEmpty(result))
-        {
+        if (StringUtils.isEmpty(result)) {
             result = null;
         }
-        if(StringUtils.isEmpty(language))
-        {
+        if (StringUtils.isEmpty(language)) {
             language = null;
         }
         List<VjJudgeResultVO> pages = viewVjJudgeResultService.pagesByConditions(pageNum, pageSize,
@@ -78,6 +80,12 @@ public class VjJudgeResultController {
         resultJson.addInfo(pages);
         resultJson.addInfo(count);
         return resultJson;
+    }
+
+    @PostMapping("/info")
+    public ResultJson getResultInfo(@RequestParam("id") int id) {
+        VjJudgeResult vjJudgeResult = vjJudgeResultService.select(id);
+        return new ResultJson(ResultCode.REQUIRED_SUCCESS, "", vjJudgeResult);
     }
 
 
@@ -99,7 +107,7 @@ public class VjJudgeResultController {
         params.setSource(Base64.getEncoder().encodeToString(newSource.getBytes(StandardCharsets.UTF_8)));
         params.setCaptcha(captcha);
         if ("false".equals(virtualJudgeHttpClient.checkIsLogin())) {
-            virtualJudgeHttpClient.userLogin(JsonFileUtils.getRandomVJAccount());
+            virtualJudgeHttpClient.userLogin(jsonFileTool.getRandomVJAccount());
         }
         JSONObject jsonObject = virtualJudgeHttpClient.submitProblem(params);
         if (jsonObject.containsKey("runId")) {

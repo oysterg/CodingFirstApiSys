@@ -10,6 +10,7 @@ import team.fjut.cf.pojo.enums.ResultCode;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ResultJson {
@@ -32,6 +33,13 @@ public class ResultJson {
         datas = new ArrayList<>();
         this.code = resultCode.getCode();
         this.msg = msg;
+    }
+
+    public ResultJson(ResultCode resultCode, String msg, Object... infos) {
+        datas = new ArrayList<>();
+        this.code = resultCode.getCode();
+        this.msg = msg;
+        this.datas.addAll(Arrays.asList(infos));
     }
 
     public Integer getCode() {

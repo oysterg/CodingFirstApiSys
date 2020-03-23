@@ -15,8 +15,8 @@ import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
-import team.fjut.cf.util.JsonFileUtils;
 import team.fjut.cf.util.IpUtils;
+import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.UUIDUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +32,9 @@ import java.util.List;
 public class UserController {
     @Autowired
     UserInfoService userInfoService;
+
+    @Autowired
+    UserCustomInfoService userCustomInfoService;
 
     @Autowired
     UserAuthService userAuthService;
@@ -54,6 +57,9 @@ public class UserController {
     @Autowired
     UserCaptchaService userCaptchaService;
 
+    @Autowired
+    JsonFileTool jsonFileTool;
+
     /**
      * 获取游客token
      *
@@ -73,12 +79,10 @@ public class UserController {
         return resultJson;
     }
 
-    @CaptchaRequired
     @PostMapping("/login")
     public ResultJson userLogin(HttpServletRequest request,
                                 @RequestParam("username") String username,
-                                @RequestParam("password") String password,
-                                @RequestParam("captcha") String captcha) {
+                                @RequestParam("password") String password) {
         ResultJson resultJson = new ResultJson();
         Date currentDate = new Date();
 
@@ -107,7 +111,7 @@ public class UserController {
         }
         if (userInfoService.userLogin(username, password)) {
             resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "登录成功！");
-            UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
+            UserCustomInfoVO userCustomInfoVO = userCustomInfoService.select(username);
             TokenModel tokenModel = new TokenModel();
             tokenModel.setIp(IpUtils.getClientIpAddress(request));
             tokenModel.setUsername(username);
@@ -134,8 +138,7 @@ public class UserController {
                                    @RequestParam("email") String email,
                                    @RequestParam("phone") String phone,
                                    @RequestParam("motto") String motto,
-                                   @RequestParam("avatarUrl") String avatarUrl,
-                                   @RequestParam("captcha") String captcha) {
+                                   @RequestParam("avatarUrl") String avatarUrl) {
         ResultJson resultJson = new ResultJson();
 
         Boolean isExist = userInfoService.isUsernameExist(username);
@@ -143,7 +146,7 @@ public class UserController {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "注册的用户已存在！");
             return resultJson;
         }
-        boolean isRestrict = JsonFileUtils.isUsernameRestrict(username);
+        boolean isRestrict = jsonFileTool.isUsernameRestrict(username);
         if (isRestrict) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户名中含有关键字，请选择新的用户名后重试");
             return resultJson;
@@ -191,7 +194,7 @@ public class UserController {
     public ResultJson getUserInfo(@RequestParam("username") String username) {
         ResultJson resultJson = new ResultJson();
         UserBaseInfo userBaseInfoVO = userInfoService.selectByUsername(username);
-        UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
+        UserCustomInfoVO userCustomInfoVO = userCustomInfoService.select(username);
         Integer totalSubmit = judgeStatusService.selectCountByUsername(username);
         resultJson.addInfo(userBaseInfoVO);
         resultJson.addInfo(userCustomInfoVO);
@@ -203,7 +206,7 @@ public class UserController {
     @PostMapping("/info/custom")
     public ResultJson getUserCustomerInfo(@RequestParam("username") String username) {
         ResultJson resultJson = new ResultJson();
-        UserCustomInfoVO userCustomInfoVO = userInfoService.selectUserCustomInfo(username);
+        UserCustomInfoVO userCustomInfoVO = userCustomInfoService.select(username);
         resultJson.addInfo(userCustomInfoVO);
         return resultJson;
     }

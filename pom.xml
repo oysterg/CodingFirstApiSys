@@ -8,7 +8,7 @@
         <version>2.2.4.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.fjut</groupId>
+    <groupId>team.fjut</groupId>
     <artifactId>cf</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>

@@ -6,13 +6,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.fjut.cf.component.email.EmailTool;
 import team.fjut.cf.mapper.*;
-import team.fjut.cf.pojo.po.*;
+import team.fjut.cf.pojo.po.UserAuth;
+import team.fjut.cf.pojo.po.UserBaseInfo;
+import team.fjut.cf.pojo.po.UserCustomInfo;
+import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
 import team.fjut.cf.pojo.vo.UserAcbBorderVO;
-import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.pojo.vo.UserRatingBorderVO;
 import team.fjut.cf.service.UserInfoService;
-import team.fjut.cf.util.JsonFileUtils;
+import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.SHAUtils;
 import team.fjut.cf.util.UUIDUtils;
 import tk.mybatis.mapper.entity.Example;
@@ -49,6 +51,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     EmailTool emailTool;
+
+    @Autowired
+    JsonFileTool jsonFileTool;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -88,7 +93,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userMessage.setToUsername(userBaseInfo.getUsername());
         userMessage.setFromUsername("SYSTEM");
         userMessage.setTitle("亲爱的 "+userBaseInfo.getUsername()+" ，欢迎注册一码当先！");
-        userMessage.setText(JsonFileUtils.getMsgTemplate("welcome"));
+        userMessage.setText(jsonFileTool.getMsgTemplate("welcome"));
         userMessage.setTime(new Date());
         userMessageMapper.insertSelective(userMessage);
         return ans1 == 1 && ans2 == 1 && ans3 == 1;
@@ -164,34 +169,6 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userBaseInfo;
     }
 
-    @Override
-    public UserCustomInfoVO selectUserCustomInfo(String username) {
-        UserCustomInfoVO result = new UserCustomInfoVO();
-        Example example = new Example(UserCustomInfo.class);
-        example.createCriteria().andEqualTo("username", username);
-        UserCustomInfo userCustomInfo = userCustomInfoMapper.selectOneByExample(example);
-        // 如果为空返回空内容
-        if (null == userCustomInfo) {
-            return result;
-        }
-        result.setNickname(userCustomInfo.getNickname());
-        result.setId(userCustomInfo.getId());
-        result.setUsername(userCustomInfo.getUsername());
-        result.setAvatarUrl(userCustomInfo.getAvatarUrl());
-        if (userCustomInfo.getAdjectiveId() != null) {
-            UserTitle userAdjTitle = userTitleMapper.selectByPrimaryKey(userCustomInfo.getAdjectiveId());
-            result.setAdjectiveTitle(userAdjTitle.getName());
-        }
-        if (userCustomInfo.getArticleId() != null) {
-            UserTitle userArtTitle = userTitleMapper.selectByPrimaryKey(userCustomInfo.getArticleId());
-            result.setArticleTitle(userArtTitle.getName());
-        }
-        if (userCustomInfo.getSealId() != null) {
-            UserSeal userSeal = userSealMapper.selectByPrimaryKey(userCustomInfo.getSealId());
-            result.setSealUrl(userSeal.getPictureUrl());
-        }
-        return result;
-    }
 
     @Override
     public List<UserAcbBorderVO> selectAcbBorder(int pageNum, int pageSize) {

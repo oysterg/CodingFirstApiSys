@@ -3,8 +3,10 @@ package team.fjut.cf.util;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
 import team.fjut.cf.component.judge.vjudge.pojo.VjAccount;
 
 import java.nio.charset.StandardCharsets;
@@ -15,9 +17,13 @@ import java.util.Random;
  *
  * @author axiang [2020/3/12]
  */
+@Component
+public class JsonFileTool {
 
-public class JsonFileUtils {
-    public static boolean isUsernameRestrict(String username) {
+    @Value("${spring.profiles.active}")
+    private String profiles;
+
+    public boolean isUsernameRestrict(String username) {
         try {
             Resource resource = new ClassPathResource("templates/Keyword.json");
             final String str = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -36,7 +42,7 @@ public class JsonFileUtils {
         }
     }
 
-    public static String getMsgTemplate(String name) {
+    public String getMsgTemplate(String name) {
         try {
             Resource resource = new ClassPathResource("templates/MsgTemplate.json");
             final String str = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
@@ -48,9 +54,10 @@ public class JsonFileUtils {
         }
     }
 
-    public static VjAccount getRandomVJAccount() {
+    public VjAccount getRandomVJAccount() {
         try {
-            Resource resource = new ClassPathResource("conf/VJAccounts.json");
+            String fileName = String.format("vj-accounts-%s.json", profiles);
+            Resource resource = new ClassPathResource("conf/" + fileName);
             final String str = IOUtils.toString(resource.getInputStream(), StandardCharsets.UTF_8);
             JSONArray array = JSONObject.parseArray(str);
             Random random = new Random();

@@ -213,4 +213,5 @@ buildNumber.properties
 /src/test/
 
 /src/main/resources/application-prod.yml
+/src/main/resources/conf/vj-accounts-prod.json
 # End of personal settings

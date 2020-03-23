@@ -22,6 +22,7 @@ import java.util.Objects;
  */
 @Service
 public class ViewVjJudgeResultServiceImpl implements ViewVjJudgeResultService {
+
     @Autowired
     ViewVjJudgeResultMapper viewVjJudgeResultMapper;
 
