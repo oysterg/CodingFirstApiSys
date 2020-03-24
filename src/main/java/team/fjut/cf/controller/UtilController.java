@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.component.jwt.JwtTokenManager;
+import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCaptcha;

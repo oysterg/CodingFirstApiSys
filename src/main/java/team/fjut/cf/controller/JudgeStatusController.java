@@ -23,7 +23,7 @@ import java.util.*;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/judgeStatus")
+@RequestMapping("/judge_status")
 public class JudgeStatusController {
     @Autowired
     JudgeStatusService judgeStatusService;

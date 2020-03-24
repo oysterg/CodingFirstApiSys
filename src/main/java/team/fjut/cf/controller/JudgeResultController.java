@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/judgeResult")
+@RequestMapping("/judge_result")
 public class JudgeResultController {
     @Autowired
     JudgeStatusService judgeStatusService;

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.CaptchaRequired;
 import team.fjut.cf.config.interceptor.LoginRequired;
 import team.fjut.cf.config.interceptor.PrivateRequired;
-import team.fjut.cf.component.jwt.JwtTokenManager;
+import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserAuth;

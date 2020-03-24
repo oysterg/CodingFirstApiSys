@@ -22,12 +22,12 @@ public class BugReportController {
     /**
      * 报告bug
      *
-     * @param username
-     * @param currentPath
-     * @param type
-     * @param title
-     * @param text
-     * @return
+     * @param username 用户名
+     * @param currentPath 当前路径
+     * @param type 0
+     * @param title BUG标题
+     * @param text BUG内容
+     * @return resultJson
      */
     @PostMapping("/report")
     public ResultJson reportBug(@RequestParam("username") String username,
@@ -44,7 +44,7 @@ public class BugReportController {
         bugReport.setText(text);
         bugReport.setIsFixed(0);
         bugReport.setReportTime(new Date());
-        Integer ans = bugReportedService.insert(bugReport);
+        int ans = bugReportedService.insert(bugReport);
         if (1 == ans) {
             resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
         } else {

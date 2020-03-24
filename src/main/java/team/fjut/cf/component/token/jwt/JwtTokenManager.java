@@ -1,4 +1,4 @@
-package team.fjut.cf.component.jwt;
+package team.fjut.cf.component.token.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
