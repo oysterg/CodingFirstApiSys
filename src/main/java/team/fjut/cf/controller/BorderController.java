@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.*;
 import team.fjut.cf.service.BorderHonorRankService;
-import team.fjut.cf.service.UserInfoService;
+import team.fjut.cf.service.UserBaseInfoService;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class BorderController {
     BorderHonorRankService borderHonorRankService;
 
     @Autowired
-    UserInfoService userInfoService;
+    UserBaseInfoService userBaseInfoService;
 
     @GetMapping("/honor_rank")
     public ResultJson getHonorRankList(@RequestParam("pageNum") Integer pageNum,
@@ -37,9 +37,9 @@ public class BorderController {
     public ResultJson getUserBorder(@RequestParam("pageNum") Integer pageNum,
                                     @RequestParam("pageSize") Integer pageSize) {
         ResultJson resultJson = new ResultJson();
-        List<UserRatingBorderVO> userRatingBorderVOS = userInfoService.selectRatingBorder(pageNum, pageSize);
-        List<UserAcNumBorderVO> userAcNumBorderVOS = userInfoService.selectAcNumBorder(pageNum, pageSize);
-        List<UserAcbBorderVO> userAcbBorderVOS = userInfoService.selectAcbBorder(pageNum, pageSize);
+        List<UserRatingBorderVO> userRatingBorderVOS = userBaseInfoService.selectRatingBorder(pageNum, pageSize);
+        List<UserAcNumBorderVO> userAcNumBorderVOS = userBaseInfoService.selectAcNumBorder(pageNum, pageSize);
+        List<UserAcbBorderVO> userAcbBorderVOS = userBaseInfoService.selectAcbBorder(pageNum, pageSize);
         resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
         resultJson.addInfo(userRatingBorderVOS);
         resultJson.addInfo(userAcNumBorderVOS);

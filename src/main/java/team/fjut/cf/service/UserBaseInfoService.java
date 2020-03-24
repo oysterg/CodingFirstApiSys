@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author axiang [2019/10/11]
  */
-public interface UserInfoService {
+public interface UserBaseInfoService {
     /**
      * 注册用户
      * @param userBaseInfo
@@ -20,7 +20,7 @@ public interface UserInfoService {
      * @param userCustomInfo
      * @return
      */
-    Boolean registerUser(UserBaseInfo userBaseInfo, UserAuth userAuth, UserCustomInfo userCustomInfo);
+    boolean registerUser(UserBaseInfo userBaseInfo, UserAuth userAuth, UserCustomInfo userCustomInfo);
 
     /**
      * 用户登录
@@ -29,17 +29,16 @@ public interface UserInfoService {
      * @param password
      * @return
      */
-    Boolean userLogin(String username, String password);
+    boolean userLogin(String username, String password);
 
     /**
      * 根据用户名查询该用户名是否存在
+     * 依据是UserBaseInfo表和UserCustomInfo表中各有一条记录
      *
      * @param username
      * @return
      */
-    Boolean isUsernameExist(String username);
-
-
+    boolean isUserExist(String username);
 
     /**
      * 根据用户名查找用户所有信息
@@ -48,8 +47,6 @@ public interface UserInfoService {
      * @return
      */
     UserBaseInfo selectByUsername(String username);
-
-
 
     /**
      * 查询ACB榜单

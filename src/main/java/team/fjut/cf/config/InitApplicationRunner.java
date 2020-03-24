@@ -31,7 +31,7 @@ public class InitApplicationRunner implements CommandLineRunner {
     String avatarPath;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         initFilePath();
     }
 

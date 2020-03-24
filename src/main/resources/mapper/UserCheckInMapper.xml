@@ -1,38 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserCheckInMapper">
-
-    <select id="selectCheckInByUsername" resultType="team.fjut.cf.pojo.po.UserCheckIn">
-        SELECT
-        id,
-        username,
-        check_time,
-        info,
-        ip_address
-        from
-        t_user_check_in
-        WHERE username = #{username}
-        ORDER BY check_time DESC;
-    </select>
-
     <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserCheckIn">
-        SELECT
-        id,
-        username,
-        check_time,
-        info,
-        ip_address
-        from
-        t_user_check_in
+        SELECT id,
+               username,
+               check_time,
+               info,
+               ip_address
+        from t_user_check_in
         WHERE username = #{username}
         ORDER BY check_time DESC
 
-    </select>
-
-    <select id="selectCountTodayCheckInByUsername" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM t_user_check_in
-        WHERE username = #{username}
-        AND TO_DAYS(check_time) = TO_DAYS(NOW());
     </select>
 
 </mapper>

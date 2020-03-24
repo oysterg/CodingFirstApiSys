@@ -1,4 +1,4 @@
-package team.fjut.cf.component.handler;
+package team.fjut.cf.config.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;

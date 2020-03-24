@@ -1,8 +1,8 @@
 package team.fjut.cf.config;
 
-import team.fjut.cf.component.interceptor.CaptchaRequestInterceptor;
-import team.fjut.cf.component.interceptor.LoginRequestInterceptor;
-import team.fjut.cf.component.interceptor.PrivateRequestInterceptor;
+import team.fjut.cf.config.interceptor.CaptchaRequestInterceptor;
+import team.fjut.cf.config.interceptor.LoginRequestInterceptor;
+import team.fjut.cf.config.interceptor.PrivateRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

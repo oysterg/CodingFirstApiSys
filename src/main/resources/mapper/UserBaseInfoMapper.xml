@@ -2,12 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserBaseInfoMapper">
 
-    <update id="updateAcNumAddOneByUsername">
-        UPDATE t_user_base_info
-        SET ac_num = ac_num + 1
-        WHERE username = #{username};
-    </update>
-
     <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserBaseInfo">
         SELECT id,
                username,

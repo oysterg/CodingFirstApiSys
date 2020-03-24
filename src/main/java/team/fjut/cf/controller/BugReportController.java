@@ -30,11 +30,11 @@ public class BugReportController {
      * @return
      */
     @PostMapping("/report")
-    public ResultJson insertReport(@RequestParam("username") String username,
-                                   @RequestParam("currentPath") String currentPath,
-                                   @RequestParam(value = "type", defaultValue = "0") Integer type,
-                                   @RequestParam("title") String title,
-                                   @RequestParam("text") String text) {
+    public ResultJson reportBug(@RequestParam("username") String username,
+                                @RequestParam("currentPath") String currentPath,
+                                @RequestParam(value = "type", defaultValue = "0") Integer type,
+                                @RequestParam("title") String title,
+                                @RequestParam("text") String text) {
         ResultJson resultJson = new ResultJson();
         BugReport bugReport = new BugReport();
         bugReport.setUsername(username);

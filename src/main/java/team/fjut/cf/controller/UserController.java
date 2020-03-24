@@ -3,9 +3,9 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.component.interceptor.CaptchaRequired;
-import team.fjut.cf.component.interceptor.LoginRequired;
-import team.fjut.cf.component.interceptor.PrivateRequired;
+import team.fjut.cf.config.interceptor.CaptchaRequired;
+import team.fjut.cf.config.interceptor.LoginRequired;
+import team.fjut.cf.config.interceptor.PrivateRequired;
 import team.fjut.cf.component.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultCode;
@@ -31,7 +31,7 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
     @Autowired
-    UserInfoService userInfoService;
+    UserBaseInfoService userBaseInfoService;
 
     @Autowired
     UserCustomInfoService userCustomInfoService;
@@ -40,22 +40,13 @@ public class UserController {
     UserAuthService userAuthService;
 
     @Autowired
-    UserCheckInService userCheckInService;
-
-    @Autowired
     JudgeStatusService judgeStatusService;
 
     @Autowired
     BorderHonorRankService borderHonorRankService;
 
     @Autowired
-    ChallengeBlockService challengeBlockService;
-
-    @Autowired
     JwtTokenManager jwtTokenManager;
-
-    @Autowired
-    UserCaptchaService userCaptchaService;
 
     @Autowired
     JsonFileTool jsonFileTool;
@@ -68,48 +59,51 @@ public class UserController {
      */
     @PostMapping("/guest/token")
     public ResultJson requireGuestToken(HttpServletRequest request) {
-
-        ResultJson resultJson = new ResultJson();
         TokenModel tokenModel = new TokenModel();
         tokenModel.setIp(IpUtils.getClientIpAddress(request));
         tokenModel.setUsername(UUIDUtils.getUUID32());
         tokenModel.setRole("Guest");
         String token = jwtTokenManager.createToken(tokenModel);
-        resultJson.addInfo(token);
-        return resultJson;
+        return new ResultJson(ResultCode.REQUIRED_SUCCESS, "", token);
     }
 
+    /**
+     * 用户登录
+     *
+     * @param request
+     * @param username
+     * @param password
+     * @return
+     */
     @PostMapping("/login")
     public ResultJson userLogin(HttpServletRequest request,
                                 @RequestParam("username") String username,
                                 @RequestParam("password") String password) {
         ResultJson resultJson = new ResultJson();
         Date currentDate = new Date();
-
-
+        // 校验用户名和密码是否为空
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户名或者密码为空！");
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "登录失败！用户名或者密码为空！");
             return resultJson;
         }
-        // 用户名不存在
-        if (!userInfoService.isUsernameExist(username)) {
+        // 校验用户名是否存在
+        if (!userBaseInfoService.isUserExist(username)) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "登录失败！用户不存在！");
             return resultJson;
         }
         // 查询账号是否激活
-        boolean isUserLocked = userAuthService.isUserLocked(username);
-        if (isUserLocked) {
-            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "您的账号还未激活，请到邮箱中点击激活！");
+        if (userAuthService.isUserLocked(username)) {
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "登录失败！您的账号还未激活，请联系管理员！");
             return resultJson;
         }
         // 查询登录权限的解锁时间
         Date unlockTime = userAuthService.selectUnlockTime(username);
         // 如果当前时间小于解锁时间，则表示账号还在锁定期，无法登录
         if (0 > currentDate.compareTo(unlockTime)) {
-            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "您的账号已暂时被锁定，请稍后登录。如有疑问，请联系管理员");
+            resultJson.setStatus(ResultCode.BUSINESS_FAIL, "登录失败！您的账号已暂时被锁定，请稍后登录。如有疑问，请联系管理员");
             return resultJson;
         }
-        if (userInfoService.userLogin(username, password)) {
+        if (userBaseInfoService.userLogin(username, password)) {
             resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "登录成功！");
             UserCustomInfoVO userCustomInfoVO = userCustomInfoService.select(username);
             TokenModel tokenModel = new TokenModel();
@@ -130,8 +124,7 @@ public class UserController {
 
     @CaptchaRequired
     @PostMapping("/register")
-    public ResultJson userRegister(HttpServletRequest request,
-                                   @RequestParam("username") String username,
+    public ResultJson userRegister(@RequestParam("username") String username,
                                    @RequestParam("password") String password,
                                    @RequestParam("nickname") String nickname,
                                    @RequestParam("gender") Integer gender,
@@ -140,8 +133,7 @@ public class UserController {
                                    @RequestParam("motto") String motto,
                                    @RequestParam("avatarUrl") String avatarUrl) {
         ResultJson resultJson = new ResultJson();
-
-        Boolean isExist = userInfoService.isUsernameExist(username);
+        boolean isExist = userBaseInfoService.isUserExist(username);
         if (isExist) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "注册的用户已存在！");
             return resultJson;
@@ -165,8 +157,7 @@ public class UserController {
         UserCustomInfo userCustomInfo = new UserCustomInfo();
         userCustomInfo.setAvatarUrl(avatarUrl);
         userCustomInfo.setNickname(nickname);
-        Boolean ans = userInfoService.registerUser(userBaseInfo, userAuth, userCustomInfo);
-
+        boolean ans = userBaseInfoService.registerUser(userBaseInfo, userAuth, userCustomInfo);
         if (ans) {
             resultJson.setStatus(ResultCode.REQUIRED_SUCCESS, "用户注册成功！");
             //// 插入挑战模式解锁记录
@@ -193,7 +184,7 @@ public class UserController {
     @PostMapping("/info")
     public ResultJson getUserInfo(@RequestParam("username") String username) {
         ResultJson resultJson = new ResultJson();
-        UserBaseInfo userBaseInfoVO = userInfoService.selectByUsername(username);
+        UserBaseInfo userBaseInfoVO = userBaseInfoService.selectByUsername(username);
         UserCustomInfoVO userCustomInfoVO = userCustomInfoService.select(username);
         Integer totalSubmit = judgeStatusService.selectCountByUsername(username);
         resultJson.addInfo(userBaseInfoVO);

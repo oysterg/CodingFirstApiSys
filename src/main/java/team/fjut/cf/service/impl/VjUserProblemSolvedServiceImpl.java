@@ -52,4 +52,9 @@ public class VjUserProblemSolvedServiceImpl implements VjUserProblemSolvedServic
         }
 
     }
+
+    @Override
+    public VjUserProblemSolved selectOne(VjUserProblemSolved vjUserProblemSolved) {
+        return vjUserProblemSolvedMapper.selectOne(vjUserProblemSolved);
+    }
 }

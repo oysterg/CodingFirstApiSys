@@ -3,8 +3,8 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.component.interceptor.LoginRequired;
-import team.fjut.cf.component.interceptor.PrivateRequired;
+import team.fjut.cf.config.interceptor.LoginRequired;
+import team.fjut.cf.config.interceptor.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.*;
 import team.fjut.cf.pojo.vo.ProblemListVO;
@@ -22,7 +22,7 @@ import java.util.List;
 @CrossOrigin
 public class ProblemController {
     @Autowired
-    UserInfoService userInfoService;
+    UserBaseInfoService userBaseInfoService;
 
     @Autowired
     ProblemService problemService;
@@ -122,7 +122,7 @@ public class ProblemController {
     @GetMapping("/recommend")
     public ResultJson getRecommendProblem(@RequestParam("username") String username) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        Boolean isExist = userInfoService.isUsernameExist(username);
+        Boolean isExist = userBaseInfoService.isUserExist(username);
         if (!isExist) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL, "用户不存在");
             return resultJson;

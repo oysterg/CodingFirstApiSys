@@ -29,7 +29,7 @@ import java.util.Objects;
 @Component
 public class JwtTokenManager implements TokenManager {
     /**
-     * jwt生成的token默认过期时间为24小时
+     * jwt生成的token默认过期时间
      */
     @Value("${cf.config.jwt.expireTime}")
     private long expireTime;

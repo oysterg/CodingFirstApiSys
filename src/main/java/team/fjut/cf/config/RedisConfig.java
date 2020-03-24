@@ -28,6 +28,7 @@ public class RedisConfig {
         redisTemplate.afterPropertiesSet();
         return redisTemplate;
     }
+
     public void setRedisTemplate(RedisTemplate redisTemplate) {
         GenericJackson2JsonRedisSerializer jackson2JsonRedisSerializer = new GenericJackson2JsonRedisSerializer();
         // 设置值（value）的序列化采用StringRedisSerializer，后续业务更改可修改为FastJsonRedisSerializer。

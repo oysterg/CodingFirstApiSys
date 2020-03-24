@@ -1,4 +1,4 @@
-package team.fjut.cf.component.interceptor;
+package team.fjut.cf.config.interceptor;
 
 
 import com.alibaba.fastjson.JSONObject;

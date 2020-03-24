@@ -6,9 +6,7 @@ package team.fjut.cf.component.token;
  *
  * @author axiang [2019/10/21]
  */
-
 public interface TokenManager {
-
     /**
      * 根据传入的TokenModel创建一个token并存入Redis中
      *
@@ -24,7 +22,6 @@ public interface TokenManager {
      * @return
      */
     TokenStatus checkToken(String token);
-
 
     /**
      * 获取Token内容

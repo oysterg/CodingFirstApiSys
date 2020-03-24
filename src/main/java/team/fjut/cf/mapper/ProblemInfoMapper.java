@@ -12,39 +12,6 @@ import java.util.List;
 public interface ProblemInfoMapper extends Mapper<ProblemInfo> {
 
     /**
-     * 更新题目提交总数+1
-     *
-     * @param problemId
-     * @return
-     */
-    Integer updateTotalSubmitAddOne(@Param("problemId") Integer problemId);
-
-    /**
-     * 更新题目提交AC总数+1
-     *
-     * @param problemId
-     * @return
-     */
-    Integer updateTotalAcAddOne(@Param("problemId") Integer problemId);
-
-    /**
-     * 更新题目提交用户总数+1
-     *
-     * @param problemId
-     * @return
-     */
-    Integer updateTotalSubmitUserAddOne(@Param("problemId") Integer problemId);
-
-    /**
-     * 更新提交提交用户的AC总数+1
-     *
-     * @param problemId
-     * @return
-     */
-    Integer updateTotalAcUserAddOne(@Param("problemId") Integer problemId);
-
-
-    /**
      * 查询用户未解决的题目列表
      * @param username
      * @return

@@ -21,4 +21,12 @@ public interface VjUserProblemSolvedService {
      * @param vjJudgeResult
      */
     void ifSubmitSuccess(VjJudgeResult vjJudgeResult);
+
+    /**
+     * 根据内容查找一条记录
+     *
+     * @param vjUserProblemSolved
+     * @return
+     */
+    VjUserProblemSolved selectOne(VjUserProblemSolved vjUserProblemSolved);
 }

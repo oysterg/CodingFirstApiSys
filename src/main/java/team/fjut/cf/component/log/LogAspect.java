@@ -42,7 +42,7 @@ public class LogAspect {
     public void controllerMethod() {
     }
 
-    @Pointcut("execution(public * team.fjut.cf.component.handler..*.*(..))")
+    @Pointcut("execution(public * team.fjut.cf.config.exception..*.*(..))")
     public void handlerMethod() {
     }
 

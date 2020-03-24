@@ -3,7 +3,7 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.component.interceptor.PrivateRequired;
+import team.fjut.cf.config.interceptor.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.ResultJson;

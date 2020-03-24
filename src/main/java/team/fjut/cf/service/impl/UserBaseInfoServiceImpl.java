@@ -13,7 +13,7 @@ import team.fjut.cf.pojo.po.UserMessage;
 import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
 import team.fjut.cf.pojo.vo.UserAcbBorderVO;
 import team.fjut.cf.pojo.vo.UserRatingBorderVO;
-import team.fjut.cf.service.UserInfoService;
+import team.fjut.cf.service.UserBaseInfoService;
 import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.SHAUtils;
 import team.fjut.cf.util.UUIDUtils;
@@ -27,7 +27,7 @@ import java.util.List;
  * @author axiang [2019/10/11]
  */
 @Service
-public class UserInfoServiceImpl implements UserInfoService {
+public class UserBaseInfoServiceImpl implements UserBaseInfoService {
     @Autowired
     UserBaseInfoMapper userBaseInfoMapper;
 
@@ -57,7 +57,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean registerUser(UserBaseInfo userBaseInfo, UserAuth userAuth, UserCustomInfo userCustomInfo) {
+    public boolean registerUser(UserBaseInfo userBaseInfo, UserAuth userAuth, UserCustomInfo userCustomInfo) {
         // 插入用户基本信息
         int ans1 = userBaseInfoMapper.insert(userBaseInfo);
         // 插入用户权限信息
@@ -101,7 +101,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean userLogin(String username, String password) {
+    public boolean userLogin(String username, String password) {
         // 最大登录尝试次数
         int maxAttemptTimes = 5;
         Example example = new Example(UserAuth.class);
@@ -150,23 +150,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 
     @Override
-    public Boolean isUsernameExist(String username) {
+    public boolean isUserExist(String username) {
         Example example = new Example(UserAuth.class);
         example.createCriteria().andEqualTo("username", username);
         int num1 = userAuthMapper.selectCountByExample(example);
-        System.out.println(num1);
         Example example1 = new Example(UserBaseInfo.class);
         example1.createCriteria().andEqualTo("username", username);
         int num2 = userBaseInfoMapper.selectCountByExample(example1);
-        System.out.println(num2);
         return (num1 == 1) && (num2 == 1);
     }
 
 
     @Override
     public UserBaseInfo selectByUsername(String username) {
-        UserBaseInfo userBaseInfo = userBaseInfoMapper.selectByUsername(username);
-        return userBaseInfo;
+        Example example = new Example(UserBaseInfo.class);
+        example.createCriteria().andEqualTo("username",username);
+        return userBaseInfoMapper.selectOneByExample(example);
     }
 
 

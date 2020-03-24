@@ -1,65 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.UserProblemSolvedMapper">
-
-    <update id="updateTryCountAddOne">
-       UPDATE t_user_problem_solved
-       SET try_count = try_count+1
-       WHERE username = #{username}
-       AND problem_id = #{problemId};
-    </update>
-
-    <update id="updateSolvedCountAddOne">
-    UPDATE t_user_problem_solved
-       SET solved_count = solved_count +1
-       WHERE username = #{username}
-       AND problem_id = #{problemId};
-    </update>
-
-    <update id="updateFirstSolvedTime">
-    UPDATE t_user_problem_solved
-       SET first_solved_time = NOW()
-       WHERE username = #{username}
-       AND problem_id = #{problemId};
-    </update>
-
-    <update id="updateLastTryTime">
-    UPDATE t_user_problem_solved
-       SET last_try_time = NOW()
-       WHERE username = #{username}
-       AND problem_id = #{problemId};
-    </update>
-
     <select id="selectByUsername" resultType="team.fjut.cf.pojo.po.UserProblemSolved">
-    SELECT * FROM t_user_problem_solved
+        SELECT *
+        FROM t_user_problem_solved
         WHERE username = #{username};
-    </select>
-
-    <select id="selectByUsernameAndProblemId" resultType="team.fjut.cf.pojo.po.UserProblemSolved">
-    SELECT * FROM t_user_problem_solved
-        WHERE username = #{username}
-        AND problem_id = #{problemId};
-    </select>
-
-    <select id="selectCountByUsernameAndProblemId" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM t_user_problem_solved
-        WHERE username = #{username}
-        AND problem_id = #{problemId};
     </select>
 
     <select id="selectCountTypeByUsername" resultType="team.fjut.cf.pojo.po.ProblemTypeCountPO">
         SELECT COUNT(*) totalCount, problem_type
         FROM t_problem_difficult tpd
         WHERE tpd.problem_id in
-        (
-            SELECT problem_id
-            FROM t_user_problem_solved
-            WHERE solved_count >0
-            AND username=#{username}
-        )
+              (
+                  SELECT problem_id
+                  FROM t_user_problem_solved
+                  WHERE solved_count > 0
+                    AND username = #{username}
+              )
         GROUP BY problem_type
         ORDER BY problem_type;
     </select>
-
 
 </mapper>

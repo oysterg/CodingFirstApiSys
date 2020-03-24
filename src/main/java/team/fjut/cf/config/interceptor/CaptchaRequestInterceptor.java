@@ -1,4 +1,4 @@
-package team.fjut.cf.component.interceptor;
+package team.fjut.cf.config.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +8,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import team.fjut.cf.component.jwt.JwtTokenManager;
-import team.fjut.cf.component.token.TokenStatus;
+import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.service.UserCaptchaService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,16 +19,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * 检查用户是否登录拦截器
+ * 带验证码请求 的 拦截器
  *
- * @author axiang [2019/10/23]
+ * @author axiang [2020/3/20]
  */
 @Component
 @Slf4j
-public class LoginRequestInterceptor implements HandlerInterceptor {
-
+public class CaptchaRequestInterceptor implements HandlerInterceptor {
     @Autowired
     private JwtTokenManager jwtTokenManager;
+
+    @Autowired
+    UserCaptchaService userCaptchaService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -36,51 +39,35 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             return true;
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        LoginRequired loginRequired = handlerMethod.getMethodAnnotation(LoginRequired.class);
+        CaptchaRequired captchaRequired = handlerMethod.getMethodAnnotation(CaptchaRequired.class);
         // 如果没有注解，直接跳过
-        if (null == loginRequired) {
+        if (null == captchaRequired) {
             return true;
         } else {
-            // 从头部获取token
-            String token = request.getHeader("token");
-            // 如果token不存在
-            if (StringUtils.isEmpty(token)) {
-                ResultJson resultJson = new ResultJson();
-                resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
+            // 从参数中获取验证码值
+            String captchaValue = request.getParameter("captcha");
+            // 如果验证码不存在
+            if (StringUtils.isEmpty(captchaValue)) {
+                ResultJson resultJson = new ResultJson(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
                 returnJsonObj(response, JSONObject.toJSONString(resultJson));
                 return false;
             }
-            // 如果token存在，则开始校验
+            // 如果验证码存在，则开始检查验证码
             else {
-                String tokenRole = "User";
-                // 校验token状态
-                TokenStatus status = jwtTokenManager.checkToken(token);
-                // 如果token验证成功
-                if (status == TokenStatus.IS_TRUE) {
+                String token = request.getHeader("token");
+                TokenModel tokenModel = jwtTokenManager.getTokenModel(token);
+                // 检查验证码
+                int i = userCaptchaService.checkCaptcha(tokenModel.getUsername(), captchaValue);
+                if (i == 0) {
+                    ResultJson resultJson = new ResultJson(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
+                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
+                    return false;
+                } else if (i == 2) {
+                    ResultJson resultJson = new ResultJson(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
+                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
+                    return false;
+                } else{
                     return true;
-                }
-                else if(status == TokenStatus.IS_GUEST)
-                {
-                    ResultJson resultJson = new ResultJson();
-                    resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
-                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
-                    return false;
-                }
-                // 如果验证失败，则让其登录
-                else if (status == TokenStatus.IS_FAIL) {
-                    ResultJson resultJson = new ResultJson();
-                    resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
-                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
-                    return false;
-                }
-                // 如果验证为过期token，则让其重新登录
-                else if (status == TokenStatus.IS_OUTDATED) {
-                    ResultJson resultJson = new ResultJson();
-                    resultJson.setStatus(ResultCode.TOKEN_OUTDATED, "token过期，请重新登录");
-                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
-                    return false;
-                } else {
-                    return false;
                 }
             }
         }
@@ -102,5 +89,4 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
             }
         }
     }
-
 }

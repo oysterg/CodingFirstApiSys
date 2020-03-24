@@ -10,9 +10,11 @@ import team.fjut.cf.component.judge.vjudge.pojo.ProblemHtmlParams;
 import team.fjut.cf.component.judge.vjudge.pojo.ProblemListParams;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.VjProblemInfo;
+import team.fjut.cf.pojo.po.VjUserProblemSolved;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.SystemInfoService;
 import team.fjut.cf.service.VjProblemInfoService;
+import team.fjut.cf.service.VjUserProblemSolvedService;
 
 import java.util.Date;
 import java.util.Objects;
@@ -34,6 +36,9 @@ public class VjProblemController {
 
     @Autowired
     SystemInfoService systemInfoService;
+
+    @Autowired
+    VjUserProblemSolvedService vjUserProblemSolvedService;
 
     @PostMapping("/list")
     public ResultJson getVJProblemList(@RequestParam("pageNum") Integer pageNum,
@@ -118,6 +123,18 @@ public class VjProblemController {
             }
         }
         return resultJson;
+    }
+
+    @PostMapping("/user_solved")
+    public ResultJson getProblemSolved(@RequestParam("OJId") String oJId,
+                                       @RequestParam("probNum") String probNum,
+                                       @RequestParam("username") String username) {
+        VjUserProblemSolved example = new VjUserProblemSolved();
+        example.setOjId(oJId);
+        example.setProbNum(probNum);
+        example.setUsername(username);
+        VjUserProblemSolved vjUserProblemSolved = vjUserProblemSolvedService.selectOne(example);
+        return new ResultJson(ResultCode.REQUIRED_SUCCESS, "", vjUserProblemSolved);
     }
 
 }
