@@ -6,7 +6,7 @@ server:
 spring:
   profiles:
     # 切换环境 dev为开发环境，prod为生产环境
-    active: prod
+    active: dev
   jackson:
     serialization:
       write-dates-as-timestamps: true

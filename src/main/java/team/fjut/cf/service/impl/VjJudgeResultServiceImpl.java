@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.component.judge.vjudge.pojo.ProblemSolution;
 import team.fjut.cf.mapper.VjJudgeResultMapper;
+import team.fjut.cf.mapper.VjUserProblemSolvedMapper;
 import team.fjut.cf.pojo.po.VjJudgeResult;
+import team.fjut.cf.pojo.po.VjUserProblemSolved;
 import team.fjut.cf.service.VjJudgeResultService;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author axiang [2020/3/21]
@@ -16,6 +19,9 @@ import team.fjut.cf.service.VjJudgeResultService;
 public class VjJudgeResultServiceImpl implements VjJudgeResultService {
     @Autowired
     VjJudgeResultMapper vjJudgeResultMapper;
+
+    @Autowired
+    VjUserProblemSolvedMapper vjUserProblemSolvedMapper;
 
     @Autowired
     VirtualJudgeHttpClient virtualJudgeHttpClient;
@@ -34,14 +40,15 @@ public class VjJudgeResultServiceImpl implements VjJudgeResultService {
 
     @Async
     @Override
-    public void getResultFromVJ(VjJudgeResult vjJudgeResult) {
+    public void queryResultFromVJ(VjJudgeResult vjJudgeResult) {
         boolean isProcessing;
         // 循环次数
         int times = 100;
         // 线程睡眠时间
         int sleepTime = 2000;
+        ProblemSolution result;
         do {
-            ProblemSolution result = virtualJudgeHttpClient.getResult(vjJudgeResult.getRunId().toString());
+            result = virtualJudgeHttpClient.getResult(vjJudgeResult.getRunId().toString());
             vjJudgeResult.setAdditionalInfo(result.getAdditionalInfo());
             vjJudgeResult.setStatus(result.getStatus());
             vjJudgeResult.setStatusType(result.getStatusType());
@@ -65,6 +72,28 @@ public class VjJudgeResultServiceImpl implements VjJudgeResultService {
 
             }
         } while (times > 0 && isProcessing);
+        /*
+        完成结果获取后，更新题目解答表
+         */
+        Example example = new Example(VjUserProblemSolved.class);
+        example.createCriteria().andEqualTo("ojId", vjJudgeResult.getOj())
+                .andEqualTo("probNum", vjJudgeResult.getProbNum())
+                .andEqualTo("username", vjJudgeResult.getUsername());
+        // 查询解答题目表中的记录。由于提交时已经**插入**过了，所以表中一定有记录
+        VjUserProblemSolved vjUserProblemSolved = vjUserProblemSolvedMapper.selectOneByExample(example);
+        // 如果结果是AC
+        if ("AC".equals(result.getStatusCanonical())) {
+            // 第一次解答则更新第一次解答时间
+            if (vjUserProblemSolved.getSolvedCount() == 0) {
+                vjUserProblemSolved.setFirstSolvedTime(vjJudgeResult.getSubmitTime());
+                vjUserProblemSolved.setSolvedCount(1);
+            }
+            // 前面已经解决过了，再一次解决
+            else {
+                vjUserProblemSolved.setSolvedCount(vjUserProblemSolved.getSolvedCount() + 1);
+            }
+        }
+        vjUserProblemSolvedMapper.updateByPrimaryKey(vjUserProblemSolved);
     }
 
 

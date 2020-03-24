@@ -26,5 +26,5 @@ public interface VjJudgeResultService {
      *
      * @param vjJudgeResult
      */
-    void getResultFromVJ(VjJudgeResult vjJudgeResult);
+    void queryResultFromVJ(VjJudgeResult vjJudgeResult);
 }

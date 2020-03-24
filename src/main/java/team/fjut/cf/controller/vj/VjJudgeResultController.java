@@ -16,6 +16,7 @@ import team.fjut.cf.pojo.vo.VjJudgeResultVO;
 import team.fjut.cf.service.UserInfoService;
 import team.fjut.cf.service.ViewVjJudgeResultService;
 import team.fjut.cf.service.VjJudgeResultService;
+import team.fjut.cf.service.VjUserProblemSolvedService;
 import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.UUIDUtils;
 
@@ -50,6 +51,9 @@ public class VjJudgeResultController {
 
     @Autowired
     VjJudgeResultService vjJudgeResultService;
+
+    @Autowired
+    VjUserProblemSolvedService vjUserProblemSolvedService;
 
     @Autowired
     UserInfoService userInfoService;
@@ -102,7 +106,9 @@ public class VjJudgeResultController {
         params.setOj(oj);
         params.setProbNum(probNum);
         params.setLanguage(language);
+        // VJ平台上不分享设置为0
         params.setShare("0");
+        // 由于URL转码，需要把 “+” 替换成 “%2B”，在VJ上才能被识别
         String newSource = source.replaceAll("\\+", "%2B");
         params.setSource(Base64.getEncoder().encodeToString(newSource.getBytes(StandardCharsets.UTF_8)));
         params.setCaptcha(captcha);
@@ -110,6 +116,7 @@ public class VjJudgeResultController {
             virtualJudgeHttpClient.userLogin(jsonFileTool.getRandomVJAccount());
         }
         JSONObject jsonObject = virtualJudgeHttpClient.submitProblem(params);
+        // 提交成功会返回runId
         if (jsonObject.containsKey("runId")) {
             resultJson.setStatus(ResultCode.REQUIRED_SUCCESS);
             VjJudgeResult vjJudgeResult = new VjJudgeResult();
@@ -120,7 +127,8 @@ public class VjJudgeResultController {
             vjJudgeResult.setSubmitTime(new Date());
             vjJudgeResult.setRunId(Integer.parseInt(jsonObject.get("runId").toString()));
             vjJudgeResultService.insert(vjJudgeResult);
-            vjJudgeResultService.getResultFromVJ(vjJudgeResult);
+            vjUserProblemSolvedService.ifSubmitSuccess(vjJudgeResult);
+            vjJudgeResultService.queryResultFromVJ(vjJudgeResult);
         }
         // 需要验证码时，告诉前端需要更多操作
         else if ("true".equals(jsonObject.get("captcha").toString())) {

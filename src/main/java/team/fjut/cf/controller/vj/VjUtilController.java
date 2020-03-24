@@ -32,10 +32,8 @@ import java.util.Objects;
 @CrossOrigin
 @RequestMapping("/vj/util")
 public class VjUtilController {
-
     @Value("${cf.config.file.tempPath}")
     String tempPath;
-
 
     @Autowired
     SystemInfoService systemInfoService;
