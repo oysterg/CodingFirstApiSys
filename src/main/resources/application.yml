@@ -5,7 +5,7 @@ server:
 
 spring:
   profiles:
-    # 切换环境 dev为开发环境，prod为生产环境
+    # 切换环境 默认为dev开发环境，打包时需要指定参数为生成环境
     active: @spring.profiles.active@
   jackson:
     serialization:

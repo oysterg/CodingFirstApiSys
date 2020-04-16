@@ -18,25 +18,22 @@
 
 1. 下载并安装Idea，配置好开发环境，安装相关的插件
 2. 下载并安装maven (不是必要，如果正确安装Idea会自动配置)
-3. 下载Spring-2.0.0.M5 SpringBoot工具（不是必要）
-4. 下载并安装MySQL 8.0.15和MySQL可视化工具，项目运行时保持MySQL链接正常 （不是必要，将开放远程测试库）
-5. 下载并安装Redis 3.2.100，项目运行时保持Redis Server在本地开启
-6. 在application.yml，application-dev.yml文件中修改相关字段保证本地的配置链接正确
-7. 运行 CodingFirstApplication.java
-8. 在浏览器中输入地址 http://localhost:[配置文件中的端口]/[配置文件中的项目名]/swagger-ui.html
+3. 下载并安装MySQL 8.0.15和MySQL可视化工具，项目运行时保持MySQL链接正常 （不是必要，将开放远程测试库）
+4. 下载并安装Redis 3.2.100，项目运行时保持Redis Server在本地开启
+5. 在 src/main/resources/ 下的application.yml，application-dev.yml文件中修改相关字段保证开发环境的配置正确
+6. 运行 CodingFirstApplication.java
+7. 在浏览器中输入地址 http://localhost:[配置文件中的端口]/[配置文件中的项目名]/swagger-ui.html
 进入在线接口文档 
-9. 在浏览器中输入地址 http://localhost:[配置文件中的端口]/[配置文件中的项目名]/druid/index.html
+8. 在浏览器中输入地址 http://localhost:[配置文件中的端口]/[配置文件中的项目名]/druid/index.html
 ，并输入用户名密码后，进入Druid管理界面
 
 ## 部署教程
 
-1. 在 [项目根目录]/src/main/resources/application.yml 文件中切换环境为prod
-2. 更改 [项目根目录]/src/main/resources/application-prod.yml 文件内的内容以符合部署环境
-1. 项目根目录下运行maven命令 mvn clean 清空原有内容
-2. 项目根目录下运行maven命令 mvn install 打包为jar文件
-3. 在 [项目根目录]/target/文件夹下找到文件 [配置文件中的打包项目名].jar
-4. 使用JDK1.8及以上版本的JAVA运行该jar，即可部署应用
-
+1. 在 src/main/resources/ 下添加文件application-prod.yml，并参照application-dev.yml进行生产环境配置
+2. 在项目根目录下运行maven命令 mvn package -P prod 以生产环境打包为jar文件
+3. 在 [项目根目录]/target/文件夹下找到文件 [pom.xml中的打包项目名].jar
+4. 使用JDK1.8或以上版本的JAVA运行该jar，即可部署应用
+5. 文件 [pom.xml中的打包项目名].jar 下会生成logs文件夹存放日志
 
 ## 参与贡献
 
