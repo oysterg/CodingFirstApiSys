@@ -16,7 +16,7 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 日志格式 -->
         <encoder>
-            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %blue([%thread]) %highlight([%level])  %green(%logger{35}) - %msg %n</pattern>
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss}) %blue([%thread]) %highlight([%level])  %green(%logger{35}) - %highlight(%msg) %n</pattern>
         </encoder>
     </appender>
 

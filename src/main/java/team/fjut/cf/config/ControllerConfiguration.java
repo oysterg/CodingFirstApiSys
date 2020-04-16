@@ -2,6 +2,7 @@ package team.fjut.cf.config;
 
 import team.fjut.cf.config.interceptor.CaptchaRequestInterceptor;
 import team.fjut.cf.config.interceptor.LoginRequestInterceptor;
+import team.fjut.cf.config.interceptor.PermissionRequestInterceptor;
 import team.fjut.cf.config.interceptor.PrivateRequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +48,9 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     @Resource
     private PrivateRequestInterceptor privateRequestInterceptor;
 
+    @Resource
+    private PermissionRequestInterceptor permissionRequestInterceptor;
+
     /**
      * 添加拦截器
      *
@@ -58,6 +62,7 @@ public class ControllerConfiguration implements WebMvcConfigurer {
             registry.addInterceptor(captchaRequestInterceptor).addPathPatterns("/**");
             registry.addInterceptor(loginRequestInterceptor).addPathPatterns("/**");
             registry.addInterceptor(privateRequestInterceptor).addPathPatterns("/**");
+            registry.addInterceptor(permissionRequestInterceptor).addPathPatterns("/**");
         }
     }
 

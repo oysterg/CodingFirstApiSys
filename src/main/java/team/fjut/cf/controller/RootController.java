@@ -4,6 +4,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import team.fjut.cf.config.interceptor.annotation.LoginRequired;
+import team.fjut.cf.config.interceptor.annotation.PermissionRequired;
+import team.fjut.cf.pojo.enums.PermissionType;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
 
 /**
@@ -15,10 +19,10 @@ import team.fjut.cf.pojo.vo.ResultJson;
 @CrossOrigin
 @RequestMapping("/")
 public class RootController {
+
+    @PermissionRequired(permissions = {PermissionType.TEST_1, PermissionType.BASE_ADMIN})
     @GetMapping("/")
     public ResultJson getRootInfo() throws InterruptedException {
-        //Thread.sleep(1000);
-        throw new ArrayIndexOutOfBoundsException("fluck ");
-        //return new ResultJson(ResultCode.TOKEN_OUTDATED);
+        return new ResultJson();
     }
 }
