@@ -3,6 +3,7 @@ package team.fjut.cf.controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.util.UUIDUtils;
 
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 /**
  * @author axiang [2019/11/15]
@@ -30,10 +32,13 @@ public class UploadController {
     @PostMapping("/avatar")
     public ResultJson uploadAvatar(@RequestParam("avatar") final MultipartFile file)
             throws IOException {
+        if (file.getSize() == 0) {
+            return new ResultJson(ResultCode.BAD_REQUEST, "文件为空！");
+        }
         ResultJson resultJson = new ResultJson();
         final byte[] bytes = file.getBytes();
         String randFileName = UUIDUtils.getUUID32();
-        int len = file.getOriginalFilename().split("\\.").length;
+        int len = Objects.requireNonNull(file.getOriginalFilename()).split("\\.").length;
         String suffix = "";
         if (len > 0) {
             suffix = file.getOriginalFilename().split("\\.")[len - 1];

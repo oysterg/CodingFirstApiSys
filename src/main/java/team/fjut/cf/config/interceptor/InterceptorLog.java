@@ -25,14 +25,15 @@ public class InterceptorLog {
         //业务发生时间
         Date serviceHappenDate = new Date();
         if (interceptorLogEnable) {
-            log.info("=================== 拦截器启动 ======================");
-            log.info("== 【拦截触发时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
-            log.info("== 【拦截器】:{}", obj.getClass().getName());
-            log.info("== 【请求URL】:{}", request.getRequestURL().toString());
-            log.info("== 【请求IP】:{}", IpUtils.getClientIpAddress(request));
-            log.info("== 【拦截的类】：{}",handlerMethod.getMethod().getDeclaringClass().getName());
-            log.info("== 【拦截方法】:{}", handlerMethod.getMethod().getName());
-            log.info("===================================================");
+            String s = "\n=================== 拦截器启动 ======================\n"
+                    + String.format("== 【拦截触发时间】:%s\n", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"))
+                    + String.format("== 【拦截器】:%s\n", obj.getClass().getName())
+                    + String.format("== 【请求URL】:%s\n", request.getRequestURL().toString())
+                    + String.format("== 【请求IP】:%s\n", IpUtils.getClientIpAddress(request))
+                    + String.format("== 【拦截的类】：%s\n", handlerMethod.getMethod().getDeclaringClass().getName())
+                    + String.format("== 【拦截方法】:%s\n", handlerMethod.getMethod().getName())
+                    + "===================================================\n";
+            log.warn(s);
         }
     }
 
@@ -40,9 +41,11 @@ public class InterceptorLog {
         //业务发生时间
         Date serviceHappenDate = new Date();
         if (interceptorLogEnable) {
-            log.info("==================== 拦截结束 =======================");
-            log.info("== 【响应内容】:{}", resultJson.toString());
-            log.info("====================================================");
+            String s = "\n==================== 拦截结束 =======================\n"
+                    + String.format("== 【响应内容】:%s\n", resultJson.toString())
+                    + "====================================================\n";
+            log.warn(s);
+
         }
     }
 

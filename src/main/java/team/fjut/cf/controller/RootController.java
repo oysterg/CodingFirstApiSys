@@ -19,10 +19,9 @@ import team.fjut.cf.pojo.vo.ResultJson;
 @CrossOrigin
 @RequestMapping("/")
 public class RootController {
-
-    @PermissionRequired(permissions = {PermissionType.TEST_1, PermissionType.BASE_ADMIN})
     @GetMapping("/")
     public ResultJson getRootInfo() throws InterruptedException {
-        return new ResultJson();
+        throw new ArrayIndexOutOfBoundsException();
+        //return new ResultJson();
     }
 }

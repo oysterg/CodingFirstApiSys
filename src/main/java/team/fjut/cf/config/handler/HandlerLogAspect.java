@@ -45,13 +45,14 @@ public class HandlerLogAspect {
         Object o;
         Object[] args = proceedingJoinPoint.getArgs();
         if (handlerLogEnable) {
-            log.info("===================== 进入异常处理 =====================");
-            log.info("== 【异常发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
-            log.info("== 【请求URL】:{}", request.getRequestURL().toString());
-            log.info("== 【请求IP】:{}", IpUtils.getClientIpAddress(request));
-            log.info("== 【请求的类】:{}", target);
-            log.info("== 【调用方法】:{}", method.getName());
-            log.info("======================================================");
+            String s = "\n==================== 进入异常处理 =====================\n"
+                    + String.format("== 【异常发生时间】:%s\n", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"))
+                    + String.format("== 【请求URL】:%s\n", request.getRequestURL().toString())
+                    + String.format("== 【请求IP】:%s\n", IpUtils.getClientIpAddress(request))
+                    + String.format("== 【请求的类】:%s\n", target)
+                    + String.format("== 【调用方法】:%s\n", method.getName())
+                    + "======================================================\n";
+            log.error(s);
         }
         //计算执行时间
         long startTime = System.currentTimeMillis();
@@ -64,11 +65,12 @@ public class HandlerLogAspect {
         }
         endTime = System.currentTimeMillis();
         if (handlerLogEnable) {
-            log.info("===================== 离开异常处理 =====================");
-            log.info("== 【异常发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
-            log.info("== 【响应耗时】:{}", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS");
-            log.info("== 【响应内容】:{}", o == null ? "" : o.toString());
-            log.info("======================================================\n");
+            String s = "\n====================== 离开异常处理 ===================\n"
+                    + String.format("== 【异常发生时间】:%s\n", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"))
+                    + String.format("== 【响应耗时】:%s\n", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS")
+                    + String.format("== 【响应内容】:%s\n", o == null ? "" : o.toString())
+                    + "======================================================\n";
+            log.error(s);
         }
         return o;
     }

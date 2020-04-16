@@ -66,15 +66,16 @@ public class ApiLogAspect {
         Object o = null;
         Object[] args = proceedingJoinPoint.getArgs();
         if (controllerLogEnable) {
-            log.info("===================== 进入请求 =====================");
-            log.info("== 【业务发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
-            log.info("== 【请求URL】:{}", request.getRequestURL().toString());
-            log.info("== 【请求IP】:{}", IpUtils.getClientIpAddress(request));
-            log.info("== 【请求类】:{}", target);
-            log.info("== 【调用方法】:{}", method.getName());
-            log.info("== 【方法参数】:{}", params.toString());
-            log.info("== 【传入数据】:{}", Arrays.toString(args));
-            log.info("===================================================");
+            String s = "\n===================== 进入请求 =====================\n" +
+                    String.format("== 【业务发生时间】:%s\n", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss")) +
+                    String.format("== 【请求URL】:%s\n", request.getRequestURL().toString()) +
+                    String.format("== 【请求IP】:%s\n", IpUtils.getClientIpAddress(request)) +
+                    String.format("== 【请求类】:%s\n", target) +
+                    String.format("== 【调用方法】:%s\n", method.getName()) +
+                    String.format("== 【方法参数】:%s\n", params.toString()) +
+                    String.format("== 【传入数据】:%s\n", Arrays.toString(args)) +
+                    "===================================================\n";
+            log.info(s);
         }
         //计算执行时间
         long startTime = System.currentTimeMillis();
@@ -88,16 +89,16 @@ public class ApiLogAspect {
         endTime = System.currentTimeMillis();
 
         if (controllerLogEnable) {
-            log.info("===================== 结束请求 =====================");
-            log.info("== 【业务发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
-            log.info("== 【响应耗时】:{}", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS");
-            log.info("== 【响应内容】:{}", o == null ? "" : o.toString());
-            log.info("===================================================\n");
+            String s = "\n===================== 结束请求 =====================\n" +
+                    String.format("== 【业务发生时间】:%s\n", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss")) +
+                    String.format("== 【响应耗时】:%s\n", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS") +
+                    String.format("== 【响应内容】:%s\n", o == null ? "" : o.toString()) +
+                    "===================================================\n";
+            log.info(s);
         }
         return o;
 
     }
-
 
 
 }
