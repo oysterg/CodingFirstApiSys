@@ -77,10 +77,10 @@ public class ResultJson {
 
     @Override
     public String toString() {
-        return "ResultJsonVO {\n" +
-                " code=" + code +
-                ",\n msg='" + msg + '\'' +
-                ",\n datas= \"日志中不允许查看\"" +
-                "\n}";
+        return "ResultJson{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", datas=['日志中不能查看']"+
+                '}';
     }
 }

@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
 
 /**
@@ -19,6 +18,7 @@ public class RootController {
     @GetMapping("/")
     public ResultJson getRootInfo() throws InterruptedException {
         //Thread.sleep(1000);
-        return new ResultJson(ResultCode.TOKEN_OUTDATED);
+        throw new ArrayIndexOutOfBoundsException("fluck ");
+        //return new ResultJson(ResultCode.TOKEN_OUTDATED);
     }
 }

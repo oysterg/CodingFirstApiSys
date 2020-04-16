@@ -70,8 +70,6 @@ spring:
 mybatis:
   # mapper.xml包地址
   mapper-locations: classpath:mapper/*.xml
-  # pojo生成包地址
-  type-aliases-package: team.fjut.cf.pojo
   configuration:
     map-underscore-to-camel-case: true
 
