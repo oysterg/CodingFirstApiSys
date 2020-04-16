@@ -30,7 +30,10 @@
 ## 部署教程
 
 1. 在 src/main/resources/ 下添加文件application-prod.yml，并参照application-dev.yml进行生产环境配置
-2. 在项目根目录下运行maven命令 mvn package -P prod 以生产环境打包为jar文件
+2. 在项目根目录下运行maven命令
+ ```
+ mvn package -P prod 以生产环境打包为jar文件
+ ```
 3. 在 [项目根目录]/target/文件夹下找到文件 [pom.xml中的打包项目名].jar
 4. 使用JDK1.8或以上版本的JAVA运行该jar，即可部署应用
 5. 文件 [pom.xml中的打包项目名].jar 下会生成logs文件夹存放日志
