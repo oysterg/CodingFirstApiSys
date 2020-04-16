@@ -49,7 +49,7 @@ public class HandlerLogAspect {
             log.info("== 【异常发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
             log.info("== 【请求URL】:{}", request.getRequestURL().toString());
             log.info("== 【请求IP】:{}", IpUtils.getClientIpAddress(request));
-            log.info("== 【请求类】:{}", target);
+            log.info("== 【请求的类】:{}", target);
             log.info("== 【调用方法】:{}", method.getName());
             log.info("======================================================");
         }
@@ -65,9 +65,9 @@ public class HandlerLogAspect {
         endTime = System.currentTimeMillis();
         if (handlerLogEnable) {
             log.info("===================== 离开异常处理 =====================");
-            log.info("== 【业务发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
+            log.info("== 【异常发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
             log.info("== 【响应耗时】:{}", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS");
-            log.info("== 【返回内容】:{}", o == null ? "" : o.toString());
+            log.info("== 【响应内容】:{}", o == null ? "" : o.toString());
             log.info("======================================================\n");
         }
         return o;

@@ -91,7 +91,7 @@ public class ApiLogAspect {
             log.info("===================== 结束请求 =====================");
             log.info("== 【业务发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
             log.info("== 【响应耗时】:{}", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS");
-            log.info("== 【返回内容】:{}", o == null ? "" : o.toString());
+            log.info("== 【响应内容】:{}", o == null ? "" : o.toString());
             log.info("===================================================\n");
         }
         return o;

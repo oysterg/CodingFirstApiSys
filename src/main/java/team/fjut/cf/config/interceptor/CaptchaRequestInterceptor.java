@@ -9,7 +9,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.config.interceptor.annotation.CaptchaRequired;
-import team.fjut.cf.config.interceptor.annotation.InterceptLog;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.UserCaptchaService;
@@ -32,7 +31,11 @@ public class CaptchaRequestInterceptor implements HandlerInterceptor {
     private JwtTokenManager jwtTokenManager;
 
     @Resource
+    InterceptorLog interceptorLog;
+
+    @Resource
     UserCaptchaService userCaptchaService;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -46,12 +49,13 @@ public class CaptchaRequestInterceptor implements HandlerInterceptor {
         if (null == captchaRequired) {
             return true;
         } else {
+            interceptorLog.logWhenStart(this, handlerMethod, request);
             // 从参数中获取验证码值
             String captchaValue = request.getParameter("captcha");
             // 如果验证码不存在
             if (StringUtils.isEmpty(captchaValue)) {
                 ResultJson resultJson = new ResultJson(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
-                returnJsonObj(response, JSONObject.toJSONString(resultJson));
+                returnJsonObj(response, resultJson);
                 return false;
             }
             // 如果验证码存在，则开始检查验证码
@@ -62,33 +66,34 @@ public class CaptchaRequestInterceptor implements HandlerInterceptor {
                 int i = userCaptchaService.checkCaptcha(tokenModel.getUsername(), captchaValue);
                 if (i == 0) {
                     ResultJson resultJson = new ResultJson(ResultCode.REFRESH_CAPTCHA, "验证码错误，刷新验证码");
-                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
+                    returnJsonObj(response, resultJson);
                     return false;
                 } else if (i == 2) {
                     ResultJson resultJson = new ResultJson(ResultCode.REFRESH_CAPTCHA, "验证码过期，刷新验证码");
-                    returnJsonObj(response, JSONObject.toJSONString(resultJson));
+                    returnJsonObj(response, resultJson);
                     return false;
-                } else{
+                } else {
                     return true;
                 }
             }
         }
     }
 
-    @InterceptLog
-    private void returnJsonObj(HttpServletResponse response, String json) {
+
+    private void returnJsonObj(HttpServletResponse response, ResultJson resultJson) {
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
         try {
             writer = response.getWriter();
-            writer.print(json);
+            writer.print(JSONObject.toJSONString(resultJson));
         } catch (IOException e) {
             log.error("请求返回错误：", e);
         } finally {
             if (writer != null) {
                 writer.close();
             }
+            interceptorLog.logWhenEnd(resultJson);
         }
     }
 }

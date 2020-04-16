@@ -10,7 +10,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.component.token.TokenStatus;
-import team.fjut.cf.config.interceptor.annotation.InterceptLog;
 import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
@@ -30,6 +29,8 @@ import java.util.Objects;
 @Component
 @Slf4j
 public class PrivateRequestInterceptor implements HandlerInterceptor {
+    @Resource
+    InterceptorLog interceptorLog;
 
     @Resource
     private JwtTokenManager jwtTokenManager;
@@ -40,13 +41,13 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
      * @param handler
      * @return
      */
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // 如果不是映射到方法上就直接跳过
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
-
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         PrivateRequired privateRequired = handlerMethod.getMethodAnnotation(PrivateRequired.class);
 
@@ -54,6 +55,7 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
         if (null == privateRequired) {
             return true;
         } else {
+            interceptorLog.logWhenStart(this, handlerMethod, request);
             // 从参数中拿到用户名
             String username = request.getParameter("username");
             // 从头部获取token
@@ -62,7 +64,7 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
             if (StringUtils.isEmpty(token)) {
                 ResultJson resultJson = new ResultJson();
                 resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
-                returnJson(response, JSONObject.toJSONString(resultJson));
+                returnJson(response, resultJson);
                 return false;
             }
             // 如果token存在，则开始校验
@@ -76,7 +78,7 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
                     } else {
                         ResultJson resultJson = new ResultJson();
                         resultJson.setStatus(ResultCode.PERMISSION_NOT_ENOUGH, "权限不足");
-                        returnJson(response, JSONObject.toJSONString(resultJson));
+                        returnJson(response, resultJson);
                         return false;
                     }
                 }
@@ -84,14 +86,14 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
                 else if (status == TokenStatus.IS_FAIL) {
                     ResultJson resultJson = new ResultJson();
                     resultJson.setStatus(ResultCode.USER_NOT_LOGIN, "请登录后重试");
-                    returnJson(response, JSONObject.toJSONString(resultJson));
+                    returnJson(response, resultJson);
                     return false;
                 }
                 // 如果验证为过期token，则让其重新登录
                 else if (status == TokenStatus.IS_OUTDATED) {
                     ResultJson resultJson = new ResultJson();
                     resultJson.setStatus(ResultCode.TOKEN_OUTDATED, "token过期，请重新登录");
-                    returnJson(response, JSONObject.toJSONString(resultJson));
+                    returnJson(response, resultJson);
                     return false;
                 } else {
                     return false;
@@ -100,14 +102,14 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
         }
     }
 
-    @InterceptLog
-    private void returnJson(HttpServletResponse response, String json) {
+
+    private void returnJson(HttpServletResponse response, ResultJson resultJson) {
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
         try {
             writer = response.getWriter();
-            writer.print(json);
+            writer.print(JSONObject.toJSONString(resultJson));
 
         } catch (IOException e) {
             log.error("response error", e);
@@ -115,8 +117,10 @@ public class PrivateRequestInterceptor implements HandlerInterceptor {
             if (writer != null) {
                 writer.close();
             }
+            interceptorLog.logWhenEnd(resultJson);
         }
     }
+
 
 }
 
