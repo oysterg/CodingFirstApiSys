@@ -2,16 +2,18 @@ package team.fjut.cf.config.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenStatus;
+import team.fjut.cf.config.interceptor.annotation.InterceptLog;
+import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,7 +28,7 @@ import java.io.PrintWriter;
 @Slf4j
 public class LoginRequestInterceptor implements HandlerInterceptor {
 
-    @Autowired
+    @Resource
     private JwtTokenManager jwtTokenManager;
 
     @Override
@@ -86,7 +88,7 @@ public class LoginRequestInterceptor implements HandlerInterceptor {
         }
     }
 
-
+    @InterceptLog
     private void returnJsonObj(HttpServletResponse response, String json) {
         PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");

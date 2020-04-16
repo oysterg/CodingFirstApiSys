@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.config.interceptor.PrivateRequired;
+import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
 import team.fjut.cf.pojo.enums.ResultCode;

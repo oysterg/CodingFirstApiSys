@@ -2,7 +2,7 @@ package team.fjut.cf.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.config.interceptor.LoginRequired;
+import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.JudgeResult;
 import team.fjut.cf.pojo.vo.JudgeStatusVO;

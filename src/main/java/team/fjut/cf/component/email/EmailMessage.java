@@ -1,4 +1,4 @@
-package team.fjut.cf.component.email.pojo;
+package team.fjut.cf.component.email;
 
 /**
  * @author axiang [2019/11/28]

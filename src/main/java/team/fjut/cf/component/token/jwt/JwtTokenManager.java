@@ -13,6 +13,7 @@ import team.fjut.cf.component.token.TokenManager;
 import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.component.token.TokenStatus;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Objects;
 
@@ -40,7 +41,7 @@ public class JwtTokenManager implements TokenManager {
     @Value("${cf.config.jwt.tokenSecret")
     private String tokenSecret;
 
-    @Autowired
+    @Resource
     RedisUtils redisUtils;
 
     @Override

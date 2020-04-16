@@ -42,8 +42,6 @@ public class SwaggerConfig {
                     .paths(PathSelectors.none())
                     .build();
         }
-
-
     }
 
     private ApiInfo apiInfo() {

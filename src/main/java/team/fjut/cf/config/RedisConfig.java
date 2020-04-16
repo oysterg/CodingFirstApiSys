@@ -9,6 +9,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
  * redis配置类
+ * FIXME: 不能切换库
  *
  * @author axiang [2019/10/21]
  */

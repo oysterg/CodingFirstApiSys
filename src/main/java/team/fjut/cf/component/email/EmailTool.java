@@ -1,12 +1,12 @@
 package team.fjut.cf.component.email;
 
-import team.fjut.cf.component.email.pojo.EmailMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 邮件发送工具类
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class EmailTool {
-    @Autowired
+    @Resource
     private JavaMailSender javaMailSender;
 
     @Value("${spring.mail.username}")

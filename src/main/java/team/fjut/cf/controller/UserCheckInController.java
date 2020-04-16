@@ -1,6 +1,6 @@
 package team.fjut.cf.controller;
 
-import team.fjut.cf.config.interceptor.PrivateRequired;
+import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCheckIn;
 import team.fjut.cf.pojo.vo.ResultJson;

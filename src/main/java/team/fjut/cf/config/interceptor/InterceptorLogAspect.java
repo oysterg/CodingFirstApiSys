@@ -1,4 +1,4 @@
-package team.fjut.cf.config.exception;
+package team.fjut.cf.config.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -15,6 +15,7 @@ import team.fjut.cf.util.IpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -23,16 +24,16 @@ import java.util.Date;
 @Aspect
 @Component
 @Slf4j
-public class HandlerLogAspect {
-    @Value("${cf.config.handlerLog.enable}")
-    private boolean handlerLogEnable;
+public class InterceptorLogAspect {
+    @Value("${cf.config.interceptorLog.enable}")
+    private boolean interceptorLogEnable;
 
-    @Pointcut("@annotation(org.springframework.web.bind.annotation.ExceptionHandler)")
-    public void handlerMethod() {
+    @Pointcut("@annotation(team.fjut.cf.config.interceptor.annotation.InterceptLog)")
+    public void interceptLog() {
     }
 
-    @Around("handlerMethod()")
-    public Object logBeforeRequest(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    @Around("interceptLog()")
+    public Object logAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //业务发生时间
         Date serviceHappenDate = new Date();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -44,32 +45,24 @@ public class HandlerLogAspect {
         //返回对象
         Object o;
         Object[] args = proceedingJoinPoint.getArgs();
-        if (handlerLogEnable) {
-            log.info("===================== 进入异常处理 =====================");
-            log.info("== 【异常发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
+        if (interceptorLogEnable) {
+            log.info("===================== 拦截器启动拦截 =====================");
+            log.info("== 【拦截器发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
             log.info("== 【请求URL】:{}", request.getRequestURL().toString());
             log.info("== 【请求IP】:{}", IpUtils.getClientIpAddress(request));
             log.info("== 【请求类】:{}", target);
             log.info("== 【调用方法】:{}", method.getName());
-            log.info("======================================================");
+            log.info("== 【返回值】:{}", Arrays.toString(args));
+            log.info("========================================================");
         }
-        //计算执行时间
-        long startTime = System.currentTimeMillis();
-        long endTime = 0;
 
         if (args.length > 0) {
             o = proceedingJoinPoint.proceed(args);
         } else {
             o = proceedingJoinPoint.proceed();
         }
-        endTime = System.currentTimeMillis();
-        if (handlerLogEnable) {
-            log.info("===================== 离开异常处理 =====================");
-            log.info("== 【业务发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
-            log.info("== 【响应耗时】:{}", endTime - startTime < 0 ? "" : (endTime - startTime) + "MS");
-            log.info("== 【返回内容】:{}", o == null ? "" : o.toString());
-            log.info("======================================================\n");
-        }
         return o;
     }
+
+
 }

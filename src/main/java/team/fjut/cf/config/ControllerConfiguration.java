@@ -10,6 +10,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.Resource;
+
 /**
  * MVC控制器配置
  *
@@ -36,13 +38,13 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     @Value("${cf.config.file.tempPath}")
     private String tempPath;
 
-    @Autowired
+    @Resource
     private CaptchaRequestInterceptor captchaRequestInterceptor;
 
-    @Autowired
+    @Resource
     private LoginRequestInterceptor loginRequestInterceptor;
 
-    @Autowired
+    @Resource
     private PrivateRequestInterceptor privateRequestInterceptor;
 
     /**

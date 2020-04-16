@@ -34,6 +34,9 @@ cf:
     # 异常处理器日志
     handlerLog:
       enable: true
+    # 拦截器日志
+    interceptorLog:
+      enable: true
     # 线程池配置
     threadPool:
       corePoolSize: 10

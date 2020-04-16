@@ -1,6 +1,6 @@
 package team.fjut.cf.controller;
 
-import team.fjut.cf.config.interceptor.LoginRequired;
+import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.MallGoodsPO;
 import team.fjut.cf.pojo.vo.ResultJson;

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.config.interceptor.PrivateRequired;
+import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.component.judge.vjudge.pojo.SubmitParams;
 import team.fjut.cf.pojo.enums.ResultCode;
