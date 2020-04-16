@@ -1,9 +1,8 @@
 package team.fjut.cf.component.judge.vjudge;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,6 +13,7 @@ import org.springframework.util.MultiValueMap;
 import team.fjut.cf.component.judge.OnlineJudgeHttpClient;
 import team.fjut.cf.component.judge.vjudge.pojo.*;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -26,7 +26,8 @@ import java.util.List;
  */
 @Component
 public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
-    @Autowired
+
+    @Resource
     VirtualJudgeResponseExtractor virtualJudgeResponseParser;
 
     /**
@@ -203,11 +204,11 @@ public class VirtualJudgeHttpClient extends OnlineJudgeHttpClient {
      */
     public InputStream getCaptcha() throws IOException {
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
-        String currentCaptchaUrl = new StringBuilder().append(captchaUrl).append("?").append(System.currentTimeMillis()).toString();
+        String currentCaptchaUrl = captchaUrl + "?" + System.currentTimeMillis();
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
         System.out.println(currentCaptchaUrl);
-        ResponseEntity<Resource> responseEntity = doPostAsResource(currentCaptchaUrl, request);
+        ResponseEntity<org.springframework.core.io.Resource> responseEntity = doPostAsResource(currentCaptchaUrl, request);
         return virtualJudgeResponseParser.extractBodyAsInputStream(responseEntity);
     }
 

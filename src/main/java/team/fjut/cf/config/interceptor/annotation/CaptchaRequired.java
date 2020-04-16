@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * 需要验证码的注解
  *
- * @author axiang
+ * @author axiang [2020/4/16]
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

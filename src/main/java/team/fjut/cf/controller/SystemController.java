@@ -1,12 +1,12 @@
 package team.fjut.cf.controller;
 
+import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.SystemInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
@@ -16,7 +16,7 @@ import java.util.Objects;
 @CrossOrigin
 @RequestMapping("/system")
 public class SystemController {
-    @Autowired
+    @Resource
     SystemInfoService systemInfoService;
 
     @GetMapping("/info")

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class OnlineJudgeResponseExtractor {
     /**
      * 提取response body 为JSONObject
+     *
      * @param response
      * @return
      */

@@ -1,12 +1,13 @@
 package team.fjut.cf.component.judge;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
 
 /**
  * OJ请求工具类基类
@@ -15,7 +16,8 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component
 public class OnlineJudgeHttpClient {
-    @Autowired
+
+    @Resource
     RestTemplate restTemplate;
 
     public OnlineJudgeHttpClient() {
@@ -40,8 +42,8 @@ public class OnlineJudgeHttpClient {
      * @param request
      * @return
      */
-    protected ResponseEntity<Resource> doPostAsResource(String url, HttpEntity<MultiValueMap<String, Object>> request) {
-        return restTemplate.postForEntity(url, request, Resource.class);
+    protected ResponseEntity<org.springframework.core.io.Resource> doPostAsResource(String url, HttpEntity<MultiValueMap<String, Object>> request) {
+        return restTemplate.postForEntity(url, request, org.springframework.core.io.Resource.class);
     }
 
 

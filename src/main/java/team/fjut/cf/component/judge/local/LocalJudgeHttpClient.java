@@ -13,15 +13,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.annotation.Resource;
+
 /**
- * 与本地评测机的通讯
+ * 与本地评测机的通讯类
  *
  * @author axiang [2019/7/31]
  */
 @Component
 public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
 
-    @Autowired
+    @Resource
     LocalJudgeResponseExtractor localJudgeResponseParser;
 
     @Value("${cf.config.local.localJudgePath}")

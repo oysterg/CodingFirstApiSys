@@ -1,12 +1,11 @@
 package team.fjut.cf.controller;
 
 import com.google.code.kaptcha.Producer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.component.token.TokenModel;
+import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCaptcha;
 import team.fjut.cf.pojo.vo.ResultJson;
@@ -14,6 +13,7 @@ import team.fjut.cf.service.UserCaptchaService;
 import team.fjut.cf.util.Enums2ListUtils;
 import team.fjut.cf.util.UUIDUtils;
 
+import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
@@ -31,13 +31,13 @@ public class UtilController {
     @Value("${cf.config.file.tempPath}")
     String tempPath;
 
-    @Autowired
+    @Resource
     Producer captchaProducer;
 
-    @Autowired
+    @Resource
     JwtTokenManager jwtTokenManager;
 
-    @Autowired
+    @Resource
     UserCaptchaService userCaptchaService;
 
 

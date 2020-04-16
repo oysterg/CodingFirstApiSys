@@ -1,12 +1,12 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.BugReport;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.BugReportedService;
 
+import javax.annotation.Resource;
 import java.util.Date;
 
 /**
@@ -16,17 +16,18 @@ import java.util.Date;
 @CrossOrigin
 @RequestMapping("/bug")
 public class BugReportController {
-    @Autowired
+
+    @Resource
     BugReportedService bugReportedService;
 
     /**
      * 报告bug
      *
-     * @param username 用户名
+     * @param username    用户名
      * @param currentPath 当前路径
-     * @param type 0
-     * @param title BUG标题
-     * @param text BUG内容
+     * @param type        0
+     * @param title       BUG标题
+     * @param text        BUG内容
      * @return resultJson
      */
     @PostMapping("/report")

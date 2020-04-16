@@ -1,6 +1,5 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.LoginRequired;
@@ -16,6 +15,7 @@ import team.fjut.cf.service.ContestProblemService;
 import team.fjut.cf.service.JudgeStatusService;
 import team.fjut.cf.service.ViewJudgeStatusService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -25,16 +25,16 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/contest")
 public class ContestController {
-    @Autowired
+    @Resource
     ContestInfoService contestInfoService;
 
-    @Autowired
+    @Resource
     ContestProblemService contestProblemService;
 
-    @Autowired
+    @Resource
     JudgeStatusService judgeStatusService;
 
-    @Autowired
+    @Resource
     ViewJudgeStatusService viewJudgeStatusService;
 
     @GetMapping("/list")

@@ -16,12 +16,12 @@ import lombok.Data;
  */
 @Data
 public class ProblemListParams {
-     int start;
-     int length;
-     String OJId;
-     String probNum;
-     String title;
-     String source;
-     String category;
+    int start;
+    int length;
+    String OJId;
+    String probNum;
+    String title;
+    String source;
+    String category;
 
 }

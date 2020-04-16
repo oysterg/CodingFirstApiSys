@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
+ * 拦截器日志切片
+ *
  * @author axiang [2020/4/16]
  */
 @Component

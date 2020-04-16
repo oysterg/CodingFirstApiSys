@@ -1,6 +1,5 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,7 @@ import team.fjut.cf.component.judge.vjudge.pojo.VjAccount;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.util.JsonFileTool;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
@@ -19,10 +19,10 @@ import java.io.IOException;
 @CrossOrigin
 @RequestMapping("/test")
 public class TestController {
-    @Autowired
+    @Resource
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
-    @Autowired
+    @Resource
     JsonFileTool jsonFileTool;
 
     @GetMapping(value = "/test")

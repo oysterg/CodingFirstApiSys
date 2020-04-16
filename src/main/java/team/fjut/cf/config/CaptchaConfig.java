@@ -11,6 +11,7 @@ import java.util.Properties;
 /**
  * captcha验证码配置
  * FIXME: 本captcha插件有漏洞，找到合适的来替换
+ *
  * @author axiang [2020/3/18]
  */
 @Configuration

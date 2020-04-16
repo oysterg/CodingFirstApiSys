@@ -1,7 +1,6 @@
 package team.fjut.cf.controller.vj;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
@@ -12,10 +11,10 @@ import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.VjProblemInfo;
 import team.fjut.cf.pojo.po.VjUserProblemSolved;
 import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.service.SystemInfoService;
 import team.fjut.cf.service.VjProblemInfoService;
 import team.fjut.cf.service.VjUserProblemSolvedService;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.Objects;
 
@@ -28,20 +27,18 @@ import java.util.Objects;
 @CrossOrigin
 @RequestMapping("/vj/problem")
 public class VjProblemController {
-    @Autowired
+    @Resource
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
-    @Autowired
+    @Resource
     VjProblemInfoService vjProblemInfoService;
 
-    @Autowired
-    SystemInfoService systemInfoService;
 
-    @Autowired
+    @Resource
     VjUserProblemSolvedService vjUserProblemSolvedService;
 
     @PostMapping("/list")
-    public ResultJson getVJProblemList(@RequestParam("pageNum") Integer pageNum,
+    public ResultJson getVjProblemList(@RequestParam("pageNum") Integer pageNum,
                                        @RequestParam("pageSize") Integer pageSize,
                                        @RequestParam(value = "OJId", required = false) String OJId,
                                        @RequestParam(value = "category", required = false) String category,

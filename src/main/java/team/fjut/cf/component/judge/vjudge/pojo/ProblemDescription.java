@@ -3,6 +3,7 @@ package team.fjut.cf.component.judge.vjudge.pojo;
 import lombok.Data;
 
 /**
+ * 题目描述
  * @author axiang [2020/2/19]
  */
 @Data

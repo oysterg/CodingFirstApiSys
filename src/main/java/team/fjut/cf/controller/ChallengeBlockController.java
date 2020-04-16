@@ -1,6 +1,5 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
@@ -10,6 +9,7 @@ import team.fjut.cf.pojo.vo.*;
 import team.fjut.cf.service.ChallengeBlockProblemService;
 import team.fjut.cf.service.ChallengeBlockService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,10 +19,10 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/challenge_block")
 public class ChallengeBlockController {
-    @Autowired
+    @Resource
     ChallengeBlockService challengeBlockService;
 
-    @Autowired
+    @Resource
     ChallengeBlockProblemService challengeBlockProblemService;
 
 
@@ -32,9 +32,9 @@ public class ChallengeBlockController {
 
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         List<UserChallengeBlockVO> userChallengeBlockVOS = challengeBlockService.selectByUsername(username);
-        List<ChallengeBlockConditionPO> challengeBlockConditionPOS = challengeBlockService.selectConditions();
+        List<ChallengeBlockConditionPO> challengeBlockConditions = challengeBlockService.selectConditions();
         resultJson.addInfo(userChallengeBlockVOS);
-        resultJson.addInfo(challengeBlockConditionPOS);
+        resultJson.addInfo(challengeBlockConditions);
         return resultJson;
     }
 

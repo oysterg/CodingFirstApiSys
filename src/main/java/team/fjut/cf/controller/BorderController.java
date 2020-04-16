@@ -1,12 +1,12 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.*;
 import team.fjut.cf.service.BorderHonorRankService;
 import team.fjut.cf.service.UserBaseInfoService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,10 +16,10 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/border")
 public class BorderController {
-    @Autowired
+    @Resource
     BorderHonorRankService borderHonorRankService;
 
-    @Autowired
+    @Resource
     UserBaseInfoService userBaseInfoService;
 
     @GetMapping("/honor_rank")
@@ -27,7 +27,7 @@ public class BorderController {
                                        @RequestParam("pageSize") Integer pageSize) {
         ResultJson resultJson = new ResultJson();
         List<BorderHonorRankVO> borderHonorRankVOS = borderHonorRankService.pages(pageNum, pageSize);
-        Integer count  = borderHonorRankService.selectAllCount();
+        Integer count = borderHonorRankService.selectAllCount();
         resultJson.addInfo(borderHonorRankVOS);
         resultJson.addInfo(count);
         return resultJson;

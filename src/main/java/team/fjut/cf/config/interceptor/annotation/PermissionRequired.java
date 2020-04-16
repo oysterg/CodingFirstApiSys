@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 import java.util.List;
 
 /**
+ * 权限拦截 注解
+ *
  * @author axiang [2020/4/16]
  */
 @Target(ElementType.METHOD)

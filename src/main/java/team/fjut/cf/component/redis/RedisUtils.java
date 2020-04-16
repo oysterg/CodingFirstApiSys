@@ -1,22 +1,22 @@
 package team.fjut.cf.component.redis;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Redis配置类
+ * Redis工具类
  *
  * @author axiang [2019/10/21]
  */
 @Component
 public class RedisUtils {
 
-    @Autowired
+    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     /**
@@ -24,16 +24,11 @@ public class RedisUtils {
      *
      * @param key
      * @param time
-     * @return
      */
-    public boolean expire(String key, long time) {
+    public void expire(String key, long time) {
         if (time > 0) {
             redisTemplate.expire(key, time, TimeUnit.SECONDS);
-            return true;
-        } else {
-            return false;
         }
-
     }
 
     /**
@@ -42,7 +37,7 @@ public class RedisUtils {
      * @param key
      * @return 时间(秒)
      */
-    public long getExpireTime(String key) {
+    public Long getExpireTime(String key) {
         return redisTemplate.getExpire(key, TimeUnit.SECONDS);
     }
 
@@ -52,7 +47,7 @@ public class RedisUtils {
      * @param key 键
      * @return true 存在 false不存在
      */
-    public boolean hasKey(String key) {
+    public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
@@ -66,7 +61,7 @@ public class RedisUtils {
             if (key.length == 1) {
                 redisTemplate.delete(key[0]);
             } else {
-                redisTemplate.delete(CollectionUtils.arrayToList(key));
+                redisTemplate.delete(Arrays.asList(key));
             }
         }
     }
@@ -89,11 +84,9 @@ public class RedisUtils {
      *
      * @param key   键
      * @param value 值
-     * @return true成功 false失败
      */
-    public boolean set(String key, Object value) {
+    public void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
-        return true;
     }
 
     /**
@@ -102,15 +95,13 @@ public class RedisUtils {
      * @param key
      * @param value
      * @param time
-     * @return
      */
-    public boolean set(String key, Object value, long time) {
+    public void set(String key, Object value, long time) {
         if (time > 0) {
             redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
         } else {
             set(key, value);
         }
-        return true;
     }
 
 

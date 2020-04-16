@@ -1,12 +1,11 @@
 package team.fjut.cf.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.component.judge.local.LocalJudgeHttpClient;
 import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
+import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.JudgeStatus;
@@ -16,6 +15,7 @@ import team.fjut.cf.pojo.vo.StatusListVO;
 import team.fjut.cf.service.JudgeStatusService;
 import team.fjut.cf.service.ViewJudgeStatusService;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -25,13 +25,13 @@ import java.util.*;
 @CrossOrigin
 @RequestMapping("/judge_status")
 public class JudgeStatusController {
-    @Autowired
+    @Resource
     JudgeStatusService judgeStatusService;
 
-    @Autowired
+    @Resource
     ViewJudgeStatusService viewJudgeStatusService;
 
-    @Autowired
+    @Resource
     LocalJudgeHttpClient localJudgeHttpClient;
 
     @GetMapping("/list")

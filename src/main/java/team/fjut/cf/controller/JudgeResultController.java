@@ -1,6 +1,5 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
@@ -10,6 +9,7 @@ import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.JudgeResultService;
 import team.fjut.cf.service.JudgeStatusService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,16 +19,15 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/judge_result")
 public class JudgeResultController {
-    @Autowired
+    @Resource
     JudgeStatusService judgeStatusService;
 
-    @Autowired
+    @Resource
     JudgeResultService judgeResultService;
 
     @LoginRequired
     @PostMapping("/info")
-    public ResultJson getJudgeResult(@RequestParam("judgeId")Integer judgeId)
-    {
+    public ResultJson getJudgeResult(@RequestParam("judgeId") Integer judgeId) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         List<JudgeResult> judgeResults = judgeResultService.selectJudgeResult(judgeId);
         JudgeStatusVO judgeStatusVO = judgeStatusService.selectJudgeStatus(judgeId);

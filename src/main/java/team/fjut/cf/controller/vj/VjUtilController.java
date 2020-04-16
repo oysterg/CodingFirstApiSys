@@ -2,14 +2,13 @@ package team.fjut.cf.controller.vj;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
+import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
@@ -17,6 +16,7 @@ import team.fjut.cf.service.SystemInfoService;
 import team.fjut.cf.util.Enums2ListUtils;
 import team.fjut.cf.util.UUIDUtils;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,10 +35,10 @@ public class VjUtilController {
     @Value("${cf.config.file.tempPath}")
     String tempPath;
 
-    @Autowired
+    @Resource
     SystemInfoService systemInfoService;
 
-    @Autowired
+    @Resource
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
     /**

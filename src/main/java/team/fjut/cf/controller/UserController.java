@@ -1,13 +1,12 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import team.fjut.cf.component.token.TokenModel;
+import team.fjut.cf.component.token.jwt.JwtTokenManager;
 import team.fjut.cf.config.interceptor.annotation.CaptchaRequired;
 import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
-import team.fjut.cf.component.token.jwt.JwtTokenManager;
-import team.fjut.cf.component.token.TokenModel;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserAuth;
 import team.fjut.cf.pojo.po.UserBaseInfo;
@@ -19,6 +18,7 @@ import team.fjut.cf.util.IpUtils;
 import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.UUIDUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -30,25 +30,25 @@ import java.util.List;
 @RequestMapping("/user")
 @CrossOrigin
 public class UserController {
-    @Autowired
+    @Resource
     UserBaseInfoService userBaseInfoService;
 
-    @Autowired
+    @Resource
     UserCustomInfoService userCustomInfoService;
 
-    @Autowired
+    @Resource
     UserAuthService userAuthService;
 
-    @Autowired
+    @Resource
     JudgeStatusService judgeStatusService;
 
-    @Autowired
+    @Resource
     BorderHonorRankService borderHonorRankService;
 
-    @Autowired
+    @Resource
     JwtTokenManager jwtTokenManager;
 
-    @Autowired
+    @Resource
     JsonFileTool jsonFileTool;
 
     /**

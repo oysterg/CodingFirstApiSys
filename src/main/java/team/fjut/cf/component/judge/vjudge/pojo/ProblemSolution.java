@@ -5,6 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * 题目解答结果
+ *
  * @author axiang [2020/3/21]
  */
 @Data

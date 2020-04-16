@@ -1,17 +1,20 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
-import team.fjut.cf.pojo.po.*;
+import team.fjut.cf.pojo.po.ProblemInfo;
+import team.fjut.cf.pojo.po.ProblemSample;
+import team.fjut.cf.pojo.po.ProblemView;
+import team.fjut.cf.pojo.po.UserProblemSolved;
 import team.fjut.cf.pojo.vo.ProblemListVO;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserRadarVO;
 import team.fjut.cf.service.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -21,28 +24,28 @@ import java.util.List;
 @RequestMapping("/problem")
 @CrossOrigin
 public class ProblemController {
-    @Autowired
+    @Resource
     UserBaseInfoService userBaseInfoService;
 
-    @Autowired
+    @Resource
     ProblemService problemService;
 
-    @Autowired
+    @Resource
     ProblemInfoService problemInfoService;
 
-    @Autowired
+    @Resource
     ProblemViewService problemViewService;
 
-    @Autowired
+    @Resource
     ProblemSampleService problemSampleService;
 
-    @Autowired
+    @Resource
     ProblemTagService problemTagService;
 
-    @Autowired
+    @Resource
     UserProblemSolvedService userProblemSolvedService;
 
-    @Autowired
+    @Resource
     ViewProblemInfoService viewProblemInfoService;
 
     /**

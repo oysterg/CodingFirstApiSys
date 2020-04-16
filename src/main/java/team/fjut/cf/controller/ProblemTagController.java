@@ -1,15 +1,15 @@
 package team.fjut.cf.controller;
 
-import team.fjut.cf.pojo.enums.ResultCode;
-import team.fjut.cf.pojo.po.ProblemTagPO;
-import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.service.ProblemTagService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import team.fjut.cf.pojo.enums.ResultCode;
+import team.fjut.cf.pojo.po.ProblemTagPO;
+import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.service.ProblemTagService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/problem_tag")
 public class ProblemTagController {
-    @Autowired
+    @Resource
     ProblemTagService problemTagService;
 
     @GetMapping("/all")

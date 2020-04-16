@@ -1,14 +1,14 @@
 package team.fjut.cf.controller;
 
+import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCheckIn;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.UserCheckInService;
 import team.fjut.cf.util.IpUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/user/checkIn")
 public class UserCheckInController {
-    @Autowired
+    @Resource
     UserCheckInService userCheckInService;
 
     @PrivateRequired

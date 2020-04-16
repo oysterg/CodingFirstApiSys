@@ -1,6 +1,5 @@
 package team.fjut.cf.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
@@ -10,6 +9,7 @@ import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserMessageListVO;
 import team.fjut.cf.service.UserMessageService;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -19,7 +19,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/user/message")
 public class UserMessageController {
-    @Autowired
+    @Resource
     UserMessageService userMessageService;
 
 

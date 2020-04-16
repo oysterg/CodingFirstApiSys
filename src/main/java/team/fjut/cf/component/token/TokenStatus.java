@@ -6,7 +6,7 @@ package team.fjut.cf.component.token;
  * 1：成功
  * 2：过期
  *
- * @author axiang
+ * @author axiang [2020/4/16]
  */
 public enum TokenStatus {
     /**
@@ -26,9 +26,6 @@ public enum TokenStatus {
      */
     IS_GUEST(3);
 
-    private int code;
-
     TokenStatus(int code) {
-        this.code = code;
     }
 }

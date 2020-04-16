@@ -2,24 +2,23 @@ package team.fjut.cf.controller.vj;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.component.judge.vjudge.pojo.SubmitParams;
+import team.fjut.cf.config.interceptor.annotation.PrivateRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.VjJudgeResult;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.VjJudgeResultVO;
-import team.fjut.cf.service.UserBaseInfoService;
 import team.fjut.cf.service.ViewVjJudgeResultService;
 import team.fjut.cf.service.VjJudgeResultService;
 import team.fjut.cf.service.VjUserProblemSolvedService;
 import team.fjut.cf.util.JsonFileTool;
 import team.fjut.cf.util.UUIDUtils;
 
+import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,26 +36,24 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/vj/judge_result")
 public class VjJudgeResultController {
-    @Autowired
-    JsonFileTool jsonFileTool;
-
     @Value("${cf.config.file.tempPath}")
     String tempPath;
 
-    @Autowired
+    @Resource
+    JsonFileTool jsonFileTool;
+
+    @Resource
     VirtualJudgeHttpClient virtualJudgeHttpClient;
 
-    @Autowired
+    @Resource
     ViewVjJudgeResultService viewVjJudgeResultService;
 
-    @Autowired
+    @Resource
     VjJudgeResultService vjJudgeResultService;
 
-    @Autowired
+    @Resource
     VjUserProblemSolvedService vjUserProblemSolvedService;
 
-    @Autowired
-    UserBaseInfoService userBaseInfoService;
 
     @PostMapping("/list")
     public ResultJson getResultList(@RequestParam("pageNum") int pageNum,

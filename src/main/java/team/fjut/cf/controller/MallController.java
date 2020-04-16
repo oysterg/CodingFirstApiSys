@@ -1,13 +1,13 @@
 package team.fjut.cf.controller;
 
+import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.MallGoodsPO;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.MallGoodsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +18,7 @@ import java.util.Objects;
 @CrossOrigin
 @RequestMapping("/mall")
 public class MallController {
-    @Autowired
+    @Resource
     MallGoodsService mallGoodsService;
 
     @GetMapping("/list")
