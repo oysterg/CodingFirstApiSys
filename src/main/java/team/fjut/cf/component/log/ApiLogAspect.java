@@ -1,15 +1,15 @@
 package team.fjut.cf.component.log;
 
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.util.DateUtils;
 import team.fjut.cf.util.IpUtils;
 
@@ -28,12 +28,9 @@ import java.util.Date;
 @Aspect
 @Component
 @Slf4j
-public class LogAspect {
+public class ApiLogAspect {
     @Value("${cf.config.controllerLog.enable}")
     private boolean controllerLogEnable;
-
-    @Value("${cf.config.handlerLog.enable}")
-    private boolean handlerLogEnable;
 
     /**
      * 切点为controller层的所有方法，  ..表示包和子包
@@ -46,12 +43,9 @@ public class LogAspect {
     public void controllerMethod() {
     }
 
-    @Pointcut("execution(public * team.fjut.cf.config.exception..*.*(..))")
-    public void handlerMethod() {
-    }
 
     @Around("controllerMethod()")
-    public Object logBeforeRequest(ProceedingJoinPoint proceedingJoinPoint) {
+    public Object logAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         //业务发生时间
         Date serviceHappenDate = new Date();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -85,16 +79,14 @@ public class LogAspect {
         //计算执行时间
         long startTime = System.currentTimeMillis();
         long endTime = 0;
-        try {
-            if (args.length > 0) {
-                o = proceedingJoinPoint.proceed(args);
-            } else {
-                o = proceedingJoinPoint.proceed();
-            }
-            endTime = System.currentTimeMillis();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
+
+        if (args.length > 0) {
+            o = proceedingJoinPoint.proceed(args);
+        } else {
+            o = proceedingJoinPoint.proceed();
         }
+        endTime = System.currentTimeMillis();
+
         if (controllerLogEnable) {
             log.info("===================== 结束请求 =====================");
             log.info("== 【业务发生时间】:{}", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"));
@@ -106,24 +98,6 @@ public class LogAspect {
 
     }
 
-    @Before("handlerMethod()")
-    public void logBeforeHandler(JoinPoint joinPoint) {
-        if (handlerLogEnable) {
-            StringBuilder logStr = new StringBuilder();
-            logStr.append("\n============= 进入ExceptionHandler =============\n");
-            logStr.append("处理方法名称 = {").append(joinPoint.getSignature().getDeclaringTypeName()).append(".").append(joinPoint.getSignature().getName()).append("},\n");
-            log.info(logStr.toString());
-        }
 
-    }
-
-    @AfterReturning(returning = "resultJson", pointcut = "handlerMethod()")
-    public void logAfterHandlerReturning(ResultJson resultJson) {
-        if (handlerLogEnable) {
-            String logStr = "\n请求结果：\n" + resultJson.toString() +
-                    "\n============= 离开ExceptionHandler =============\n";
-            log.info(logStr);
-        }
-    }
 
 }
