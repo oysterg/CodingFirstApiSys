@@ -11,9 +11,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author axiang [2020/4/16]
@@ -33,6 +31,11 @@ public class UserPermissionServiceImpl implements UserPermissionService {
         ArrayList<PermissionType> list = new ArrayList<>();
         for (UserPermission havePermission : havePermissions) {
             list.add(PermissionType.getEnumByID(havePermission.getPermissionId()));
+        }
+        // 如果没有基础权限，则认定非管理员
+        if(!list.contains(PermissionType.BASE_ADMIN))
+        {
+            return false;
         }
         for (PermissionType needPermission : needPermissions) {
             if (!list.contains(needPermission)) {
