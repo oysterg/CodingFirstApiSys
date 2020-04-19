@@ -1,6 +1,7 @@
 package team.fjut.cf.service;
 
 import team.fjut.cf.pojo.po.ProblemTagPO;
+import team.fjut.cf.pojo.po.ProblemTagRecordPO;
 
 import java.util.List;
 
@@ -14,6 +15,11 @@ public interface ProblemTagService {
      */
     List<ProblemTagPO> select();
 
-
+    /**
+     * 根据题目ID查询标签
+     * @param problemId
+     * @return
+     */
+    List<ProblemTagRecordPO> selectTag(Integer problemId);
 
 }

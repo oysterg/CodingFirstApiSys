@@ -7,6 +7,7 @@ import team.fjut.cf.pojo.po.ProblemSample;
 import team.fjut.cf.service.ProblemSampleService;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @Service
 public class ProblemSampleServiceImpl implements ProblemSampleService {
-    @Autowired
+    @Resource
     ProblemSampleMapper problemSampleMapper;
 
     @Override

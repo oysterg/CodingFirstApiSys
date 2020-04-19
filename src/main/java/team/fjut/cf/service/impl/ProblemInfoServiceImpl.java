@@ -7,12 +7,14 @@ import team.fjut.cf.pojo.po.ProblemInfo;
 import team.fjut.cf.service.ProblemInfoService;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
+
 /**
  * @author axiang [2020/3/6]
  */
 @Service
 public class ProblemInfoServiceImpl implements ProblemInfoService {
-    @Autowired
+    @Resource
     ProblemInfoMapper problemInfoMapper;
 
     @Override
@@ -20,6 +22,13 @@ public class ProblemInfoServiceImpl implements ProblemInfoService {
         Example example = new Example(ProblemInfo.class);
         example.createCriteria().andEqualTo("problemId", problemId);
         return problemInfoMapper.selectOneByExample(example);
+    }
+
+    @Override
+    public int deleteProblem(Integer problemId) {
+        Example example = new Example(ProblemInfo.class);
+        example.createCriteria().andEqualTo("problemId", problemId);
+        return problemInfoMapper.deleteByExample(example);
     }
 
 

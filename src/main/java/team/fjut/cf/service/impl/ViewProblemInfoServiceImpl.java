@@ -10,10 +10,12 @@ import team.fjut.cf.pojo.enums.OjId;
 import team.fjut.cf.pojo.enums.ProblemDifficultLevel;
 import team.fjut.cf.pojo.po.UserProblemSolved;
 import team.fjut.cf.pojo.po.ViewProblemInfo;
+import team.fjut.cf.pojo.vo.ProblemListAdminVO;
 import team.fjut.cf.pojo.vo.ProblemListVO;
 import team.fjut.cf.service.ViewProblemInfoService;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,10 +27,10 @@ import java.util.Objects;
  */
 @Service
 public class ViewProblemInfoServiceImpl implements ViewProblemInfoService {
-    @Autowired
+    @Resource
     ViewProblemInfoMapper viewProblemInfoMapper;
 
-    @Autowired
+    @Resource
     UserProblemSolvedMapper userProblemSolvedMapper;
 
     @Override
@@ -104,6 +106,56 @@ public class ViewProblemInfoServiceImpl implements ViewProblemInfoService {
         }
         if (Objects.nonNull(tagId)) {
             //    TODO:暂不选择TagId
+        }
+        return viewProblemInfoMapper.selectCountByExample(example);
+    }
+
+    @Override
+    public List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String title, Integer difficultLevel) {
+        List<ProblemListAdminVO> results = new ArrayList<>();
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        PageHelper.startPage(pageNum, pageSize);
+        Example example = new Example(ViewProblemInfo.class);
+        example.orderBy("problemId").asc();
+        Example.Criteria criteria = example.createCriteria();
+        // 非空则查询条件
+        if (Objects.nonNull(difficultLevel)) {
+            criteria.andEqualTo("difficultLevel", difficultLevel);
+        }
+        if (Objects.nonNull(title)) {
+            criteria.andLike("title", title);
+        }
+        List<ViewProblemInfo> viewProblemInfos = viewProblemInfoMapper.selectByExample(example);
+        for (ViewProblemInfo item : viewProblemInfos) {
+            ProblemListAdminVO vo = new ProblemListAdminVO();
+            vo.setProblemId(item.getProblemId());
+            vo.setBelongOj(OjId.getNameByCode(item.getBelongOjId()));
+            vo.setTitle(item.getTitle());
+            vo.setDifficulty(ProblemDifficultLevel.getNameByCode(item.getDifficultLevel()));
+            vo.setVisible(item.getVisible());
+            String ratio;
+            if (item.getTotalSubmit() == 0) {
+                ratio = "0.00%(0/0)";
+            } else {
+                ratio = decimalFormat.format(100.00 * item.getTotalAc() / item.getTotalSubmit()) + "%("
+                        + item.getTotalAc() + "/" + item.getTotalSubmit() + ")";
+            }
+            vo.setRatio(ratio);
+            results.add(vo);
+        }
+        return results;
+    }
+
+    @Override
+    public int countByPage(String title, Integer difficultLevel) {
+        Example example = new Example(ViewProblemInfo.class);
+        Example.Criteria criteria = example.createCriteria();
+        // 非空则查询条件
+        if (Objects.nonNull(difficultLevel)) {
+            criteria.andEqualTo("difficultLevel", difficultLevel);
+        }
+        if (Objects.nonNull(title)) {
+            criteria.andLike("title", title);
         }
         return viewProblemInfoMapper.selectCountByExample(example);
     }

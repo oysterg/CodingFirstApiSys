@@ -19,6 +19,7 @@ import team.fjut.cf.util.SHAUtils;
 import team.fjut.cf.util.UUIDUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,31 +29,31 @@ import java.util.List;
  */
 @Service
 public class UserBaseInfoServiceImpl implements UserBaseInfoService {
-    @Autowired
+    @Resource
     UserBaseInfoMapper userBaseInfoMapper;
 
-    @Autowired
+    @Resource
     UserAuthMapper userAuthMapper;
 
-    @Autowired
+    @Resource
     UserCustomInfoMapper userCustomInfoMapper;
 
-    @Autowired
+    @Resource
     UserCheckInMapper userCheckInMapper;
 
-    @Autowired
+    @Resource
     UserSealMapper userSealMapper;
 
-    @Autowired
+    @Resource
     UserTitleMapper userTitleMapper;
 
-    @Autowired
+    @Resource
     UserMessageMapper userMessageMapper;
 
-    @Autowired
+    @Resource
     EmailTool emailTool;
 
-    @Autowired
+    @Resource
     JsonFileTool jsonFileTool;
 
     @Transactional(rollbackFor = Exception.class)
