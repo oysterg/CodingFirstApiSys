@@ -47,7 +47,7 @@ public class HandlerLogAspect {
         Object o;
         Object[] args = proceedingJoinPoint.getArgs();
         if (handlerLogEnable) {
-            String s = "\n==================== 进入异常处理 =====================\n"
+            String s = "\n==================== 进入异常处理 ======================\n"
                     + String.format("== 【异常发生时间】:%s\n", DateUtils.formatDate(serviceHappenDate, "yyyy-MM-dd hh:mm:ss"))
                     + String.format("== 【请求URL】:%s\n", request.getRequestURL().toString())
                     + String.format("== 【请求IP】:%s\n", IpUtils.getClientIpAddress(request))
