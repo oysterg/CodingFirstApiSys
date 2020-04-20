@@ -25,8 +25,9 @@ public class ProblemViewServiceImpl implements ProblemViewService {
         return problemViewMapper.selectOneByExample(example);
     }
 
+    // add by zhongml [2020/4/17]
     @Override
-    public int updateProblem(ProblemView problemView) {
+    public int updateView(ProblemView problemView) {
         Example example = new Example(ProblemView.class);
         example.createCriteria().andEqualTo("problemId", problemView.getProblemId());
         return problemViewMapper.updateByExampleSelective(problemView, example);

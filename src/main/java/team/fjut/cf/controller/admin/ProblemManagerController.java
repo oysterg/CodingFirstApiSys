@@ -64,8 +64,8 @@ public class ProblemManagerController {
             // 拼接查询字符串如果为空字符或者null则 置为null
             title = null;
         }
-        List<ProblemListAdminVO> problemList = viewProblemInfoService.selectByPage(page, limit, sort, title, difficultLevel);
-        int total = viewProblemInfoService.countByPage(title, difficultLevel);
+        List<ProblemListAdminVO> problemList = viewProblemInfoService.selectByCondition(page, limit, sort, title, difficultLevel);
+        int total = viewProblemInfoService.countByCondition(title, difficultLevel);
         resultJson.addInfo(problemList);
         resultJson.addInfo(total);
         return resultJson;
@@ -76,12 +76,12 @@ public class ProblemManagerController {
      * @return
      */
     @GetMapping("/info")
-    public ResultJson getProblemLimit(@RequestParam("problemId") Integer problemId) {
+    public ResultJson getProblemInfo(@RequestParam("problemId") Integer problemId) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         ProblemInfo problemInfo = problemInfoService.selectProblemInfo(problemId);
         ProblemView problemView = problemViewService.selectView(problemId);
         List<ProblemSample> problemSample = problemSampleService.selectSamples(problemId);
-        int totalTag = problemTagService.selectTag(problemId).size();
+        int totalTag = problemTagService.selectTagRecord(problemId).size();
         int totalStar = problemStarService.selectStar(problemId).size();
         resultJson.addInfo(problemInfo);
         resultJson.addInfo(problemView);
@@ -113,7 +113,7 @@ public class ProblemManagerController {
         problemView.setDescription(description);
         problemView.setInput(input);
         problemView.setOutput(output);
-        int result1 = problemViewService.updateProblem(problemView);
+        int result1 = problemViewService.updateView(problemView);
         if (result1 != 1) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL);
         }

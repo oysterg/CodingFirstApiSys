@@ -24,6 +24,7 @@ public class ProblemInfoServiceImpl implements ProblemInfoService {
         return problemInfoMapper.selectOneByExample(example);
     }
 
+    // add by zhongml [2020/4/17]
     @Override
     public int deleteProblem(Integer problemId) {
         Example example = new Example(ProblemInfo.class);

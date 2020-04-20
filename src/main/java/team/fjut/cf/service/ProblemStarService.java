@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * 题目收藏Service
- * @author zhongml [2020/04/17]
+ * @author zhongml [2020/4/17]
  */
 public interface ProblemStarService {
 

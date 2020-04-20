@@ -3,7 +3,7 @@ package team.fjut.cf.pojo.vo;
 import lombok.Data;
 
 /**
- * @author zhongml [2020/04/17]
+ * @author zhongml [2020/4/17]
  */
 @Data
 public class ProblemListAdminVO {

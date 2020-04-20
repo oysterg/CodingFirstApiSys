@@ -110,18 +110,19 @@ public class ViewProblemInfoServiceImpl implements ViewProblemInfoService {
         return viewProblemInfoMapper.selectCountByExample(example);
     }
 
+    // add by zhongml [2020/4/17]
     @Override
-    public List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String sort, String title, Integer difficultLevel) {
+    public List<ProblemListAdminVO> selectByCondition(int pageNum, int pageSize, String sort, String title, Integer difficultLevel) {
         List<ProblemListAdminVO> results = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         PageHelper.startPage(pageNum, pageSize);
         Example example = new Example(ViewProblemInfo.class);
 
-        if(sort != null && sort.equals("ascending")) {
-            example.orderBy("problemId").asc();
+        if(sort != null && sort.equals("descending")) {
+            example.orderBy("problemId").desc();
         }
         else {
-            example.orderBy("problemId").desc();
+            example.orderBy("problemId").asc();
         }
         Example.Criteria criteria = example.createCriteria();
         // 非空则查询条件
@@ -152,8 +153,9 @@ public class ViewProblemInfoServiceImpl implements ViewProblemInfoService {
         return results;
     }
 
+    // add by zhongml [2020/4/17]
     @Override
-    public int countByPage(String title, Integer difficultLevel) {
+    public int countByCondition(String title, Integer difficultLevel) {
         Example example = new Example(ViewProblemInfo.class);
         Example.Criteria criteria = example.createCriteria();
         // 非空则查询条件

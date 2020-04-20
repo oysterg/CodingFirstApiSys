@@ -17,7 +17,11 @@ public interface ProblemInfoService {
     ProblemInfo selectProblemInfo(Integer problemId);
 
     /**
+     * @author zhongml [2020/4/17]
      * 根据题目ID删除题目
+     *
+     * @param problemId
+     * @return
      */
     int deleteProblem(Integer problemId);
 

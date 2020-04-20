@@ -16,10 +16,11 @@ public interface ProblemViewService {
     ProblemView selectView(Integer problemId);
 
     /**
+     * @author zhongml [2020/4/17]
      * 修改题目详情
      *
      * @param problemView
      * @return
      */
-    int updateProblem(ProblemView problemView);
+    int updateView(ProblemView problemView);
 }

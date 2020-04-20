@@ -9,6 +9,7 @@ import team.fjut.cf.pojo.po.ProblemTypeCountPO;
 import team.fjut.cf.pojo.vo.UserRadarVO;
 import team.fjut.cf.service.ProblemService;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -16,22 +17,22 @@ import java.util.*;
  */
 @Service
 public class ProblemServiceImpl implements ProblemService {
-    @Autowired
+    @Resource
     ProblemInfoMapper problemInfoMapper;
 
-    @Autowired
+    @Resource
     ProblemViewMapper problemViewMapper;
 
-    @Autowired
+    @Resource
     ProblemSampleMapper problemSampleMapper;
 
-    @Autowired
+    @Resource
     ProblemDifficultMapper problemDifficultMapper;
 
-    @Autowired
+    @Resource
     UserProblemSolvedMapper userProblemSolvedMapper;
 
-    @Autowired
+    @Resource
     ProblemTagRecordMapper problemTagRecordMapper;
 
     @Override

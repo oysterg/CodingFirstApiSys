@@ -37,7 +37,8 @@ public interface ViewProblemInfoService {
     int countByConditions(Integer problemId, String title, Integer tagId);
 
     /**
-     * 后台根据条件查询
+     * @author zhongml [2020/4/17]
+     * 后台根据条件查询题目列表
      *
      * @param pageNum
      * @param pageSize
@@ -45,15 +46,15 @@ public interface ViewProblemInfoService {
      * @param difficultLevel
      * @return
      */
-    List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String sort, String title, Integer difficultLevel);
-
+    List<ProblemListAdminVO> selectByCondition(int pageNum, int pageSize, String sort, String title, Integer difficultLevel);
 
     /**
+     * @author zhongml [2020/4/17]
      * 后台根据条件查询数量
      *
      * @param title
      * @param difficultLevel
      * @return
      */
-    int countByPage(String title, Integer difficultLevel);
+    int countByCondition(String title, Integer difficultLevel);
 }
