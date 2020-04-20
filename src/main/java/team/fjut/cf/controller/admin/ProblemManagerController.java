@@ -39,6 +39,7 @@ public class ProblemManagerController {
     /**
      * @param page
      * @param limit
+     * @param sort
      * @param title
      * @param difficultLevel
      * @return
@@ -46,6 +47,7 @@ public class ProblemManagerController {
     @GetMapping("/list")
     public ResultJson getProblemLimit(@RequestParam("page") Integer page,
                                       @RequestParam("limit") Integer limit,
+                                      @RequestParam(value = "sort", required = false) String sort,
                                       @RequestParam(value = "difficultLevel", required = false) Integer difficultLevel,
                                       @RequestParam(value = "title", required = false) String title) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
@@ -62,7 +64,7 @@ public class ProblemManagerController {
             // 拼接查询字符串如果为空字符或者null则 置为null
             title = null;
         }
-        List<ProblemListAdminVO> problemList = viewProblemInfoService.selectByPage(page, limit, title, difficultLevel);
+        List<ProblemListAdminVO> problemList = viewProblemInfoService.selectByPage(page, limit, sort, title, difficultLevel);
         int total = viewProblemInfoService.countByPage(title, difficultLevel);
         resultJson.addInfo(problemList);
         resultJson.addInfo(total);

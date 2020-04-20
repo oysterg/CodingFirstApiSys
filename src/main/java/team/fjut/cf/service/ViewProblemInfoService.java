@@ -45,7 +45,7 @@ public interface ViewProblemInfoService {
      * @param difficultLevel
      * @return
      */
-    List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String title, Integer difficultLevel);
+    List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String sort, String title, Integer difficultLevel);
 
 
     /**

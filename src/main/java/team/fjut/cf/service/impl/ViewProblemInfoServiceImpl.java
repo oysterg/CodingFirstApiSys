@@ -111,12 +111,18 @@ public class ViewProblemInfoServiceImpl implements ViewProblemInfoService {
     }
 
     @Override
-    public List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String title, Integer difficultLevel) {
+    public List<ProblemListAdminVO> selectByPage(int pageNum, int pageSize, String sort, String title, Integer difficultLevel) {
         List<ProblemListAdminVO> results = new ArrayList<>();
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         PageHelper.startPage(pageNum, pageSize);
         Example example = new Example(ViewProblemInfo.class);
-        example.orderBy("problemId").asc();
+
+        if(sort != null && sort.equals("ascending")) {
+            example.orderBy("problemId").asc();
+        }
+        else {
+            example.orderBy("problemId").desc();
+        }
         Example.Criteria criteria = example.createCriteria();
         // 非空则查询条件
         if (Objects.nonNull(difficultLevel)) {
