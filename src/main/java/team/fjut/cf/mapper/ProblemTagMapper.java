@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author axiang [2019/10/30]
  */
-public interface ProblemTagMapper  extends Mapper<ProblemTagPO> {
+public interface ProblemTagMapper extends Mapper<ProblemTagPO> {
     /**
      * 查找全部题目标签类型
      * @return

@@ -1,10 +1,15 @@
 package team.fjut.cf.pojo.po;
 
+import lombok.Data;
+
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author axiang [2019/10/21]
  */
+@Data
+@Table(name = "t_mall_goods")
 public class MallGoodsPO {
     private Integer id;
     private String name;

@@ -2,13 +2,14 @@ package team.fjut.cf.mapper;
 
 import team.fjut.cf.pojo.po.MallGoodsPO;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/11/12]
  */
-public interface MallGoodsMapper {
+public interface MallGoodsMapper extends Mapper<MallGoodsPO> {
 
     /**
      * 查询全部商品信息记录
