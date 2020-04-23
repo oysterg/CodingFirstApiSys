@@ -1,6 +1,6 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.po.MallGoodsPO;
+import team.fjut.cf.pojo.po.MallGoods;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface MallGoodsService {
      * @param pageSize
      * @return
      */
-    List<MallGoodsPO> pages(Integer pageNum, Integer pageSize);
+    List<MallGoods> pages(Integer pageNum, Integer pageSize);
 
     /**
      * 查询商品记录总数
@@ -30,7 +30,7 @@ public interface MallGoodsService {
      * @param id
      * @return
      */
-    MallGoodsPO selectByGoodsId(Integer id);
+    MallGoods selectByGoodsId(Integer id);
 
     /**
      * @author zhongml [2020/4/21]
@@ -43,7 +43,7 @@ public interface MallGoodsService {
      * @param name
      * @return
      */
-    List<MallGoodsPO> selectByCondition(Integer pageNum, Integer pageSize, String sort, Integer id, String name);
+    List<MallGoods> selectByCondition(Integer pageNum, Integer pageSize, String sort, Integer id, String name);
 
     /**
      * @author zhongml [2020/4/21]
@@ -59,19 +59,19 @@ public interface MallGoodsService {
      * @author zhongml [2020/4/21]
      * 新增一件商品
      *
-     * @param mallGoodsPO
+     * @param mallGoods
      * @return
      */
-    int createGoods(MallGoodsPO mallGoodsPO);
+    int createGoods(MallGoods mallGoods);
 
     /**
      * @author zhongml [2020/4/21]
      * 根据ID修改商品信息
      *
-     * @param mallGoodsPO
+     * @param mallGoods
      * @return
      */
-    int updateGoods(MallGoodsPO mallGoodsPO);
+    int updateGoods(MallGoods mallGoods);
 
     /**
      * @author zhongml [2020/4/21]

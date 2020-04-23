@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.fjut.cf.mapper.MallGoodsMapper">
 
-    <select id="all" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
+    <select id="all" resultType="team.fjut.cf.pojo.po.MallGoods">
         SELECT * FROM t_mall_goods
     </select>
 
@@ -11,7 +11,7 @@
         FROM t_mall_goods
     </select>
 
-    <select id="selectByGoodsId" resultType="team.fjut.cf.pojo.po.MallGoodsPO">
+    <select id="selectByGoodsId" resultType="team.fjut.cf.pojo.po.MallGoods">
         SELECT 	id,
         name,
         cost,

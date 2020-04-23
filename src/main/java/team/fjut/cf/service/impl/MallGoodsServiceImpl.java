@@ -2,7 +2,7 @@ package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import team.fjut.cf.mapper.MallGoodsMapper;
-import team.fjut.cf.pojo.po.MallGoodsPO;
+import team.fjut.cf.pojo.po.MallGoods;
 import team.fjut.cf.service.MallGoodsService;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -20,10 +20,10 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     MallGoodsMapper mallGoodsMapper;
 
     @Override
-    public List<MallGoodsPO> pages(Integer pageNum, Integer pageSize) {
+    public List<MallGoods> pages(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<MallGoodsPO> mallGoodsPOS = mallGoodsMapper.all();
-        return mallGoodsPOS;
+        List<MallGoods> mallGoods = mallGoodsMapper.all();
+        return mallGoods;
     }
 
     @Override
@@ -32,15 +32,15 @@ public class MallGoodsServiceImpl implements MallGoodsService {
     }
 
     @Override
-    public MallGoodsPO selectByGoodsId(Integer id) {
+    public MallGoods selectByGoodsId(Integer id) {
         return mallGoodsMapper.selectByGoodsId(id);
     }
 
     // add by zhongml [2020/4/21]
     @Override
-    public List<MallGoodsPO> selectByCondition(Integer pageNum, Integer pageSize, String sort, Integer id, String name) {
+    public List<MallGoods> selectByCondition(Integer pageNum, Integer pageSize, String sort, Integer id, String name) {
         PageHelper.startPage(pageNum, pageSize);
-        Example example = new Example(MallGoodsPO.class);
+        Example example = new Example(MallGoods.class);
 
         if(sort != null && sort.equals("descending")) {
             example.orderBy("id").desc();
@@ -57,14 +57,14 @@ public class MallGoodsServiceImpl implements MallGoodsService {
             criteria.andLike("name", name);
         }
 
-        List<MallGoodsPO> result = mallGoodsMapper.selectByExample(example);
+        List<MallGoods> result = mallGoodsMapper.selectByExample(example);
         return result;
     }
 
     // add by zhongml [2020/4/21]
     @Override
     public int countByCondition(Integer id, String name) {
-        Example example = new Example(MallGoodsPO.class);
+        Example example = new Example(MallGoods.class);
         Example.Criteria criteria = example.createCriteria();
         // 非空则查询条件
         if (Objects.nonNull(id)) {
@@ -78,22 +78,22 @@ public class MallGoodsServiceImpl implements MallGoodsService {
 
     // add by zhongml [2020/4/21]
     @Override
-    public int createGoods(MallGoodsPO mallGoodsPO) {
-        return mallGoodsMapper.insertSelective(mallGoodsPO);
+    public int createGoods(MallGoods mallGoods) {
+        return mallGoodsMapper.insertSelective(mallGoods);
     }
 
     // add by zhongml [2020/4/21]
     @Override
-    public int updateGoods(MallGoodsPO mallGoodsPO) {
-        Example example = new Example(MallGoodsPO.class);
-        example.createCriteria().andEqualTo("id", mallGoodsPO.getId());
-        return mallGoodsMapper.updateByExampleSelective(mallGoodsPO, example);
+    public int updateGoods(MallGoods mallGoods) {
+        Example example = new Example(MallGoods.class);
+        example.createCriteria().andEqualTo("id", mallGoods.getId());
+        return mallGoodsMapper.updateByExampleSelective(mallGoods, example);
     }
 
     // add by zhongml [2020/4/21]
     @Override
     public int deleteGoods(Integer id) {
-        Example example = new Example(MallGoodsPO.class);
+        Example example = new Example(MallGoods.class);
         example.createCriteria().andEqualTo("id", id);
         return mallGoodsMapper.deleteByExample(example);
     }

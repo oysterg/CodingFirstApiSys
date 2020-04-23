@@ -1,6 +1,6 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.MallGoodsPO;
+import team.fjut.cf.pojo.po.MallGoods;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * @author axiang [2019/11/12]
  */
-public interface MallGoodsMapper extends Mapper<MallGoodsPO> {
+public interface MallGoodsMapper extends Mapper<MallGoods> {
 
     /**
      * 查询全部商品信息记录
      *
      * @return
      */
-    List<MallGoodsPO> all();
+    List<MallGoods> all();
 
     /**
      * 查询商品总数
@@ -31,6 +31,6 @@ public interface MallGoodsMapper extends Mapper<MallGoodsPO> {
      * @param id
      * @return
      */
-    MallGoodsPO selectByGoodsId(@Param("id") Integer id);
+    MallGoods selectByGoodsId(@Param("id") Integer id);
 
 }

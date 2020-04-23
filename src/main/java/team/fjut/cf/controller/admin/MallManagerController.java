@@ -1,9 +1,8 @@
 package team.fjut.cf.controller.admin;
 
 import org.springframework.web.bind.annotation.*;
-import team.fjut.cf.config.interceptor.annotation.LoginRequired;
 import team.fjut.cf.pojo.enums.ResultCode;
-import team.fjut.cf.pojo.po.MallGoodsPO;
+import team.fjut.cf.pojo.po.MallGoods;
 import team.fjut.cf.pojo.po.MallOrderPO;
 import team.fjut.cf.pojo.vo.MallOrderVO;
 import team.fjut.cf.pojo.vo.ResultJson;
@@ -11,7 +10,6 @@ import team.fjut.cf.service.MallGoodsService;
 import team.fjut.cf.service.MallOrderService;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +41,7 @@ public class MallManagerController {
                                        @RequestParam(value="id", required = false) Integer id,
                                        @RequestParam(value="name", required = false) String name) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        List<MallGoodsPO> mallGoods = mallGoodsService.selectByCondition(page, limit, sort, id, name);
+        List<MallGoods> mallGoods = mallGoodsService.selectByCondition(page, limit, sort, id, name);
         Integer count = mallGoodsService.countByCondition(id, name);
         resultJson.addInfo(mallGoods);
         resultJson.addInfo(count);
@@ -57,11 +55,11 @@ public class MallManagerController {
     @GetMapping("/info")
     public ResultJson getMallGoods(@RequestParam("id") Integer id) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        MallGoodsPO mallGoodsPO = mallGoodsService.selectByGoodsId(id);
-        if (Objects.isNull(mallGoodsPO)) {
+        MallGoods mallGoods = mallGoodsService.selectByGoodsId(id);
+        if (Objects.isNull(mallGoods)) {
             resultJson.setStatus(ResultCode.RESOURCE_NOT_EXIST);
         } else {
-            resultJson.addInfo(mallGoodsPO);
+            resultJson.addInfo(mallGoods);
         }
         return resultJson;
     }
@@ -91,19 +89,19 @@ public class MallManagerController {
                                       @RequestParam("description") String description,
                                       @RequestParam("shelfUser") String shelfUser) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        MallGoodsPO mallGoodsPO = new MallGoodsPO();
-        mallGoodsPO.setName(name);
-        mallGoodsPO.setCost(cost);
-        mallGoodsPO.setStock(stock);
-        mallGoodsPO.setGoodsType(goodsType);
-        mallGoodsPO.setBuyLimit(buyLimit);
-        mallGoodsPO.setBuyVerifyLimit(buyVerifyLimit);
-        mallGoodsPO.setVisible(visible);
-        mallGoodsPO.setPictureUrl(pcitureUrl);
-        mallGoodsPO.setDescription(description);
-        mallGoodsPO.setShelfUser(shelfUser);
-        mallGoodsPO.setShelfTime(new Date());
-        int result = mallGoodsService.createGoods(mallGoodsPO);
+        MallGoods mallGoods = new MallGoods();
+        mallGoods.setName(name);
+        mallGoods.setCost(cost);
+        mallGoods.setStock(stock);
+        mallGoods.setGoodsType(goodsType);
+        mallGoods.setBuyLimit(buyLimit);
+        mallGoods.setBuyVerifyLimit(buyVerifyLimit);
+        mallGoods.setVisible(visible);
+        mallGoods.setPictureUrl(pcitureUrl);
+        mallGoods.setDescription(description);
+        mallGoods.setShelfUser(shelfUser);
+        mallGoods.setShelfTime(new Date());
+        int result = mallGoodsService.createGoods(mallGoods);
         if (result != 1) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL);
         }
@@ -135,18 +133,18 @@ public class MallManagerController {
                                       @RequestParam("pictureUrl") String pcitureUrl,
                                       @RequestParam("description") String description) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        MallGoodsPO mallGoodsPO = new MallGoodsPO();
-        mallGoodsPO.setId(id);
-        mallGoodsPO.setName(name);
-        mallGoodsPO.setCost(cost);
-        mallGoodsPO.setStock(stock);
-        mallGoodsPO.setGoodsType(goodsType);
-        mallGoodsPO.setBuyLimit(buyLimit);
-        mallGoodsPO.setBuyVerifyLimit(buyVerifyLimit);
-        mallGoodsPO.setVisible(visible);
-        mallGoodsPO.setPictureUrl(pcitureUrl);
-        mallGoodsPO.setDescription(description);
-        int result = mallGoodsService.updateGoods(mallGoodsPO);
+        MallGoods mallGoods = new MallGoods();
+        mallGoods.setId(id);
+        mallGoods.setName(name);
+        mallGoods.setCost(cost);
+        mallGoods.setStock(stock);
+        mallGoods.setGoodsType(goodsType);
+        mallGoods.setBuyLimit(buyLimit);
+        mallGoods.setBuyVerifyLimit(buyVerifyLimit);
+        mallGoods.setVisible(visible);
+        mallGoods.setPictureUrl(pcitureUrl);
+        mallGoods.setDescription(description);
+        int result = mallGoodsService.updateGoods(mallGoods);
         if (result != 1) {
             resultJson.setStatus(ResultCode.BUSINESS_FAIL);
         }
