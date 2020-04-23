@@ -2,13 +2,14 @@ package team.fjut.cf.mapper;
 
 import team.fjut.cf.pojo.po.ContestInfoPO;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/11/18]
  */
-public interface ContestInfoMapper {
+public interface ContestInfoMapper extends Mapper<ContestInfoPO> {
     /**
      * 根据条件查询不同类型比赛列表
      *

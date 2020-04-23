@@ -42,11 +42,9 @@ public class MallOrderServiceImpl implements MallOrderService {
         if (Objects.nonNull(orderUser)) {
             criteria.andLike("orderUser", orderUser);
         }
-
         if (Objects.nonNull(orderStatus)) {
             criteria.andEqualTo("orderStatus", orderStatus);
         }
-
         if (Objects.nonNull(orderCancel)) {
             criteria.andEqualTo("orderCancel", orderCancel);
         }

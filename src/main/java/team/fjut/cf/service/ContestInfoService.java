@@ -48,4 +48,13 @@ public interface ContestInfoService {
      * @return
      */
     ContestInfoPO selectByContestId(Integer contestId);
+
+    /**
+     * 管理员新增比赛
+     * @author zhongml [2020/4/23]
+     *
+     * @param contestInfoPO
+     * @return
+     */
+    Integer createContest(ContestInfoPO contestInfoPO);
 }
