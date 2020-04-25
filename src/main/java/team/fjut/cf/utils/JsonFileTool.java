@@ -1,4 +1,4 @@
-package team.fjut.cf.util;
+package team.fjut.cf.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author zhongml [2020/4/22]
  */
 public enum MallOrderStatus {
+    /**
+     *
+     */
     ORDER_CANCELED(-1, "订单取消"),
     WAIT_CONFIRM(0, "待确认"),
     CONFIRMED(1, "待发货"),

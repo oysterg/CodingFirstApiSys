@@ -1,15 +1,14 @@
 package team.fjut.cf.config;
 
-import team.fjut.cf.config.interceptor.CaptchaRequestInterceptor;
-import team.fjut.cf.config.interceptor.LoginRequestInterceptor;
-import team.fjut.cf.config.interceptor.PermissionRequestInterceptor;
-import team.fjut.cf.config.interceptor.PrivateRequestInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import team.fjut.cf.config.interceptor.CaptchaRequestInterceptor;
+import team.fjut.cf.config.interceptor.LoginRequestInterceptor;
+import team.fjut.cf.config.interceptor.PermissionRequestInterceptor;
+import team.fjut.cf.config.interceptor.PrivateRequestInterceptor;
 
 import javax.annotation.Resource;
 
@@ -20,7 +19,6 @@ import javax.annotation.Resource;
  */
 @Configuration
 public class ControllerConfiguration implements WebMvcConfigurer {
-
     /**
      * 是否启用权限拦截器
      */
@@ -33,9 +31,15 @@ public class ControllerConfiguration implements WebMvcConfigurer {
     @Value("${cf.config.file.picPath}")
     private String picPath;
 
+    /**
+     * 头像地址
+     */
     @Value("${cf.config.file.avatarPath}")
     private String avatarPath;
 
+    /**
+     * 临时地址
+     */
     @Value("${cf.config.file.tempPath}")
     private String tempPath;
 

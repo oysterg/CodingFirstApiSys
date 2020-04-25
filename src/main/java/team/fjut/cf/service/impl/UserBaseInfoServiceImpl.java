@@ -1,7 +1,6 @@
 package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.fjut.cf.component.email.EmailTool;
@@ -14,9 +13,9 @@ import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
 import team.fjut.cf.pojo.vo.UserAcbBorderVO;
 import team.fjut.cf.pojo.vo.UserRatingBorderVO;
 import team.fjut.cf.service.UserBaseInfoService;
-import team.fjut.cf.util.JsonFileTool;
-import team.fjut.cf.util.SHAUtils;
-import team.fjut.cf.util.UUIDUtils;
+import team.fjut.cf.utils.JsonFileTool;
+import team.fjut.cf.utils.Sha1Utils;
+import team.fjut.cf.utils.UUIDUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -68,7 +67,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
         // 加盐密码
         String newPassword = salt + userAuth.getPassword();
         // 对加盐密码使用SHA1加密
-        String encryptedPwd = SHAUtils.SHA1(newPassword);
+        String encryptedPwd = Sha1Utils.encode(newPassword);
         userAuth.setUsername(userBaseInfo.getUsername());
         userAuth.setSalt(salt);
         userAuth.setPassword(encryptedPwd);
@@ -114,7 +113,7 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
         String salt = userAuth.getSalt();
         String newPwd = salt + password;
         // 对明文密码和盐值做加密
-        String encryptPwd = SHAUtils.SHA1(newPwd);
+        String encryptPwd = Sha1Utils.encode(newPwd);
         criteria.andEqualTo("password", encryptPwd);
         // 查询用户名密码是否对应上
         int ans = userAuthMapper.selectCountByExample(example);

@@ -1,6 +1,7 @@
-package team.fjut.cf.config;
+package team.fjut.cf.config.async;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -26,6 +27,7 @@ public class AsyncConfig implements AsyncConfigurer {
     @Value("${cf.config.threadPool.queueCapacity}")
     private int queueCapacity;
 
+    @Bean
     @Override
     public Executor getAsyncExecutor() {
         // 定义线程池
@@ -33,6 +35,7 @@ public class AsyncConfig implements AsyncConfigurer {
         taskExecutor.setCorePoolSize(corePoolSize);
         taskExecutor.setMaxPoolSize(maxPoolSize);
         taskExecutor.setQueueCapacity(queueCapacity);
+        taskExecutor.setThreadNamePrefix("async-exec-");
         taskExecutor.initialize();
         return taskExecutor;
     }

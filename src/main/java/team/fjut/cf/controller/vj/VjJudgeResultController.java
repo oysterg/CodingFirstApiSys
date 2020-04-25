@@ -15,8 +15,8 @@ import team.fjut.cf.pojo.vo.VjJudgeResultVO;
 import team.fjut.cf.service.ViewVjJudgeResultService;
 import team.fjut.cf.service.VjJudgeResultService;
 import team.fjut.cf.service.VjUserProblemSolvedService;
-import team.fjut.cf.util.JsonFileTool;
-import team.fjut.cf.util.UUIDUtils;
+import team.fjut.cf.utils.JsonFileTool;
+import team.fjut.cf.utils.UUIDUtils;
 
 import javax.annotation.Resource;
 import java.io.File;

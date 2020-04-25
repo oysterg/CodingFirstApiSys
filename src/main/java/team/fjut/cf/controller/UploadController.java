@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.util.UUIDUtils;
+import team.fjut.cf.utils.UUIDUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;

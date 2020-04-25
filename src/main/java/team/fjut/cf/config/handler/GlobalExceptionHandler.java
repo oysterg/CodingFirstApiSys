@@ -21,7 +21,8 @@ import java.net.ConnectException;
  *
  * @author axiang [2019/10/9]
  */
-@RestControllerAdvice(basePackages = {"team.fjut.cf.controller.*"},
+@RestControllerAdvice(
+        basePackages = {"team.fjut.cf.controller.*"},
         annotations = {Controller.class, RestController.class})
 @Slf4j
 public class GlobalExceptionHandler {
@@ -33,12 +34,11 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler({MissingServletRequestParameterException.class, TypeMismatchException.class, IllegalArgumentException.class, IllegalStateException.class})
-    public ResultJson conversionErrorHandler(Exception e) {
+    public ResultJson handleParameterException(Exception e) {
         String exceptionMessage = "请求参数不合法！";
         log.error(exceptionMessage, e);
         return new ResultJson(ResultCode.BAD_REQUEST, "请求参数不合法！");
     }
-
 
     /**
      * 405处理不生效，由默认的 DefaultHandlerExceptionResolver 处理
@@ -48,8 +48,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public ResultJson handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
-
+    public ResultJson handleMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         String exceptionMessage = "请求方法不支持！";
         log.error(exceptionMessage, e);
         return new ResultJson(ResultCode.METHOD_NOT_SUPPORTED, exceptionMessage);
@@ -62,7 +61,7 @@ public class GlobalExceptionHandler {
      * @return 返回json
      */
     @ExceptionHandler(Exception.class)
-    public ResultJson handleException(Exception e) {
+    public ResultJson handleServerException(Exception e) {
         ResultJson resultJson = new ResultJson();
         String exceptionMsg;
         if (e instanceof ArrayIndexOutOfBoundsException) {

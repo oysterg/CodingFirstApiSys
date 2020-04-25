@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team.fjut.cf.component.judge.vjudge.VirtualJudgeHttpClient;
 import team.fjut.cf.component.judge.vjudge.pojo.VjAccount;
 import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.util.JsonFileTool;
+import team.fjut.cf.utils.JsonFileTool;
 
 import javax.annotation.Resource;
 import java.io.IOException;

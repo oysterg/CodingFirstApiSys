@@ -72,7 +72,7 @@ public class MallManagerController {
      * @param buyLimit
      * @param buyVerifyLimit
      * @param visible
-     * @param pcitureUrl
+     * @param pictureUrl
      * @param description
      * @param shelfUser
      * @return
@@ -85,7 +85,7 @@ public class MallManagerController {
                                       @RequestParam("buyLimit") Integer buyLimit,
                                       @RequestParam("buyVerifyLimit") Integer buyVerifyLimit,
                                       @RequestParam("visible") Integer visible,
-                                      @RequestParam("pictureUrl") String pcitureUrl,
+                                      @RequestParam("pictureUrl") String pictureUrl,
                                       @RequestParam("description") String description,
                                       @RequestParam("shelfUser") String shelfUser) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
@@ -97,7 +97,7 @@ public class MallManagerController {
         mallGoods.setBuyLimit(buyLimit);
         mallGoods.setBuyVerifyLimit(buyVerifyLimit);
         mallGoods.setVisible(visible);
-        mallGoods.setPictureUrl(pcitureUrl);
+        mallGoods.setPictureUrl(pictureUrl);
         mallGoods.setDescription(description);
         mallGoods.setShelfUser(shelfUser);
         mallGoods.setShelfTime(new Date());
@@ -117,7 +117,7 @@ public class MallManagerController {
      * @param buyLimit
      * @param buyVerifyLimit
      * @param visible
-     * @param pcitureUrl
+     * @param pictureUrl
      * @param description
      * @return
      */
@@ -130,7 +130,7 @@ public class MallManagerController {
                                       @RequestParam("buyLimit") Integer buyLimit,
                                       @RequestParam("buyVerifyLimit") Integer buyVerifyLimit,
                                       @RequestParam("visible") Integer visible,
-                                      @RequestParam("pictureUrl") String pcitureUrl,
+                                      @RequestParam("pictureUrl") String pictureUrl,
                                       @RequestParam("description") String description) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         MallGoods mallGoods = new MallGoods();
@@ -142,7 +142,7 @@ public class MallManagerController {
         mallGoods.setBuyLimit(buyLimit);
         mallGoods.setBuyVerifyLimit(buyVerifyLimit);
         mallGoods.setVisible(visible);
-        mallGoods.setPictureUrl(pcitureUrl);
+        mallGoods.setPictureUrl(pictureUrl);
         mallGoods.setDescription(description);
         int result = mallGoodsService.updateGoods(mallGoods);
         if (result != 1) {
