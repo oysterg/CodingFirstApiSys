@@ -72,6 +72,17 @@ public class ProblemManagerController {
     }
 
     /**
+     * @return
+     */
+    @GetMapping("/all")
+    public ResultJson getAllProblem() {
+        ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
+        List<ProblemInfo> problemList = problemInfoService.selectAll();
+        resultJson.addInfo(problemList);
+        return resultJson;
+    }
+
+    /**
      * @param problemId
      * @return
      */

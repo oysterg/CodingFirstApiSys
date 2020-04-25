@@ -1,8 +1,11 @@
 package team.fjut.cf.pojo.po;
 
+import javax.persistence.Table;
+
 /**
  * @author axiang [2019/10/21]
  */
+@Table(name = "t_challenge_block")
 public class ChallengeBlockPO {
     private Integer id;
     private String name;

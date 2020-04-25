@@ -29,7 +29,7 @@ public class ContestManagerController {
     ContestInfoService contestInfoService;
 
     @GetMapping("/review/list")
-    public ResultJson getContestList(@RequestParam("page") Integer page,
+    public ResultJson getContestLimit(@RequestParam("page") Integer page,
                                      @RequestParam("limit") Integer limit,
                                      @RequestParam(value = "sort", required = false) String sort,
                                      @RequestParam(value = "contestKind", required = false) Integer contestKind,
@@ -49,7 +49,7 @@ public class ContestManagerController {
     }
 
     @PutMapping("/review/update")
-    public ResultJson getContestList(@RequestParam("id") Integer id,
+    public ResultJson updateContest(@RequestParam("id") Integer id,
                                      @RequestParam("reviewStatus") Integer reviewStatus,
                                      @RequestParam("reviewInfo") String reviewInfo) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
@@ -66,7 +66,7 @@ public class ContestManagerController {
     }
 
     @PostMapping("/review/create")
-    public ResultJson getContestList(@RequestParam("data") ContestInfoPO contestInfoPO) {
+    public ResultJson createContest(@RequestParam("data") ContestInfoPO contestInfoPO) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
         int result  = contestInfoService.createContest(contestInfoPO);
         if (result != 1) {

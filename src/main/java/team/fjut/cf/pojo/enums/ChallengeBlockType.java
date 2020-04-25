@@ -46,5 +46,14 @@ public enum ChallengeBlockType {
         return null;
     }
 
+    public static Integer getIdByName(String name) {
+        for (ChallengeBlockType t : ChallengeBlockType.values()) {
+            if (t.getName().equals(name)) {
+                return t.getId();
+            }
+        }
+        return null;
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package team.fjut.cf.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -11,13 +12,14 @@ import team.fjut.cf.mapper.ChallengeUserOpenBlockMapper;
 import team.fjut.cf.pojo.enums.ChallengeBlockType;
 import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
 import team.fjut.cf.pojo.po.ChallengeBlockPO;
+import team.fjut.cf.pojo.po.ChallengeBlockProblemPO;
 import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
-import team.fjut.cf.pojo.vo.ChallengeBlockConditionVO;
-import team.fjut.cf.pojo.vo.ChallengeBlockVO;
-import team.fjut.cf.pojo.vo.UserChallengeBlockVO;
+import team.fjut.cf.pojo.vo.*;
 import team.fjut.cf.service.ChallengeBlockService;
 import team.fjut.cf.service.UserMessageService;
+import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -25,19 +27,19 @@ import java.util.*;
  */
 @Service
 public class ChallengeBlockServiceImpl implements ChallengeBlockService {
-    @Autowired
+    @Resource
     ChallengeBlockMapper challengeBlockMapper;
 
-    @Autowired
+    @Resource
     ChallengeBlockProblemMapper challengeBlockProblemMapper;
 
-    @Autowired
+    @Resource
     ChallengeBlockConditionMapper challengeBlockConditionMapper;
 
-    @Autowired
+    @Resource
     ChallengeUserOpenBlockMapper challengeUserOpenBlockMapper;
 
-    @Autowired
+    @Resource
     UserMessageService userMessageService;
 
 
@@ -158,5 +160,93 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
             }
         }
 
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public List<ChallengeBlockAdminVO> selectByCondition(Integer pageNum, Integer pageSize, String sort, String name) {
+        List<ChallengeBlockAdminVO> results = new ArrayList<>();
+        PageHelper.startPage(pageNum, pageSize);
+        Example example = new Example(ChallengeBlockPO.class);
+
+        if(sort != null && sort.equals("descending")) {
+            example.orderBy("id").desc();
+        }
+        else {
+            example.orderBy("id").asc();
+        }
+        Example.Criteria criteria = example.createCriteria();
+        if (Objects.nonNull(name)) {
+            criteria.andLike("name", name);
+        }
+        List<ChallengeBlockPO> challengeBlockPOS = challengeBlockMapper.selectByExample(example);
+        for (ChallengeBlockPO item : challengeBlockPOS) {
+            ChallengeBlockAdminVO vo = new ChallengeBlockAdminVO();
+            vo.setId(item.getId());
+            vo.setName(item.getName());
+            vo.setBlockType(ChallengeBlockType.getNameByID(item.getBlockType()));
+            vo.setDescription(item.getDescription());
+            // 获取前置模块列表
+            List<ChallengeBlockConditionVO> challengeBlockConditionVOS = challengeBlockConditionMapper.selectConditionByBlockId(item.getId());
+            List<ChallengeBlockProblemAdminVO> challengeBlockProblemAdminVOS = challengeBlockProblemMapper.selectProblemsByBlockId(item.getId());
+            Integer preconditionScore = challengeBlockConditionMapper.selectBlockConditionTotalScore(item.getId());
+            vo.setPreconditionBlocks(challengeBlockConditionVOS); // 前置模块列表
+            vo.setChallengeProblems(challengeBlockProblemAdminVOS); // 前置模块题目列表
+            vo.setPreconditionTotalScore(preconditionScore); // 前置模块总分数
+            results.add(vo);
+        }
+        return results;
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public int countByCondition(String name) {
+        Example example = new Example(ChallengeBlockPO.class);
+        Example.Criteria criteria = example.createCriteria();
+        if (Objects.nonNull(name)) {
+            criteria.andLike("name", name);
+        }
+        return challengeBlockMapper.selectCountByExample(example);
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public List<ChallengeBlockPO> selectAll() {
+        return challengeBlockMapper.selectAll();
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public int createChallenge(ChallengeBlockPO challengeBlockPO) {
+        return challengeBlockMapper.insertSelective(challengeBlockPO);
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public int updateChallenge(ChallengeBlockPO challengeBlockPO) {
+        Example example = new Example(ChallengeBlockPO.class);
+        example.createCriteria().andEqualTo("id", challengeBlockPO.getId());
+        return challengeBlockMapper.updateByExampleSelective(challengeBlockPO, example);
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public int deleteChallenge(Integer blockId) {
+        Example example = new Example(ChallengeBlockPO.class);
+        example.createCriteria().andEqualTo("id", blockId);
+        return challengeBlockMapper.deleteByExample(example);
+    }
+
+    // add by zhongml [2020/4/24]
+    @Override
+    public int insertConditionBlocks(Integer blockId, List<ChallengeBlockConditionVO> preconditonBlocks) {
+        return challengeBlockConditionMapper.insertConditionBlocks(blockId, preconditonBlocks);
+    }
+
+    @Override
+    public int deleteConditions(Integer blockId) {
+        Example example = new Example(ChallengeBlockConditionPO.class);
+        example.createCriteria().andEqualTo("blockId", blockId);
+        return challengeBlockConditionMapper.deleteByExample(example);
     }
 }

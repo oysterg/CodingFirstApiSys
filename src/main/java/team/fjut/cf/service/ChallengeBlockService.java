@@ -1,10 +1,10 @@
 package team.fjut.cf.service;
 
+import io.swagger.models.auth.In;
 import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
+import team.fjut.cf.pojo.po.ChallengeBlockPO;
 import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
-import team.fjut.cf.pojo.vo.ChallengeBlockConditionVO;
-import team.fjut.cf.pojo.vo.ChallengeBlockVO;
-import team.fjut.cf.pojo.vo.UserChallengeBlockVO;
+import team.fjut.cf.pojo.vo.*;
 
 import java.util.List;
 
@@ -67,4 +67,79 @@ public interface ChallengeBlockService {
      * @return
      */
     void updateOpenBlock(String username,Integer problemId);
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 条件查询挑战模块
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param sort
+     * @param name
+     * @return
+     */
+    List<ChallengeBlockAdminVO> selectByCondition(Integer pageNum, Integer pageSize, String sort,String name);
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 条件查询挑战模块数量
+     *
+     * @param name
+     * @return
+     */
+    int countByCondition(String name);
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 查询所有模块
+     *
+     * @return
+     */
+    List<ChallengeBlockPO> selectAll();
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 新增一个模块
+     *
+     * @param challengeBlockPO
+     * @return
+     */
+    int createChallenge(ChallengeBlockPO challengeBlockPO);
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 修改模块信息
+     *
+     * @param challengeBlockPO
+     * @return
+     */
+    int updateChallenge(ChallengeBlockPO challengeBlockPO);
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 删除一个模块
+     *
+     * @param blockId
+     * @return
+     */
+    int deleteChallenge(Integer blockId);
+
+    /**
+     * @author zhongml [2020/4/24]
+     * 批量插入前置模块
+     *
+     * @param preconditonBlocks
+     * @return
+     */
+    int insertConditionBlocks(Integer blockId, List<ChallengeBlockConditionVO> preconditonBlocks);
+
+    /**
+     * @author zhongml [2020/4/25]
+     * 根据blockId删除所有前置模块
+     *
+     * @param blockId
+     * @return
+     */
+    int deleteConditions(Integer blockId);
+
 }

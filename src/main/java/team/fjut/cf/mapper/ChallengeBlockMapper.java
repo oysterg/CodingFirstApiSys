@@ -3,13 +3,15 @@ package team.fjut.cf.mapper;
 import team.fjut.cf.pojo.po.ChallengeBlockPO;
 import team.fjut.cf.pojo.vo.UserChallengeBlockVO;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
+import javax.persistence.Table;
 import java.util.List;
 
 /**
  * @author axiang [2019/11/11]
  */
-public interface ChallengeBlockMapper {
+public interface ChallengeBlockMapper extends Mapper<ChallengeBlockPO> {
     /**
      * 查询用户全部挑战模式模块
      *

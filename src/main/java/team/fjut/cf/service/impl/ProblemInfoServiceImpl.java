@@ -8,6 +8,7 @@ import team.fjut.cf.service.ProblemInfoService;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author axiang [2020/3/6]
@@ -30,6 +31,12 @@ public class ProblemInfoServiceImpl implements ProblemInfoService {
         Example example = new Example(ProblemInfo.class);
         example.createCriteria().andEqualTo("problemId", problemId);
         return problemInfoMapper.deleteByExample(example);
+    }
+
+    // add by zhongml [2020/4/17]
+    @Override
+    public List<ProblemInfo> selectAll() {
+        return problemInfoMapper.selectAll();
     }
 
 

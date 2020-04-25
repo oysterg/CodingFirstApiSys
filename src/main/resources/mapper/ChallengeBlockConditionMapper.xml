@@ -19,4 +19,18 @@
         FROM t_challenge_block_condition
         WHERE  precondition_block_id = #{blockId};
     </select>
+
+    <insert id="insertConditionBlocks">
+        INSERT INTO t_challenge_block_condition(block_id, precondition_block_id, precondition_unlock_score)
+        VALUES
+        <foreach collection="param2" item="item" index="index" separator=",">
+            (#{param1},#{item.blockId},#{item.num})
+        </foreach>
+    </insert>
+
+    <select id="selectBlockConditionTotalScore" resultType="java.lang.Integer">
+        SELECT SUM(precondition_unlock_score)
+        FROM t_challenge_block_condition cbc
+        WHERE cbc.block_id = #{blockId}
+    </select>
 </mapper>
