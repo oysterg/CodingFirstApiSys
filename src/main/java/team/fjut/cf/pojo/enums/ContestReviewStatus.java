@@ -6,6 +6,9 @@ package team.fjut.cf.pojo.enums;
  * @author zhongml [2020/4/23]
  */
 public enum ContestReviewStatus {
+    /**
+     *
+     */
     WAIT_REVIEW(0, "还未审核"),
     REVIEW_PAST(1, "审核通过"),
     REVIEW_REFUSED(2, "审核失败");

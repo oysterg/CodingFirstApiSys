@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang
  */
 public enum ChallengeBlockType {
+    /**
+     *
+     */
     BASIS(0, "基础"),
     DATA_STRUCTURE(1, "数据结构"),
     MATH(2, "数学"),

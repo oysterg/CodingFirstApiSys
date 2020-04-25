@@ -6,6 +6,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/10/23]
  */
 public enum OjId {
+    /**
+     *
+     */
     DEFAULT(-1, "默认"),
     HDU(0, "HDU"),
     BNUOJ(1, "BNUOJ"),

@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/10/22]
  */
 public enum AwardLevel {
+    /**
+     *
+     */
     NONE(-2, "无奖项"),
     TENACIOUSLY(-1, "顽强拼搏奖"),
     ENCOURAGING(0, "优秀奖/鼓励奖"),

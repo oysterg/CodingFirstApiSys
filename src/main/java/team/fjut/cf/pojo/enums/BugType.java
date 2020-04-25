@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/10/18]
  */
 public enum BugType {
+    /**
+     *
+     */
     OTHER(0, "其他"),
     SYSTEM_FAIL(1, "系统漏洞"),
     FUNCTION_ERROR(2, "功能异常"),

@@ -6,6 +6,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/10/14]
  */
 public enum ResultCode {
+    /**
+     *
+     */
     REQUIRED_SUCCESS(10000, "请求成功"),
     RESOURCE_NOT_EXIST(10001, "请求的资源不存在"),
     METHOD_NOT_SUPPORTED(10002, "请求的方法不支持！"),

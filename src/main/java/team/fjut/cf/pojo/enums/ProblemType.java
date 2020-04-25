@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/11/14]
  */
 public enum ProblemType {
+    /**
+     *
+     */
     BASIS(0, "基础"),
     DATA_STRUCTURE(1, "数据结构"),
     MATH(2, "数学"),

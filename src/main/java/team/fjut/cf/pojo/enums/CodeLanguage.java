@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author QAQ [2017/11/5]
  */
 public enum CodeLanguage {
+    /**
+     *
+     */
     GPP(0, "G++"),
     GCC(1, "GCC"),
     JAVA(2, "JAVA"),

@@ -4,6 +4,9 @@ package team.fjut.cf.pojo.enums;
  * @author axiang [2019/11/18]
  */
 public enum ContestPermission {
+    /**
+     *
+     */
     PUBLIC(0, "公开"),
     CODE(1, "密码"),
     PRIVATE(2, "私有"),

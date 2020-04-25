@@ -29,7 +29,7 @@
 
 ## 部署教程
 
-1. 在 src/main/resources/ 下添加文件application-prod.yml，并参照application-dev.yml进行生产环境配置
+1. 在 src/main/resources 文件夹及其子文件夹下寻找文件名包含“-dev”的文件，并根据其内容新增对应的“-prod”文件，并在其中修改生产环境配置。
 2. 在项目根目录下运行maven命令，以生产环境打包为jar文件 
  ```
  mvn package -P prod
