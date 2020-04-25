@@ -14,9 +14,9 @@ import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.UserCustomInfoVO;
 import team.fjut.cf.service.*;
-import team.fjut.cf.util.IpUtils;
-import team.fjut.cf.util.JsonFileTool;
-import team.fjut.cf.util.UUIDUtils;
+import team.fjut.cf.utils.IpUtils;
+import team.fjut.cf.utils.JsonFileTool;
+import team.fjut.cf.utils.UUIDUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

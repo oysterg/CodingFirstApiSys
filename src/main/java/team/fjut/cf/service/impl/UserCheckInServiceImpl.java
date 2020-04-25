@@ -6,7 +6,7 @@ import team.fjut.cf.pojo.po.UserCheckIn;
 import team.fjut.cf.service.UserCheckInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.fjut.cf.util.TimeUtils;
+import team.fjut.cf.utils.TimeUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Date;

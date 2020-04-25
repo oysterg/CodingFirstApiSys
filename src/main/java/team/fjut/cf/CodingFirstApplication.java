@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import team.fjut.cf.util.IpUtils;
+import team.fjut.cf.utils.IpUtils;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**

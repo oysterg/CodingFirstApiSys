@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import team.fjut.cf.pojo.vo.ResultJson;
-import team.fjut.cf.util.DateUtils;
-import team.fjut.cf.util.IpUtils;
+import team.fjut.cf.utils.DateUtils;
+import team.fjut.cf.utils.IpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

@@ -10,8 +10,8 @@ import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCaptcha;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.UserCaptchaService;
-import team.fjut.cf.util.Enums2ListUtils;
-import team.fjut.cf.util.UUIDUtils;
+import team.fjut.cf.utils.Enums2ValueLabelUtils;
+import team.fjut.cf.utils.UUIDUtils;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
@@ -77,21 +77,21 @@ public class UtilController {
     @GetMapping("/bugTypes")
     public ResultJson getBugTypes() {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        resultJson.addInfo(Enums2ListUtils.parseBugType());
+        resultJson.addInfo(Enums2ValueLabelUtils.parseBugType());
         return resultJson;
     }
 
     @GetMapping("/codeLanguage")
     public ResultJson getCodeLanguage() {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        resultJson.addInfo(Enums2ListUtils.parseCodeLanguage());
+        resultJson.addInfo(Enums2ValueLabelUtils.parseCodeLanguage());
         return resultJson;
     }
 
     @GetMapping("/submitResult")
     public ResultJson getSubmitResult() {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        resultJson.addInfo(Enums2ListUtils.parseSubmitResult());
+        resultJson.addInfo(Enums2ValueLabelUtils.parseSubmitResult());
         return resultJson;
     }
 }

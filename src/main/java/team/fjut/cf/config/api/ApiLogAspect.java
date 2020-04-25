@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import team.fjut.cf.util.DateUtils;
-import team.fjut.cf.util.IpUtils;
+import team.fjut.cf.utils.DateUtils;
+import team.fjut.cf.utils.IpUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;

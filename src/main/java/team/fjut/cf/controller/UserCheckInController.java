@@ -6,7 +6,7 @@ import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.UserCheckIn;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.UserCheckInService;
-import team.fjut.cf.util.IpUtils;
+import team.fjut.cf.utils.IpUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;

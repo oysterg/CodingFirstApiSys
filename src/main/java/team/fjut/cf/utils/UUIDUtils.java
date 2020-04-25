@@ -1,4 +1,4 @@
-package team.fjut.cf.util;
+package team.fjut.cf.utils;
 
 import java.util.UUID;
 

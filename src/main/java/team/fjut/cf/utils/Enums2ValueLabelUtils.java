@@ -1,4 +1,4 @@
-package team.fjut.cf.util;
+package team.fjut.cf.utils;
 
 import team.fjut.cf.component.judge.vjudge.pojo.enums.LanguageType;
 import team.fjut.cf.component.judge.vjudge.pojo.enums.StatusType;
@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * 将枚举类型转换为key-value对应类型列表
+ * 将枚举类型转换为 value-label 对应关系的列表
  *
  * @author axiang [2020/3/4]
  */
-public class Enums2ListUtils {
+public class Enums2ValueLabelUtils {
     public static List<HashMap<String, Object>> parseBugType() {
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (BugType item : BugType.values()) {

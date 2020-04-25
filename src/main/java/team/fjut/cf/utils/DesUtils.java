@@ -1,4 +1,4 @@
-package team.fjut.cf.util;
+package team.fjut.cf.utils;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -13,7 +13,7 @@ import java.security.SecureRandom;
  *
  * @author axiang [2019/09/05]
  */
-public class DESUtils {
+public class DesUtils {
     private static Key DEFAULT_KEY;
     /**
      * 默认密钥

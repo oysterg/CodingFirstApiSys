@@ -13,8 +13,8 @@ import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.SystemInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.SystemInfoService;
-import team.fjut.cf.util.Enums2ListUtils;
-import team.fjut.cf.util.UUIDUtils;
+import team.fjut.cf.utils.Enums2ValueLabelUtils;
+import team.fjut.cf.utils.UUIDUtils;
 
 import javax.annotation.Resource;
 import java.io.File;
@@ -98,14 +98,14 @@ public class VjUtilController {
     @PostMapping("/languageType")
     public ResultJson getVjLanguageType() {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        resultJson.addInfo(Enums2ListUtils.parseVJLanguageType());
+        resultJson.addInfo(Enums2ValueLabelUtils.parseVJLanguageType());
         return resultJson;
     }
 
     @PostMapping("/statusType")
     public ResultJson getVjStatusType() {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        resultJson.addInfo(Enums2ListUtils.parseVJStatusType());
+        resultJson.addInfo(Enums2ValueLabelUtils.parseVJStatusType());
         return resultJson;
     }
 
