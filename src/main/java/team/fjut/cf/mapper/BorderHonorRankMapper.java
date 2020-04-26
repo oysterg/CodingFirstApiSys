@@ -2,13 +2,14 @@ package team.fjut.cf.mapper;
 
 import team.fjut.cf.pojo.po.BorderHonorRankPO;
 import org.apache.ibatis.annotations.Param;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
 /**
  * @author axiang [2019/11/11]
  */
-public interface BorderHonorRankMapper {
+public interface BorderHonorRankMapper extends Mapper<BorderHonorRankPO> {
     /**
      * 查询全部榜单
      *

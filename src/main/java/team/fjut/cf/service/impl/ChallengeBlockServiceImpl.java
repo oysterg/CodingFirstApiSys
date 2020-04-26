@@ -190,9 +190,9 @@ public class ChallengeBlockServiceImpl implements ChallengeBlockService {
             List<ChallengeBlockConditionVO> challengeBlockConditionVOS = challengeBlockConditionMapper.selectConditionByBlockId(item.getId());
             List<ChallengeBlockProblemAdminVO> challengeBlockProblemAdminVOS = challengeBlockProblemMapper.selectProblemsByBlockId(item.getId());
             Integer preconditionScore = challengeBlockConditionMapper.selectBlockConditionTotalScore(item.getId());
-            vo.setPreconditionBlocks(challengeBlockConditionVOS); // 前置模块列表
-            vo.setChallengeProblems(challengeBlockProblemAdminVOS); // 前置模块题目列表
-            vo.setPreconditionTotalScore(preconditionScore); // 前置模块总分数
+            vo.setPreconditionBlocks(challengeBlockConditionVOS);
+            vo.setChallengeProblems(challengeBlockProblemAdminVOS);
+            vo.setPreconditionTotalScore(preconditionScore);
             results.add(vo);
         }
         return results;

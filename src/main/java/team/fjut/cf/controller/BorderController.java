@@ -22,12 +22,17 @@ public class BorderController {
     @Resource
     UserBaseInfoService userBaseInfoService;
 
+    // mod by zhongml [2020/4/26] 添加后台管理条件查询参数，按条件查询数量
     @GetMapping("/honor_rank")
     public ResultJson getHonorRankList(@RequestParam("pageNum") Integer pageNum,
-                                       @RequestParam("pageSize") Integer pageSize) {
+                                       @RequestParam("pageSize") Integer pageSize,
+                                       @RequestParam(value = "sort", required = false) String sort,
+                                       @RequestParam(value = "realName", required = false) String realName,
+                                       @RequestParam(value = "awardLevel", required = false) Integer awardLevel,
+                                       @RequestParam(value = "contestLevel", required = false) Integer contestLevel) {
         ResultJson resultJson = new ResultJson();
-        List<BorderHonorRankVO> borderHonorRankVOS = borderHonorRankService.pages(pageNum, pageSize);
-        Integer count = borderHonorRankService.selectAllCount();
+        List<BorderHonorRankVO> borderHonorRankVOS = borderHonorRankService.pages(pageNum, pageSize, sort, realName, awardLevel, contestLevel);
+        Integer count = borderHonorRankService.countByCondition(realName, awardLevel, contestLevel);
         resultJson.addInfo(borderHonorRankVOS);
         resultJson.addInfo(count);
         return resultJson;

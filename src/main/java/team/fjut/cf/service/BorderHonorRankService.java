@@ -15,7 +15,42 @@ public interface BorderHonorRankService {
      * @param pageSize
      * @return
      */
-    List<BorderHonorRankVO> pages(Integer pageNum, Integer pageSize);
+    List<BorderHonorRankVO> pages(Integer pageNum, Integer pageSize,String sort, String realName, Integer awardLevel, Integer contestLevel);
+
+    /**
+     * @author zhongml [2020/4/26]
+     * 按条件查询记录数
+     *
+     * @return
+     */
+    Integer countByCondition(String realName, Integer awardLevel, Integer contestLevel);
+
+    /**
+     * @author zhongml [2020/4/26]
+     * 根据ID删除记录
+     *
+     * @param id
+     * @return
+     */
+    int deleteHonor(Integer id);
+
+    /**
+     * @author zhongml [2020/4/26]
+     * 修改记录
+     *
+     * @param borderHonorRankVO
+     * @return
+     */
+    int updateHonor(BorderHonorRankVO borderHonorRankVO);
+
+    /**
+     * @author zhongml [2020/4/26]
+     * 新增一条记录
+     *
+     * @param borderHonorRankVO
+     * @return
+     */
+    int insertHonor(BorderHonorRankVO borderHonorRankVO);
 
     /**
      * 查询榜单记录数

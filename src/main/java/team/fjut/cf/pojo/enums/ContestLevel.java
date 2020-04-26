@@ -49,4 +49,14 @@ public enum ContestLevel {
         }
         return null;
     }
+
+    // add by zhongml [2020/4/26]
+    public static Integer getCodeByName(String name) {
+        for (ContestLevel contestLevel : ContestLevel.values()) {
+            if (contestLevel.getName().equals(name)) {
+                return contestLevel.getCode();
+            }
+        }
+        return null;
+    }
 }

@@ -1,10 +1,12 @@
 package team.fjut.cf.pojo.po;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author axiang [2019/10/21]
  */
+@Table(name = "t_border_honor_rank")
 public class BorderHonorRankPO {
     private Integer id;
     private String usernameOne;
