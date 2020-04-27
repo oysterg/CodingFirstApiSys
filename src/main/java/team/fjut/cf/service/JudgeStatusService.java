@@ -2,6 +2,7 @@ package team.fjut.cf.service;
 
 import team.fjut.cf.pojo.po.JudgeStatus;
 import team.fjut.cf.pojo.vo.JudgeStatusVO;
+import team.fjut.cf.pojo.vo.StatusAdminVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 
 import java.util.List;
@@ -88,5 +89,14 @@ public interface JudgeStatusService {
      * @return
      */
     Integer selectCountByUsername(String username);
+
+    /**
+     * @author zhongml [2020/4/27]
+     * 根据ID查询评测信息
+     *
+     * @param id
+     * @return
+     */
+    JudgeStatus selectJudgeById(Integer id);
 
 }

@@ -12,6 +12,7 @@ import team.fjut.cf.pojo.enums.CodeLanguage;
 import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.*;
 import team.fjut.cf.pojo.vo.JudgeStatusVO;
+import team.fjut.cf.pojo.vo.StatusAdminVO;
 import team.fjut.cf.pojo.vo.StatusCountVO;
 import team.fjut.cf.service.JudgeStatusService;
 import tk.mybatis.mapper.entity.Example;
@@ -337,5 +338,12 @@ public class JudgeStatusServiceImpl implements JudgeStatusService {
         return judgeStatusMapper.selectCountByUsername(username);
     }
 
+    // add by zhongml [2020/4/27]
+    @Override
+    public JudgeStatus selectJudgeById(Integer id) {
+        Example example = new Example(JudgeStatus.class);
+        example.createCriteria().andEqualTo("id", id);
+        return judgeStatusMapper.selectOneByExample(example);
+    }
 
 }

@@ -1,16 +1,19 @@
 package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.fjut.cf.mapper.JudgeStatusMapper;
 import team.fjut.cf.mapper.ViewJudgeStatusMapper;
 import team.fjut.cf.pojo.enums.CodeLanguage;
 import team.fjut.cf.pojo.enums.SubmitResult;
+import team.fjut.cf.pojo.po.JudgeStatus;
 import team.fjut.cf.pojo.po.ViewJudgeStatus;
+import team.fjut.cf.pojo.vo.StatusAdminVO;
 import team.fjut.cf.pojo.vo.StatusListVO;
 import team.fjut.cf.service.ViewJudgeStatusService;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,8 +23,11 @@ import java.util.Objects;
  */
 @Service
 public class ViewJudgeStatusServiceImpl implements ViewJudgeStatusService {
-    @Autowired
+    @Resource
     ViewJudgeStatusMapper viewJudgeStatusMapper;
+
+    @Resource
+    JudgeStatusMapper judgeStatusMapper;
 
     @Override
     public List<StatusListVO> pagesByConditions(Integer pageNum, Integer pageSize,
@@ -91,5 +97,79 @@ public class ViewJudgeStatusServiceImpl implements ViewJudgeStatusService {
         }
         int i = viewJudgeStatusMapper.selectCountByExample(example);
         return i;
+    }
+
+    // add by zhongml [2020/4/27]
+    @Override
+    public List<StatusAdminVO> selectByPage(Integer pageNum, Integer pageSize, String sort, Integer contestId, String username, Integer problemId, Integer result, Integer language) {
+        List<StatusAdminVO> results = new ArrayList<>();
+
+        Example example = new Example(JudgeStatus.class);
+        if (sort != null && sort.equals("ascending")) {
+            example.orderBy("id").desc();
+        } else {
+            example.orderBy("id").desc();
+        }
+        Example.Criteria criteria = example.createCriteria();
+        if (Objects.nonNull(username)) {
+            criteria.andLike("username", username);
+        }
+        if (Objects.nonNull(contestId)) {
+            criteria.andEqualTo("contestId", contestId);
+        }
+        if (Objects.nonNull(problemId)) {
+            criteria.andEqualTo("problemId", problemId);
+        }
+        if (Objects.nonNull(result)) {
+            criteria.andEqualTo("result", result);
+        }
+        if (Objects.nonNull(language)) {
+            criteria.andEqualTo("language", language);
+        }
+
+        PageHelper.startPage(pageNum, pageSize, false);
+        List<ViewJudgeStatus> viewJudgeStatuses = viewJudgeStatusMapper.selectByExample(example);
+        for (ViewJudgeStatus item : viewJudgeStatuses) {
+            StatusAdminVO vo = new StatusAdminVO();
+            vo.setId(item.getId());
+            vo.setUsername(item.getUsername());
+            vo.setProblemId(item.getProblemId());
+            vo.setContestId(item.getContestId());
+            vo.setLanguage(CodeLanguage.getNameByCode(item.getLanguage()));
+            vo.setSubmitTime(item.getSubmitTime());
+            if (item.getResult() == SubmitResult.SC.getCode()) {
+                vo.setResult(SubmitResult.getNameByCode(item.getResult()) + " " + item.getScore());
+            } else {
+                vo.setResult(SubmitResult.getNameByCode(item.getResult()));
+            }
+            vo.setMemoryUsed(item.getMemoryUsed());
+            vo.setTimeUsed(item.getTimeUsed());
+            vo.setCodeLength(item.getCodeLength());
+            results.add(vo);
+        }
+        return results;
+    }
+
+    // add by zhongml [2020/4/27]
+    @Override
+    public int countByPage(Integer contestId, String username, Integer problemId, Integer result, Integer language) {
+        Example example = new Example(JudgeStatus.class);
+        Example.Criteria criteria = example.createCriteria();
+        if (Objects.nonNull(contestId)) {
+            criteria.andEqualTo("contestId", contestId);
+        }
+        if (Objects.nonNull(username)) {
+            criteria.andLike("username", username);
+        }
+        if (Objects.nonNull(problemId)) {
+            criteria.andEqualTo("problemId", problemId);
+        }
+        if (Objects.nonNull(result)) {
+            criteria.andEqualTo("result", result);
+        }
+        if (Objects.nonNull(language)) {
+            criteria.andEqualTo("language", language);
+        }
+        return judgeStatusMapper.selectCountByExample(example);
     }
 }
