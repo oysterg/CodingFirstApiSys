@@ -1,10 +1,12 @@
 package team.fjut.cf.pojo.po;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author axiang [2019/10/21]
  */
+@Table(name = "t_discuss_reply_post")
 public class DiscussReplyPostPO {
     private Integer id;
     private Integer discussId;

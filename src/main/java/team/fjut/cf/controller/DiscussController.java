@@ -1,8 +1,10 @@
 package team.fjut.cf.controller;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.DiscussPostPO;
+import team.fjut.cf.pojo.vo.DiscussPostVO;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.service.DiscussPostService;
 

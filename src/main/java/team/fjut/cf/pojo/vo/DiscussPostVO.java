@@ -1,4 +1,4 @@
-package team.fjut.cf.pojo.po;
+package team.fjut.cf.pojo.vo;
 
 import lombok.Data;
 
@@ -10,10 +10,11 @@ import java.util.Date;
  */
 @Data
 @Table(name = "t_discuss_post")
-public class DiscussPostPO {
+public class DiscussPostVO {
     private Integer id;
     private String title;
     private Date time;
     private String author;
+    private Integer replyNum;
     private Double priority;
 }
