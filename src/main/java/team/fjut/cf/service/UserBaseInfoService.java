@@ -3,9 +3,7 @@ package team.fjut.cf.service;
 import team.fjut.cf.pojo.po.UserAuth;
 import team.fjut.cf.pojo.po.UserBaseInfo;
 import team.fjut.cf.pojo.po.UserCustomInfo;
-import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
-import team.fjut.cf.pojo.vo.UserAcbBorderVO;
-import team.fjut.cf.pojo.vo.UserRatingBorderVO;
+import team.fjut.cf.pojo.vo.*;
 
 import java.util.List;
 
@@ -75,5 +73,23 @@ public interface UserBaseInfoService {
      */
     List<UserRatingBorderVO> selectRatingBorder(int pageNum, int pageSize);
 
+    /**
+     * @author zhongml [2020/4/28]
+     * 条件查询用户信息列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @param username
+     * @return
+     */
+    List<UserInfoAdminVO> pageByCondition(Integer pageNum, Integer pageSize, String username);
 
+    /**
+     * @author zhongml [2020/4/28]
+     * 条件查询用户列表数量
+     *
+     * @param username
+     * @return
+     */
+    int countByCondition(String username);
 }

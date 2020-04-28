@@ -1,10 +1,12 @@
 package team.fjut.cf.pojo.po;
 
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author axiang [2019/11/12]
  */
+@Table(name = "t_user_title_record")
 public class UserTitleRecordPO {
     private Integer id;
     private String username;

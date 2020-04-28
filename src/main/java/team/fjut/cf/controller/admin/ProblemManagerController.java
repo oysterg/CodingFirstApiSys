@@ -51,12 +51,6 @@ public class ProblemManagerController {
                                       @RequestParam(value = "difficultLevel", required = false) Integer difficultLevel,
                                       @RequestParam(value = "title", required = false) String title) {
         ResultJson resultJson = new ResultJson(ResultCode.REQUIRED_SUCCESS);
-        if (page == null) {
-            page = 1;
-        }
-        if (limit == null || limit > 100) {
-            limit = 20;
-        }
         if (!StringUtils.isEmpty(title)) {
             // 拼接查询字符串
             title = "%" + title + "%";
