@@ -16,13 +16,8 @@ import javax.annotation.Resource;
  */
 @Component
 public class OnlineJudgeHttpClient {
-
     @Resource
     RestTemplate restTemplate;
-
-    public OnlineJudgeHttpClient() {
-
-    }
 
     /**
      * 执行 post 请求
@@ -45,7 +40,6 @@ public class OnlineJudgeHttpClient {
     protected ResponseEntity<org.springframework.core.io.Resource> doPostAsResource(String url, HttpEntity<MultiValueMap<String, Object>> request) {
         return restTemplate.postForEntity(url, request, org.springframework.core.io.Resource.class);
     }
-
 
     /**
      * 执行 get 请求
