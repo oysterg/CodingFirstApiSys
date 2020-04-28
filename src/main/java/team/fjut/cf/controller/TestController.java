@@ -33,7 +33,14 @@ public class TestController {
     public ResultJson testMethod() {
         JSONObject daemonStatus = spiderHttpClient.getDaemonStatus();
         JSONObject listProjects = spiderHttpClient.getListProjects();
-        return new ResultJson(ResultCode.REQUIRED_SUCCESS, "", daemonStatus, listProjects);
+        JSONObject listSpiders = spiderHttpClient.getListSpiders();
+        JSONObject listJobs = spiderHttpClient.getListJobs();
+        return new ResultJson(ResultCode.REQUIRED_SUCCESS, "",
+                daemonStatus,
+                listProjects,
+                listSpiders,
+                listJobs
+        );
     }
 
 

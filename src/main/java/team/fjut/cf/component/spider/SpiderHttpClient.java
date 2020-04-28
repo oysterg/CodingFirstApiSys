@@ -3,13 +3,10 @@ package team.fjut.cf.component.spider;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 爬虫通讯类
@@ -22,28 +19,23 @@ public class SpiderHttpClient {
     @Resource
     RestTemplate restTemplate;
 
-    /**
-     * 请求头部
-     */
-    private HttpHeaders headers = new HttpHeaders();
-
-    /**
-     * Cookies保存登录状态
-     */
-    private List<String> cookies = new ArrayList<>();
-
     @Value("${cf.config.spider.daemonStatusUrl}")
     private String daemonStatusUrl;
 
     @Value("${cf.config.spider.listProjectsUrl}")
     private String listProjectsUrl;
 
+    @Value("${cf.config.spider.listSpidersUrl}")
+    private String listSpidersUrl;
+
+    @Value("${cf.config.spider.listJobsUrl}")
+    private String listJobsUrl;
+
     /**
      * 初始化设置头部
      */
     public SpiderHttpClient() {
         //入参设置头部
-
     }
 
     /**
@@ -62,6 +54,26 @@ public class SpiderHttpClient {
      */
     public JSONObject getListProjects() {
         return restTemplate.getForObject(listProjectsUrl, JSONObject.class);
+    }
+
+    /**
+     * 获取爬虫列表
+     *
+     * @return
+     */
+    public JSONObject getListSpiders() {
+        String currentUrl = String.format(listSpidersUrl, "CodingFirstSpider");
+        return restTemplate.getForObject(currentUrl, JSONObject.class);
+    }
+
+    /**
+     * 获取任务列表
+     *
+     * @return
+     */
+    public JSONObject getListJobs() {
+        String currentUrl = String.format(listJobsUrl, "CodingFirstSpider");
+        return restTemplate.getForObject(currentUrl, JSONObject.class);
     }
 
 }
