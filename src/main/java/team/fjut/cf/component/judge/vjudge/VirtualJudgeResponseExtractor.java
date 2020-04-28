@@ -54,6 +54,7 @@ public class VirtualJudgeResponseExtractor extends OnlineJudgeResponseExtractor 
     public InputStream extractBodyAsInputStream(ResponseEntity<Resource> response) throws IOException {
         return response.getBody().getInputStream();
     }
+
     /**
      * 提取VJ题目详情页面的HTML中的题目信息
      *

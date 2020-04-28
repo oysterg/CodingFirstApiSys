@@ -3,14 +3,12 @@ package team.fjut.cf.component.judge;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 
 /**
  * 将返回的response body字符串转化为JsonObject 基类
  *
  * @author axiang [2020/2/16]
  */
-@Component
 public class OnlineJudgeResponseExtractor {
     /**
      * 提取response body 为JSONObject

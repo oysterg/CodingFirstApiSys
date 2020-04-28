@@ -1,9 +1,6 @@
 package team.fjut.cf.component.judge.local;
 
 import com.alibaba.fastjson.JSONObject;
-import team.fjut.cf.component.judge.OnlineJudgeHttpClient;
-import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import team.fjut.cf.component.judge.OnlineJudgeHttpClient;
+import team.fjut.cf.component.judge.local.pojo.LocalJudgeSubmitInfoParams;
 
 import javax.annotation.Resource;
 
@@ -22,7 +21,6 @@ import javax.annotation.Resource;
  */
 @Component
 public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
-
     @Resource
     LocalJudgeResponseExtractor localJudgeResponseParser;
 
@@ -34,12 +32,12 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
     /**
      * 初始化设置头部
      */
-    public LocalJudgeHttpClient(){
+    public LocalJudgeHttpClient() {
         //入参设置头部
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     }
 
-    public JSONObject submitToLocalJudge(LocalJudgeSubmitInfoParams localJudgeSubmitInfoParams){
+    public JSONObject submitToLocalJudge(LocalJudgeSubmitInfoParams localJudgeSubmitInfoParams) {
         String postUrl = localJudgePath;
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("type", "submit");
@@ -49,14 +47,13 @@ public class LocalJudgeHttpClient extends OnlineJudgeHttpClient {
         map.add("memorylimit", localJudgeSubmitInfoParams.getMemoryLimit().toString());
         map.add("code", localJudgeSubmitInfoParams.getCode());
         map.add("language", localJudgeSubmitInfoParams.getLanguageId().toString());
-
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map, headers);
         ResponseEntity<String> responseEntity = doPost(postUrl, request);
         return localJudgeResponseParser.extractBodyAsJsonObject(responseEntity);
     }
 
-    public JSONObject getResultFromLocalJudge(Integer rid){
+    public JSONObject getResultFromLocalJudge(Integer rid) {
         String postUrl = localJudgePath;
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
         map.add("type", "getResult");

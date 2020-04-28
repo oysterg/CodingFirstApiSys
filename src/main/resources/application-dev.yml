@@ -49,10 +49,15 @@ cf:
     druid:
       name: admin
       pwd: admin
-    local:
-      localJudgePath: http://192.168.122.129:8100
     file:
       globalPath: D://testfile/
       tempPath: D://testfile/temp/
       picPath: D://testfile/pic/
       avatarPath: D://testfile/avatar/
+    local:
+      localJudgePath: http://192.168.122.129:8100
+    spider:
+      daemonStatusUrl: http://127.0.0.1:6800/daemonstatus.json
+      listProjectsUrl: http://127.0.0.1:6800/listprojects.json
+      listSpidersUrl: http://127.0.0.1:6800/listspiders.json?project=%s
+      listJobsUrl: http://127.0.0.1:6800/listjobs.json?project=%s
