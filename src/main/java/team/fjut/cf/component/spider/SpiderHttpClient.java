@@ -47,7 +47,7 @@ public class SpiderHttpClient {
     }
 
     /**
-     * 获取 scrapyd服务器运行状态
+     * 获取scrapyd服务器运行状态
      *
      * @return
      */
@@ -55,6 +55,11 @@ public class SpiderHttpClient {
         return restTemplate.getForObject(daemonStatusUrl, JSONObject.class);
     }
 
+    /**
+     * 获取scrapyd服务器已部署爬虫项目列表
+     *
+     * @return
+     */
     public JSONObject getListProjects() {
         return restTemplate.getForObject(listProjectsUrl, JSONObject.class);
     }
