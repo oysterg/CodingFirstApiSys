@@ -1,8 +1,8 @@
 package team.fjut.cf.mapper;
 
-import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
-import team.fjut.cf.pojo.vo.ChallengeBlockConditionVO;
 import org.apache.ibatis.annotations.Param;
+import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
+import team.fjut.cf.pojo.vo.response.ChallengeBlockConditionVO;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;

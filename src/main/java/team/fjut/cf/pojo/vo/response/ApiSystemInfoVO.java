@@ -1,4 +1,4 @@
-package team.fjut.cf.pojo.vo;
+package team.fjut.cf.pojo.vo.response;
 
 /**
  * 本系统访问根目录的显示信息

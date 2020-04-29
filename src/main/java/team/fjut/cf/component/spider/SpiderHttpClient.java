@@ -3,7 +3,10 @@ package team.fjut.cf.component.spider;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
@@ -30,6 +33,12 @@ public class SpiderHttpClient {
 
     @Value("${cf.config.spider.listJobsUrl}")
     private String listJobsUrl;
+
+    @Value("${cf.config.spider.scheduleUrl}")
+    private String scheduleUrl;
+
+    @Value("${cf.config.spider.logUrl}")
+    private String logUrl;
 
     /**
      * 初始化设置头部
@@ -74,6 +83,29 @@ public class SpiderHttpClient {
     public JSONObject getListJobs() {
         String currentUrl = String.format(listJobsUrl, "CodingFirstSpider");
         return restTemplate.getForObject(currentUrl, JSONObject.class);
+    }
+
+    /**
+     * 立即启动爬虫
+     *
+     * @param spiderName 爬虫名
+     * @return 启动结果
+     */
+    public JSONObject startSpider(String spiderName, String job, String problems) {
+        MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
+        map.add("project", "CodingFirstSpider");
+        map.add("spider", spiderName);
+        map.add("job", job);
+        map.add("problems", problems);
+        HttpEntity<MultiValueMap<String, Object>> request =
+                new HttpEntity<>(map);
+        return restTemplate.postForObject(scheduleUrl, request, JSONObject.class);
+    }
+
+    public String getSpiderLog(String spiderName, String jobId) {
+        String currentUrl = String.format(logUrl, "CodingFirstSpider", spiderName, jobId);
+        log.info(currentUrl);
+        return restTemplate.getForObject(currentUrl, String.class);
     }
 
 }

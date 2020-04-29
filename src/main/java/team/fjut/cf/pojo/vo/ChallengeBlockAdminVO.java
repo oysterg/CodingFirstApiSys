@@ -2,6 +2,7 @@ package team.fjut.cf.pojo.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import team.fjut.cf.pojo.vo.response.ChallengeBlockConditionVO;
 
 import java.util.List;
 

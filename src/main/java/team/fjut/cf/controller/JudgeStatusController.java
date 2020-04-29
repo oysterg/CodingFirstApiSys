@@ -11,7 +11,7 @@ import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.JudgeStatus;
 import team.fjut.cf.pojo.vo.ResultJson;
 import team.fjut.cf.pojo.vo.StatusCountVO;
-import team.fjut.cf.pojo.vo.StatusListVO;
+import team.fjut.cf.pojo.vo.response.StatusListVO;
 import team.fjut.cf.service.JudgeStatusService;
 import team.fjut.cf.service.ViewJudgeStatusService;
 

@@ -1,7 +1,6 @@
 package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +11,12 @@ import team.fjut.cf.mapper.ChallengeUserOpenBlockMapper;
 import team.fjut.cf.pojo.enums.ChallengeBlockType;
 import team.fjut.cf.pojo.po.ChallengeBlockConditionPO;
 import team.fjut.cf.pojo.po.ChallengeBlockPO;
-import team.fjut.cf.pojo.po.ChallengeBlockProblemPO;
 import team.fjut.cf.pojo.po.ChallengeUserOpenBlockPO;
-import team.fjut.cf.pojo.vo.*;
+import team.fjut.cf.pojo.vo.ChallengeBlockAdminVO;
+import team.fjut.cf.pojo.vo.ChallengeBlockProblemAdminVO;
+import team.fjut.cf.pojo.vo.ChallengeBlockVO;
+import team.fjut.cf.pojo.vo.UserChallengeBlockVO;
+import team.fjut.cf.pojo.vo.response.ChallengeBlockConditionVO;
 import team.fjut.cf.service.ChallengeBlockService;
 import team.fjut.cf.service.UserMessageService;
 import tk.mybatis.mapper.entity.Example;

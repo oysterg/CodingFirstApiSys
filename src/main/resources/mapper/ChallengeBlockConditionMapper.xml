@@ -7,11 +7,12 @@
     </select>
 
     <select id="selectConditionByBlockId"
-            resultType="team.fjut.cf.pojo.vo.ChallengeBlockConditionVO">
+            resultType="team.fjut.cf.pojo.vo.response.ChallengeBlockConditionVO">
         SELECT cbc.precondition_block_id blockId, name, cbc.precondition_unlock_score num
-        FROM t_challenge_block_condition cbc, t_challenge_block cb
+        FROM t_challenge_block_condition cbc,
+             t_challenge_block cb
         WHERE cbc.block_id = #{blockId}
-        AND cb.id = cbc.precondition_block_id;
+          AND cb.id = cbc.precondition_block_id;
     </select>
 
     <select id="selectRearBlocksByBlockId" resultType="java.lang.Integer">

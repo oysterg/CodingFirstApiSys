@@ -1,4 +1,4 @@
-package team.fjut.cf.pojo.vo;
+package team.fjut.cf.pojo.vo.response;
 
 import lombok.Data;
 

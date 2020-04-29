@@ -1,14 +1,12 @@
 package team.fjut.cf.controller.admin;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 import team.fjut.cf.pojo.enums.ResultCode;
-import team.fjut.cf.pojo.vo.*;
+import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.pojo.vo.response.BorderHonorRankVO;
 import team.fjut.cf.service.BorderHonorRankService;
-import team.fjut.cf.service.UserBaseInfoService;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author axiang [2019/11/11]
