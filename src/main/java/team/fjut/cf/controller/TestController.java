@@ -35,11 +35,13 @@ public class TestController {
         JSONObject listProjects = spiderHttpClient.getListProjects();
         JSONObject listSpiders = spiderHttpClient.getListSpiders();
         JSONObject listJobs = spiderHttpClient.getListJobs();
+        JSONObject jsonObject = spiderHttpClient.startSpider("SpecHDU", "3000,3001,3004");
         return new ResultJson(ResultCode.REQUIRED_SUCCESS, "",
                 daemonStatus,
                 listProjects,
                 listSpiders,
-                listJobs
+                listJobs,
+                jsonObject
         );
     }
 
