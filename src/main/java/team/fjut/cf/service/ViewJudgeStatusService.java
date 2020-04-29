@@ -1,7 +1,7 @@
 package team.fjut.cf.service;
 
 import team.fjut.cf.pojo.vo.StatusAdminVO;
-import team.fjut.cf.pojo.vo.StatusListVO;
+import team.fjut.cf.pojo.vo.response.StatusListVO;
 
 import java.util.List;
 

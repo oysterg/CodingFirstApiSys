@@ -1,6 +1,6 @@
 package team.fjut.cf.service;
 
-import team.fjut.cf.pojo.vo.BorderHonorRankVO;
+import team.fjut.cf.pojo.vo.response.BorderHonorRankVO;
 
 import java.util.List;
 

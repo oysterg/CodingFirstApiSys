@@ -1,13 +1,13 @@
 package team.fjut.cf.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import org.springframework.stereotype.Service;
 import team.fjut.cf.mapper.BorderHonorRankMapper;
 import team.fjut.cf.pojo.enums.AwardLevel;
 import team.fjut.cf.pojo.enums.ContestLevel;
 import team.fjut.cf.pojo.po.BorderHonorRankPO;
-import team.fjut.cf.pojo.vo.BorderHonorRankVO;
+import team.fjut.cf.pojo.vo.response.BorderHonorRankVO;
 import team.fjut.cf.service.BorderHonorRankService;
-import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;

@@ -9,7 +9,7 @@ import team.fjut.cf.pojo.enums.SubmitResult;
 import team.fjut.cf.pojo.po.JudgeStatus;
 import team.fjut.cf.pojo.po.ViewJudgeStatus;
 import team.fjut.cf.pojo.vo.StatusAdminVO;
-import team.fjut.cf.pojo.vo.StatusListVO;
+import team.fjut.cf.pojo.vo.response.StatusListVO;
 import team.fjut.cf.service.ViewJudgeStatusService;
 import tk.mybatis.mapper.entity.Example;
 

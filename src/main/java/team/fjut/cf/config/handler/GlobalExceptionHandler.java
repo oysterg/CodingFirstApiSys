@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
         } else if (e instanceof NullPointerException) {
             exceptionMsg = "[ex0003]: 空指针错误";
         } else if (e instanceof ResourceAccessException) {
-            exceptionMsg = "[ex0004]: 服务器请求外部资源异常";
+            exceptionMsg = "[ex0004]: 服务端请求外部资源异常";
         } else if ((e instanceof PoolException) || (e instanceof QueryTimeoutException)) {
             exceptionMsg = "[ex0005]: Redis数据库异常";
         } else if (e instanceof ConnectException) {
