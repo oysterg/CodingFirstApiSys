@@ -53,4 +53,22 @@
                            ON t_user_base_info.username = t_user_custom_info.username
         ORDER BY rating DESC
     </select>
+
+    <select id="selectByCondition" resultType="team.fjut.cf.pojo.vo.UserInfoAdminVO">
+        SELECT ubi.id, ubi.username, gender, email, phone, motto, register_time, rating, acb, nickname, avatar_url
+        FROM t_user_base_info ubi, t_user_custom_info uci
+        WHERE ubi.username = uci.username
+        <if test = "username != null">
+            AND ubi.username like #{username}
+        </if>
+    </select>
+
+    <select id="selectCountByCondition" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM t_user_base_info ubi, t_user_custom_info uci
+        WHERE ubi.username = uci.username
+        <if test = "username != null">
+            AND ubi.username like #{username}
+        </if>
+    </select>
 </mapper>

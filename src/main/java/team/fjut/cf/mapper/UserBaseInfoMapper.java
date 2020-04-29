@@ -2,6 +2,7 @@ package team.fjut.cf.mapper;
 
 import team.fjut.cf.pojo.po.UserBaseInfo;
 import org.apache.ibatis.annotations.Param;
+import team.fjut.cf.pojo.vo.UserInfoAdminVO;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
@@ -40,4 +41,22 @@ public interface UserBaseInfoMapper extends Mapper<UserBaseInfo> {
      * @return
      */
     List<UserBaseInfo> allRatingTop();
+
+    /**
+     * @author zhongml [2020/4/28]
+     * 条件查询用户信息
+     *
+     * @param username
+     * @return
+     */
+    List<UserInfoAdminVO> selectByCondition(@Param("username") String username);
+
+    /**
+     * @author zhongml [2020/4/28]
+     * 条件查询用户信息数量
+     *
+     * @param username
+     * @return
+     */
+    int selectCountByCondition(@Param("username") String username);
 }

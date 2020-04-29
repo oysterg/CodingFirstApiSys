@@ -3,15 +3,14 @@ package team.fjut.cf.service.impl;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import team.fjut.cf.component.email.EmailTool;
 import team.fjut.cf.mapper.*;
 import team.fjut.cf.pojo.po.UserAuth;
 import team.fjut.cf.pojo.po.UserBaseInfo;
 import team.fjut.cf.pojo.po.UserCustomInfo;
 import team.fjut.cf.pojo.po.UserMessage;
-import team.fjut.cf.pojo.vo.UserAcNumBorderVO;
-import team.fjut.cf.pojo.vo.UserAcbBorderVO;
-import team.fjut.cf.pojo.vo.UserRatingBorderVO;
+import team.fjut.cf.pojo.vo.*;
 import team.fjut.cf.service.UserBaseInfoService;
 import team.fjut.cf.utils.JsonFileTool;
 import team.fjut.cf.utils.Sha1Utils;
@@ -22,6 +21,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author axiang [2019/10/11]
@@ -214,6 +214,19 @@ public class UserBaseInfoServiceImpl implements UserBaseInfoService {
             userRatingBorderVOS.add(userRatingBorderVO);
         }
         return userRatingBorderVOS;
+    }
+
+    // add by zhongml [2020/4/28]
+    @Override
+    public List<UserInfoAdminVO> pageByCondition(Integer pageNum, Integer pageSize, String username) {
+        PageHelper.startPage(pageNum, pageSize);
+        return userBaseInfoMapper.selectByCondition(username);
+    }
+
+    // add by zhongml [2020/4/28]
+    @Override
+    public int countByCondition(String username) {
+        return userBaseInfoMapper.selectCountByCondition(username);
     }
 
 }

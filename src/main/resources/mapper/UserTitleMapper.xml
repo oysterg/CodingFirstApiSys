@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="team.fjut.cf.mapper.UserTitleMapper">
+
+    <select id="selectByCondition" resultType="team.fjut.cf.pojo.vo.UserTitleInfoVO">
+        SELECT tut.id, tut.name, tut.life_time, tut.picture_url, tutr.username, tutr.obtain_time, tutr.expired_time
+        FROM t_user_title tut, t_user_title_record tutr
+        WHERE tut.id = tutr.title_id
+        AND tutr.username = #{username}
+    </select>
+</mapper>
