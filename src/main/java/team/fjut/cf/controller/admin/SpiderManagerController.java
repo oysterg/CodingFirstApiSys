@@ -8,6 +8,7 @@ import team.fjut.cf.component.spider.SpiderParamsTool;
 import team.fjut.cf.pojo.enums.ResultCode;
 import team.fjut.cf.pojo.po.SpiderItemInfo;
 import team.fjut.cf.pojo.vo.ResultJson;
+import team.fjut.cf.pojo.vo.request.QuerySpiderLogVO;
 import team.fjut.cf.pojo.vo.request.StartSpiderVO;
 import team.fjut.cf.service.SpiderItemInfoService;
 
@@ -44,9 +45,13 @@ public class SpiderManagerController {
     @PostMapping("/start")
     public ResultJson startSpider(@RequestBody StartSpiderVO startSpiderVO) {
         String problems = SpiderParamsTool.parseRange2Problems(startSpiderVO.getRange());
-
         JSONObject jsonObject = spiderHttpClient.startSpider(startSpiderVO.getSpiderName(), "jobId", problems);
-        Object jobId = jsonObject.get("jobid");
         return new ResultJson(ResultCode.REQUIRED_SUCCESS, "", jsonObject);
+    }
+
+    @PostMapping("/log")
+    public ResultJson getJobLog(@RequestBody QuerySpiderLogVO querySpiderLogVO) {
+        String spiderLog = spiderHttpClient.getSpiderLog(querySpiderLogVO.getSpiderName(), querySpiderLogVO.getJobId());
+        return new ResultJson(ResultCode.REQUIRED_SUCCESS, "", spiderLog);
     }
 }

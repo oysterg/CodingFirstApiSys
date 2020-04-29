@@ -34,9 +34,11 @@ public class SpiderHttpClient {
     @Value("${cf.config.spider.listJobsUrl}")
     private String listJobsUrl;
 
-
     @Value("${cf.config.spider.scheduleUrl}")
     private String scheduleUrl;
+
+    @Value("${cf.config.spider.logUrl}")
+    private String logUrl;
 
     /**
      * 初始化设置头部
@@ -98,6 +100,12 @@ public class SpiderHttpClient {
         HttpEntity<MultiValueMap<String, Object>> request =
                 new HttpEntity<>(map);
         return restTemplate.postForObject(scheduleUrl, request, JSONObject.class);
+    }
+
+    public String getSpiderLog(String spiderName, String jobId) {
+        String currentUrl = String.format(logUrl, "CodingFirstSpider", spiderName, jobId);
+        log.info(currentUrl);
+        return restTemplate.getForObject(currentUrl, String.class);
     }
 
 }

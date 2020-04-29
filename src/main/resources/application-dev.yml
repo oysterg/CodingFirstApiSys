@@ -62,3 +62,4 @@ cf:
       listSpidersUrl: http://127.0.0.1:6800/listspiders.json?project=%s
       listJobsUrl: http://127.0.0.1:6800/listjobs.json?project=%s
       scheduleUrl: http://127.0.0.1:6800/schedule.json
+      logUrl: http://127.0.0.1:6800/logs/%s/%s/%s.log
